@@ -3,7 +3,7 @@
 # See LICENSE file in the project root for full license information.
 #
 
-# append source files required for ChibiOS interface  
+# append common source files
 list(APPEND COMMON_PROJECT_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/WireProtocol_HAL_Interface.c")
 list(APPEND COMMON_PROJECT_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/usbcfg.c")
 list(APPEND COMMON_PROJECT_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Device_BlockStorage.c")
