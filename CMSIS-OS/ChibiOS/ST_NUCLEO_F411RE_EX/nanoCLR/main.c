@@ -8,35 +8,12 @@
 #include <cmsis_os.h>
 
 #include "usbcfg.h"
-#include <CLR_Startup_Thread.h>
 #include <WireProtocol_ReceiverThread.h>
-
-void BlinkerThread(void const * argument)
-{
-  (void)argument;
-
-  palSetPad(GPIOA, GPIOA_LED_GREEN);
-  osDelay(1000);
-
-  palClearPad(GPIOA, GPIOA_LED_GREEN);
-  osDelay(250);
-
-  while (true) {
-
-      palSetPad(GPIOA, GPIOA_LED_GREEN);
-	    osDelay(125);
-	  
-      palClearPad(GPIOA, GPIOA_LED_GREEN);
-	    osDelay(125);	  	  
-  }
-}
-osThreadDef(BlinkerThread, osPriorityNormal, 128);
+#include <nanoCLR_Application.h>
+#include <nanoPAL_BlockStorage.h>
 
 // need to declare the Receiver thread here
-osThreadDef(ReceiverThread, osPriorityNormal, 1024);
-
-// declare CLRStartup thread here
-osThreadDef(CLRStartupThread, osPriorityNormal, 1024);
+osThreadDef(ReceiverThread, osPriorityNormal, 2048, "ReceiverThread");
 
 //  Application entry point.
 int main(void) {
@@ -60,20 +37,27 @@ int main(void) {
   usbStart(serusbcfg.usbp, &usbcfg);
   usbConnectBus(serusbcfg.usbp);
 
-  // Creates the blinker thread, it does not start immediately.
-  osThreadCreate(osThread(BlinkerThread), NULL);
-
   // create the receiver thread
   osThreadCreate(osThread(ReceiverThread), NULL);
-  
-  // create the CLR Startup thread
-  osThreadCreate(osThread(CLRStartupThread), NULL);
 
-  // start kernel, after this the main() thread has priority osPriorityNormal by default
+  // start kernel, after this main() will behave like a thread with priority osPriorityNormal
   osKernelStart();
 
-  //  Normal main() thread activity it does nothing except sleeping in a loop 
-  while (true) {
-    osDelay(1000);
+  // preparation for the CLR startup
+  BlockStorage_AddDevices();
+
+  CLR_SETTINGS clrSettings;
+
+  memset(&clrSettings, 0, sizeof(CLR_SETTINGS));
+
+  clrSettings.MaxContextSwitches         = 50;
+  clrSettings.WaitForDebugger            = false;
+  clrSettings.EnterDebuggerLoopAfterExit = true;
+
+  // startup CLR now
+  ClrStartup(clrSettings);
+
+  while (true) { 
+    osDelay(100);
   }
 }

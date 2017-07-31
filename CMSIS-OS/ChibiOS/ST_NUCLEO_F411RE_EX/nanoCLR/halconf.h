@@ -15,9 +15,10 @@
  * @{
  */
 
-#ifndef _HALCONF_H_
-#define _HALCONF_H_
+#ifndef HALCONF_H
+#define HALCONF_H
 
+#include <target_platform.h>
 #include "mcuconf.h"
 
 /**
@@ -107,9 +108,10 @@
 /**
  * @brief   Enables the RTC subsystem.
  */
-#if !defined(HAL_USE_RTC) || defined(__DOXYGEN__)
-#define HAL_USE_RTC                 FALSE
-#endif
+// this option is set at target_board.h (from config file)
+// #if !defined(HAL_USE_RTC) || defined(__DOXYGEN__)
+// #define HAL_USE_RTC                 TRUE
+// #endif
 
 /**
  * @brief   Enables the SDC subsystem.
@@ -135,9 +137,10 @@
 /**
  * @brief   Enables the SPI subsystem.
  */
-#if !defined(HAL_USE_SPI) || defined(__DOXYGEN__)
-#define HAL_USE_SPI                 FALSE
-#endif
+// this option is set at target_board.h (from config file)
+// #if !defined(HAL_USE_SPI) || defined(__DOXYGEN__)
+// #define HAL_USE_SPI                 FALSE
+// #endif
 
 /**
  * @brief   Enables the UART subsystem.
@@ -369,7 +372,7 @@
 // header for nanoFramework overlay
 #include "halconf_nf.h"
 
-#endif /* _HALCONF_H_ */
+#endif /* HALCONF_H */
 
 /** @} */
 

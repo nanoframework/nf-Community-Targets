@@ -86,6 +86,9 @@ add_executable(
     # sources for nanoFramework libraries
     "${NF_CoreCLR_SOURCES}"
     "${NF_Debugger_SOURCES}"
+    
+    # sources for nanoFramework APIs
+    "${TARGET_NANO_APIS_SOURCES}"
 )
 
 
@@ -94,6 +97,7 @@ include_directories(
     "${CMAKE_CURRENT_BINARY_DIR}"
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/common
+    ${PROJECT_SOURCE_DIR}/src/CLR/Core
     ${PROJECT_SOURCE_DIR}/src/CLR/Include
     ${PROJECT_SOURCE_DIR}/src/HAL/Include
     ${PROJECT_SOURCE_DIR}/src/PAL/Include
@@ -126,6 +130,9 @@ target_include_directories(${NANOCLR_PROJECT_NAME}.elf PUBLIC
      # directories for nanoFramework libraries
      "${NF_CoreCLR_INCLUDE_DIRS}"
      "${NF_Debugger_INCLUDE_DIRS}"
+     
+    # includes for nanoFramework APIs
+    "${TARGET_NANO_APIS_INCLUDES}"
 )
 
 ###################
@@ -140,9 +147,15 @@ CHIBIOS_ADD_HEX_BIN_DUMP_TARGETS(${NANOCLR_PROJECT_NAME}.elf)
 CHIBIOS_PRINT_SIZE_OF_TARGETS(${NANOBOOTER_PROJECT_NAME}.elf)
 CHIBIOS_PRINT_SIZE_OF_TARGETS(${NANOCLR_PROJECT_NAME}.elf)
 
-# set extra compiler flags 
-target_compile_definitions(${NANOBOOTER_PROJECT_NAME}.elf PUBLIC "-DPLATFORM_EMULATED_FLOATINGPOINT -DPLATFORM_ARM ")
-target_compile_definitions(${NANOCLR_PROJECT_NAME}.elf PUBLIC "-DPLATFORM_EMULATED_FLOATINGPOINT -DPLATFORM_ARM ")
+# set extra compiler flags, some are related with the build type
+if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+    # build types that include debug have the define 'NANOCLR_ENABLE_SOURCELEVELDEBUGGING'
+    target_compile_definitions(${NANOBOOTER_PROJECT_NAME}.elf PUBLIC "-DPLATFORM_EMULATED_FLOATINGPOINT -DPLATFORM_ARM -DNANOCLR_ENABLE_SOURCELEVELDEBUGGING ")
+    target_compile_definitions(${NANOCLR_PROJECT_NAME}.elf PUBLIC "-DPLATFORM_EMULATED_FLOATINGPOINT -DPLATFORM_ARM -DNANOCLR_ENABLE_SOURCELEVELDEBUGGING ")
+else()
+    target_compile_definitions(${NANOBOOTER_PROJECT_NAME}.elf PUBLIC "-DPLATFORM_EMULATED_FLOATINGPOINT -DPLATFORM_ARM ")
+    target_compile_definitions(${NANOCLR_PROJECT_NAME}.elf PUBLIC "-DPLATFORM_EMULATED_FLOATINGPOINT -DPLATFORM_ARM ")
+endif()
 
 # set compiler definition for FPU
 target_compile_definitions(${NANOBOOTER_PROJECT_NAME}.elf PUBLIC -DCORTEX_USE_FPU=$<$<BOOL:USE_FPU_IS_TRUE>:TRUE>$<$<NOT:$<BOOL:USE_FPU_IS_TRUE>>:FALSE>)
@@ -169,7 +182,7 @@ set_property(TARGET ${NANOCLR_PROJECT_NAME}.elf APPEND_STRING PROPERTY LINK_FLAG
 # the size of the CLR managed heap is defined here
 ###################################################
 set_property(TARGET ${NANOBOOTER_PROJECT_NAME}.elf APPEND_STRING PROPERTY LINK_FLAGS ",--library-path=${PROJECT_SOURCE_DIR}/targets/CMSIS-OS/ChibiOS/common,--defsym=__main_stack_size__=0x400,--defsym=__process_stack_size__=0x400,--defsym=__clr_managed_heap_size__=0x0")
-set_property(TARGET ${NANOCLR_PROJECT_NAME}.elf APPEND_STRING PROPERTY LINK_FLAGS ",--library-path=${PROJECT_SOURCE_DIR}/targets/CMSIS-OS/ChibiOS/common,--defsym=__main_stack_size__=0x400,--defsym=__process_stack_size__=0x400,--defsym=__clr_managed_heap_size__=0x9000")
+set_property(TARGET ${NANOCLR_PROJECT_NAME}.elf APPEND_STRING PROPERTY LINK_FLAGS ",--library-path=${PROJECT_SOURCE_DIR}/targets/CMSIS-OS/ChibiOS/common,--defsym=__main_stack_size__=0x400,--defsym=__process_stack_size__=0x400,--defsym=__clr_managed_heap_size__=0x8DE0")
 
 
 set(NANOBOOTER_HEX_FILE ${PROJECT_SOURCE_DIR}/build/${NANOBOOTER_PROJECT_NAME}.hex)
