@@ -150,12 +150,17 @@ CHIBIOS_PRINT_SIZE_OF_TARGETS(${NANOCLR_PROJECT_NAME}.elf)
 # set extra compiler flags, some are related with the build type
 if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
     # build types that include debug have the define 'NANOCLR_ENABLE_SOURCELEVELDEBUGGING'
-    target_compile_definitions(${NANOBOOTER_PROJECT_NAME}.elf PUBLIC "-DPLATFORM_EMULATED_FLOATINGPOINT -DPLATFORM_ARM -DNANOCLR_ENABLE_SOURCELEVELDEBUGGING ")
-    target_compile_definitions(${NANOCLR_PROJECT_NAME}.elf PUBLIC "-DPLATFORM_EMULATED_FLOATINGPOINT -DPLATFORM_ARM -DNANOCLR_ENABLE_SOURCELEVELDEBUGGING ")
+    target_compile_definitions(${NANOBOOTER_PROJECT_NAME}.elf PUBLIC "-DPLATFORM_ARM -DNANOCLR_ENABLE_SOURCELEVELDEBUGGING ")
+    target_compile_definitions(${NANOCLR_PROJECT_NAME}.elf PUBLIC "-DPLATFORM_ARM -DNANOCLR_ENABLE_SOURCELEVELDEBUGGING ")
 else()
-    target_compile_definitions(${NANOBOOTER_PROJECT_NAME}.elf PUBLIC "-DPLATFORM_EMULATED_FLOATINGPOINT -DPLATFORM_ARM ")
-    target_compile_definitions(${NANOCLR_PROJECT_NAME}.elf PUBLIC "-DPLATFORM_EMULATED_FLOATINGPOINT -DPLATFORM_ARM ")
+    target_compile_definitions(${NANOBOOTER_PROJECT_NAME}.elf PUBLIC "-DPLATFORM_ARM ")
+    target_compile_definitions(${NANOCLR_PROJECT_NAME}.elf PUBLIC "-DPLATFORM_ARM ")
 endif()
+
+# set compiler definition for platform emulated floating point according to FPU
+# no FPU requires FP emulation from the platform
+target_compile_definitions(${NANOBOOTER_PROJECT_NAME}.elf PUBLIC $<$<NOT:$<BOOL:USE_FPU_IS_TRUE>>:-DPLATFORM_EMULATED_FLOATINGPOINT>)
+target_compile_definitions(${NANOCLR_PROJECT_NAME}.elf PUBLIC $<$<NOT:$<BOOL:USE_FPU_IS_TRUE>>:-DPLATFORM_EMULATED_FLOATINGPOINT>)
 
 # set compiler definition for FPU
 target_compile_definitions(${NANOBOOTER_PROJECT_NAME}.elf PUBLIC -DCORTEX_USE_FPU=$<$<BOOL:USE_FPU_IS_TRUE>:TRUE>$<$<NOT:$<BOOL:USE_FPU_IS_TRUE>>:FALSE>)
