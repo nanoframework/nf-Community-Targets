@@ -1,6 +1,8 @@
 ## Another community board ##
 
-The board used in this community contribution is a STM32F411CEU6 based board from IngenuityMicro called Electron. The board has only 8 pins of which 3 are already used for 3.3V, 5V and GND, leaving use of only 7 pins. These pins can be used for:
+The board used in this community contribution is a STM32F411CEU6 based board from IngenuityMicro called Electron. The board has only 12 pins of which 3 are already used for 3.3V, 5V and GND, leaving use of only 9 pins.
+
+These pins can be used for:
 
 - 1 x TX/RX (Serial is not tested yet (January 3rd, 2018))
 - 4 x PWM
