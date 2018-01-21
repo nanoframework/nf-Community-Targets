@@ -8,6 +8,7 @@
 #include <cmsis_os.h>
 
 #include <usbcfg.h>
+#include <swo.h>
 #include <targetHAL.h>
 #include <WireProtocol_ReceiverThread.h>
 #include <LaunchCLR.h>
@@ -43,6 +44,16 @@ int main(void) {
   // and performs the board-specific initializations.
   halInit();
 
+  // init SWO as soon as possible to make it available to output ASAP
+  #if (SWO_OUTPUT == TRUE)  
+  SwoInit();
+  #endif
+
+  // The kernel is initialized but not started yet, this means that
+  // main() is executing with absolute priority but interrupts are already enabled.
+  osKernelInitialize();
+  osDelay(20);    // Let init stabilize
+  
   // check for valid CLR image 
   if(CheckValidCLRImage((uint32_t)&__nanoImage_end__))
   {
@@ -50,10 +61,6 @@ int main(void) {
     // launch nanoCLR
     LaunchCLR((uint32_t)&__nanoImage_end__);
   }
-  
-  // The kernel is initialized but not started yet, this means that
-  // main() is executing with absolute priority but interrupts are already enabled.
-  osKernelInitialize();
 
   //  Initializes a serial-over-USB CDC driver.
   sduObjectInit(&SDU1);
