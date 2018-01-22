@@ -31,9 +31,10 @@
 /**
  * @brief   Enables the ADC subsystem.
  */
-#if !defined(HAL_USE_ADC) || defined(__DOXYGEN__)
-#define HAL_USE_ADC                 FALSE
-#endif
+// this option is set at target_board.h (from config file)
+// #if !defined(HAL_USE_ADC) || defined(__DOXYGEN__)
+// #define HAL_USE_ADC                 FALSE
+// #endif
 
 /**
  * @brief   Enables the CAN subsystem.
@@ -52,9 +53,10 @@
 /**
  * @brief   Enables the EXT subsystem.
  */
-#if !defined(HAL_USE_EXT) || defined(__DOXYGEN__)
-#define HAL_USE_EXT                 FALSE
-#endif
+// this option is set at target_board.h (from config file)
+// #if !defined(HAL_USE_EXT) || defined(__DOXYGEN__)
+// #define HAL_USE_EXT                 FALSE
+// #endif
 
 /**
  * @brief   Enables the GPT subsystem.
@@ -66,10 +68,10 @@
 /**
  * @brief   Enables the I2C subsystem.
  */
-#if !defined(HAL_USE_I2C) || defined(__DOXYGEN__)
-#define HAL_USE_I2C                 FALSE
-#endif
-
+// this option is set at target_board.h (from config file)
+//#if !defined(HAL_USE_I2C) || defined(__DOXYGEN__)
+//#define HAL_USE_I2C                 TRUE
+//#endif
 /**
  * @brief   Enables the I2S subsystem.
  */
@@ -87,9 +89,10 @@
 /**
  * @brief   Enables the MAC subsystem.
  */
-#if !defined(HAL_USE_MAC) || defined(__DOXYGEN__)
-#define HAL_USE_MAC                 FALSE
-#endif
+// this option is set at target_board.h (from config file)
+// #if !defined(HAL_USE_MAC) || defined(__DOXYGEN__)
+// #define HAL_USE_MAC                 TRUE
+// #endif
 
 /**
  * @brief   Enables the MMC_SPI subsystem.
@@ -101,9 +104,10 @@
 /**
  * @brief   Enables the PWM subsystem.
  */
-#if !defined(HAL_USE_PWM) || defined(__DOXYGEN__)
-#define HAL_USE_PWM                 FALSE
-#endif
+// this option is set at target_board.h (from config file)
+// #if !defined(HAL_USE_PWM) || defined(__DOXYGEN__)
+// #define HAL_USE_PWM                 FALSE
+// #endif
 
 /**
  * @brief   Enables the RTC subsystem.
