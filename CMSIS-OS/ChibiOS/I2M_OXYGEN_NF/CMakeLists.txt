@@ -41,6 +41,11 @@ if(USE_NETWORKING_OPTION)
     find_package(CHIBIOS_LWIP REQUIRED)
 endif()
 
+# nF feature: filesystem
+if(USE_FILESYSTEM_OPTION)
+    find_package(CHIBIOS_FATFS REQUIRED)
+endif()
+
 #######################################
 
 
@@ -100,6 +105,9 @@ add_executable(
 
     # sources for nanoFramework APIs
     "${TARGET_NANO_APIS_SOURCES}"
+        # sources for target specifc stuff related with APIs
+    # Windows.Devices.SerialCommunication
+    "target_windows_devices_serialcommunication_config.cpp"
 )
 
 # add dependency from ChibiOS (this is required to make sure the ChibiOS repo is downloaded before the build starts)
