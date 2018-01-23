@@ -17,4 +17,6 @@ If($NinjaPathExists -eq $False)
 
     # unzip
     Expand-Archive $output -DestinationPath $env:NINJA_PATH
+
+    Remove-Item -Path "$PSScriptRoot\ninja.zip" -Force
 }
