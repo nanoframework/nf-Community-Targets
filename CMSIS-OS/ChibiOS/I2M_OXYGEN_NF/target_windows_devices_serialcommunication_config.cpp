@@ -14,7 +14,7 @@
 // TX pin: is GPIOA_9
 // RX pin: is GPIOA_10
 // GPIO alternate pin function is 7 (see "Table 9. Alternate function mapping" in STM32F411xC and STM32F411xE datasheet)
-UART_CONFIG_PINS(1, GPIOA, 9, 10, 7)
+UART_CONFIG_PINS(1, GPIOA, GPIOA, 9, 10, 7)
 
 // buffers size
 // tx buffer size: 256 bytes
@@ -50,7 +50,7 @@ UART_UNINIT(1)
 // TX pin: is GPIOA_2
 // RX pin: is GPIOA_3
 // GPIO alternate pin function is 7 (see "Table 9. Alternate function mapping" in STM32F411xC and STM32F411xE datasheet)
-UART_CONFIG_PINS(2, GPIOA, 2, 3, 7)
+UART_CONFIG_PINS(2, GPIOA, GPIOA, 2, 3, 7)
 
 // buffers size
 // tx buffer size: 1024 bytes
