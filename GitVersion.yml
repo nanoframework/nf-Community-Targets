@@ -1,0 +1,21 @@
+next-version: 1.0.0
+assembly-versioning-scheme: MajorMinorPatchTag
+build-metadata-padding: 3
+legacy-semver-padding: 3
+assembly-informational-format: '{LegacySemVerPadded}'
+major-version-bump-message: '\+semver:\s?(breaking|major)'
+minor-version-bump-message: '\+semver:\s?(feature|minor)'
+patch-version-bump-message: '\+semver:\s?(fix|patch)'
+commit-message-incrementing: MergeMessageOnly
+branches:
+  master:
+    mode: ContinuousDeployment
+    tag:
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+  (pull|pull\-requests|pr)[/-]:
+    mode: ContinuousDelivery
+    increment: Inherit
+    tag: alpha
+    prevent-increment-of-merged-branch-version: false
