@@ -25,8 +25,6 @@ environment:
   HEX2DFU_PATH: 'C:\mytools\hex2dfu'
   RUBY_VERSION: 24
   TARGET_TO_BUILD: ''
-  # need this here to make it easy to launch the build
-  clone_folder: c:\projects\nf-interpreter\targets-community
   GitHubUserName:
     secure: 7OBtVAMTodMWK20wg6pGnQ==
   GitHubUserEmail:
@@ -52,9 +50,7 @@ install:
   - choco install gitversion.portable -pre -y
 
   - ps: |
-
-      cd ..
-      
+     
       # extract board name to build
       .\get-target-to-build.ps1
 
@@ -69,19 +65,22 @@ build:
   verbosity: minimal
 
 before_build:
-  - md build
   - ps: |
 
       if($env:TARGET_TO_BUILD -eq $env:BOARD_NAME)
       {
+        # clone nf-interpreter
+        git clone https://github.com/nanoframework/nf-interpreter.git -b develop nf-interpreter --depth 1 -q
 
+        # copy community targets content to nf-interpreter community folder
+        Copy-Item * nf-interpreter/targets-community -recurse -Force
 
-        git clone https://github.com/nanoframework/nf-interpreter.git -b develop --depth 1 -q
-
-        cd build
         gitversion /l console /output buildserver
 
+        cd nf-interpreter
+        md build
         cd build
+
         $cmake = "cmake"
 
         # need to split the build options into an array to properly pass those as CMake arguments
