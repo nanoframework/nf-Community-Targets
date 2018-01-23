@@ -53,6 +53,8 @@ install:
 
   - ps: |
 
+      cd ..
+      
       # extract board name to build
       .\get-target-to-build.ps1
 
@@ -72,7 +74,7 @@ before_build:
 
       if($env:TARGET_TO_BUILD -eq $env:BOARD_NAME)
       {
-        cd ..
+
 
         git clone https://github.com/nanoframework/nf-interpreter.git -b develop --depth 1 -q
 
