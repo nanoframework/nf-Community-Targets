@@ -1,33 +1,87 @@
-# collection of Community targets
-$communityTargets = "I2M_ELECTRON_NF", "I2M_OXIGEN_NF", "ST_NUCLEO_F411RE_EX", "ST_NUCLEO64_F411RE_NF"
+#build matrx with target names and build options
+$BuildMatrix = ("I2M_ELECTRON_NF", "-DTARGET_SERIES=STM32F4xx -DUSE_FPU=TRUE -DNF_FEATURE_DEBUGGER=TRUE -DSWO_OUTPUT=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON", 'False'),
+("I2M_OXYGEN_NF", "-DTARGET_SERIES=STM32F4xx -DUSE_FPU=TRUE -DNF_FEATURE_DEBUGGER=TRUE -DSWO_OUTPUT=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON", 'False'),
+("ST_NUCLEO_F411RE_EX", "-DTARGET_SERIES=STM32F4xx -DUSE_FPU=TRUE -DNF_FEATURE_DEBUGGER=TRUE -DSWO_OUTPUT=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON", 'False'),
+("ST_NUCLEO64_F411RE_NF","-DTARGET_SERIES=STM32F4xx -DUSE_FPU=TRUE -DNF_FEATURE_DEBUGGER=TRUE -DSWO_OUTPUT=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON", 'False')
+
 
 # get commit message
 $commitMessage = "$env:APPVEYOR_REPO_COMMIT_MESSAGE" + " " + "$env:APPVEYOR_REPO_COMMIT_MESSAGE_EXTENDED"
 
-# nothing to build 
-$env:TARGET_TO_BUILD = "NOTHING_TO_BUILD"
-
 # is there a target name in the commit message?
-$targetCandidate = [regex]::Match("$commitMessage",'[#]+\w+[#]').Value
+$targetCandidate = [regex]::Matches("$commitMessage",'[#]+\w+[#]').Value
 
-# special case for #ALL# (build all targets)
-if($targetCandidate -eq '#ALL#')
+if($targetCandidate -is [array])
 {
-    # target to build is the board name
-    $env:TARGET_TO_BUILD = $env:BOARD_NAME
+    $global:BUILD_MATRIX = @(,@()) 
 
-    Write-Host "Target board is " $env:BOARD_NAME
-}
-elseif($targetCandidate -ne '')
-{
-    # remove the leading and trailinig '#'
-    $targetCandidate = $targetCandidate -replace "#", ""
-
-    # check if it's one of the supported targets
-    If($communityTargets -contains $targetCandidate)
+    ForEach($candidate in $targetCandidate)
     {
-        $env:TARGET_TO_BUILD = $targetCandidate
+        # remove the leading and trailinig '#'
+        $thisCandidate = $candidate -replace "#", ""
 
-        Write-Host "Target board is " $env:TARGET_TO_BUILD        
+        # find if there is a target with this name
+        ForEach($item in $BuildMatrix)
+        {
+            if(!$item[0].CompareTo($thisCandidate))
+            {
+                $global:BUILD_MATRIX += , $item
+
+                break;
+            }
+        }
     }
 }
+else
+{
+    if($targetCandidate)
+    {
+        # special case for #ALL# (build all targets)
+        if(!$targetCandidate.CompareTo('#ALL#'))
+        {
+            # target to build is the board name
+            $env:BOARD_NAME = "ALL"
+
+            $global:BUILD_MATRIX = $BuildMatrix
+        }
+        else
+        {
+            # remove the leading and trailinig '#'
+            $targetCandidate = $targetCandidate -replace "#", ""
+
+            # find if there is a target with this name
+            ForEach($item in $BuildMatrix)
+            {
+                if(!$item[0].CompareTo($targetCandidate))
+                {
+                    $env:BOARD_NAME = $item[0]
+                    $env:BUILD_OPTIONS = $item[1]
+                    $env:NEEDS_DFU = $item[2]
+            
+                    break;
+                }
+            }
+        }
+    }
+    else
+    {
+        $env:BOARD_NAME = ''
+    }
+}
+
+if($env:BOARD_NAME)
+{
+    if(!$env:BOARD_NAME.CompareTo('ALL'))
+    {
+        Write-Host "Build all targets"
+    }
+    else 
+    {
+        Write-Host "Target board is " $env:BOARD_NAME
+    }
+}
+else 
+{
+    Write-Host "Nothing to build"
+}
+
