@@ -214,3 +214,4 @@ notifications:
     on_build_success: true|false
     on_build_failure: true|false
     on_build_status_changed: true|false
+  
