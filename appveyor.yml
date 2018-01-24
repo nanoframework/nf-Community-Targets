@@ -109,6 +109,11 @@ build_script:
         {
           $cmake = "cmake"
           &$cmake --build (Get-Location).path --target all --config "$env:CONFIGURATION"
+          
+          if ($lastexitcode -ne 0)
+          {
+            throw [System.Exception] "CMake build failed with exit code $lastexitcode."
+          }
  
           Compress-7Zip -Path . -Filter "*.bin" -ArchiveFileName $env:BOARD_NAME-$env:GitVersion_AssemblySemVer.zip -DisableRecursion
           Compress-7Zip -Path . -Filter "*.hex" -ArchiveFileName $env:BOARD_NAME-$env:GitVersion_AssemblySemVer.zip -DisableRecursion -Append
@@ -149,6 +154,11 @@ build_script:
             &$cmake -G Ninja "-DTOOLCHAIN_PREFIX=$env:GNU_GCC_TOOLCHAIN_PATH" "-DCHIBIOS_BOARD=$env:BOARD_NAME" "-DCMAKE_BUILD_TYPE=$env:CONFIGURATION" $cmakeOptions ..
 
             &$cmake --build (Get-Location).path --target all --config "$env:CONFIGURATION"
+
+            if ($lastexitcode -ne 0)
+            {
+              throw [System.Exception] "CMake build failed with exit code $lastexitcode."
+            }
 
             Compress-7Zip -Path . -Filter "*.bin" -ArchiveFileName $env:BOARD_NAME-$env:GitVersion_AssemblySemVer.zip -DisableRecursion
             Compress-7Zip -Path . -Filter "*.hex" -ArchiveFileName $env:BOARD_NAME-$env:GitVersion_AssemblySemVer.zip -DisableRecursion -Append
