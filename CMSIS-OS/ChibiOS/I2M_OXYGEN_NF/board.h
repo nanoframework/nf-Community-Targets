@@ -314,7 +314,7 @@
                                      PIN_MODE_ALTERNATE(GPIOA_OTG_FS_DM) |  \
                                      PIN_MODE_ALTERNATE(GPIOA_OTG_FS_DP) |  \
                                      PIN_MODE_OUTPUT(GPIOA_USER_LED) |      \
-                                     PIN_MODE_ALTERNATE(GPIOA_PIN14) |      \
+                                     PIN_MODE_INPUT(GPIOA_PIN14) |      \
                                      PIN_MODE_INPUT(GPIOA_PIN15))
 #define VAL_GPIOA_OTYPER            (PIN_OTYPE_PUSHPULL(GPIOA_USART2_CTS) |     \
                                      PIN_OTYPE_PUSHPULL(GPIOA_USART2_RTS) |     \
