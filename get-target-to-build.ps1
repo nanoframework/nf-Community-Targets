@@ -1,6 +1,6 @@
 #build matrx with target names and build options
 $BuildMatrix = ("I2M_ELECTRON_NF", "-DTARGET_SERIES=STM32F4xx -DUSE_FPU=TRUE -DNF_FEATURE_DEBUGGER=TRUE -DSWO_OUTPUT=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON", 'False'),
-("I2M_OXYGEN_NF", "-DTARGET_SERIES=STM32F4xx -DUSE_FPU=TRUE -DNF_FEATURE_DEBUGGER=TRUE -DSWO_OUTPUT=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON", 'False'),
+("I2M_OXYGEN_NF", "-DTARGET_SERIES=STM32F4xx -DUSE_FPU=TRUE -DNF_FEATURE_DEBUGGER=TRUE -DSWO_OUTPUT=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON", 'False'),
 ("ST_NUCLEO_F411RE_EX", "-DTARGET_SERIES=STM32F4xx -DUSE_FPU=TRUE -DNF_FEATURE_DEBUGGER=TRUE -DSWO_OUTPUT=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON", 'False'),
 ("ST_NUCLEO64_F411RE_NF","-DTARGET_SERIES=STM32F4xx -DUSE_FPU=TRUE -DNF_FEATURE_DEBUGGER=TRUE -DSWO_OUTPUT=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON", 'False')
 
