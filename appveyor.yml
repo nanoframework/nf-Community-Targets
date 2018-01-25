@@ -128,7 +128,7 @@ build_script:
           {
             $webClient = New-Object System.Net.WebClient
             $webClient.Credentials = new-object System.Net.NetworkCredential("nfbot", $env:BinTrayKey)
-            $webClient.UploadFile("https://api.bintray.com/content/nfbot/nanoframework-images-community-targets/$env:BOARD_NAME/$env:GitVersion_AssemblySemVer/$env:BOARD_NAME-$env:GitVersion_AssemblySemVer.zip?publish=1?explode=0", "PUT", "$env:APPVEYOR_BUILD_FOLDER\nf-interpreter\build\$env:BOARD_NAME-$env:GitVersion_AssemblySemVer.zip")
+            $webClient.UploadFile("https://api.bintray.com/content/nfbot/nanoframework-images-community-targets/$env:BOARD_NAME/$env:GitVersion_AssemblySemVer/$env:BOARD_NAME-$env:GitVersion_AssemblySemVer.zip?publish=1", "PUT", "$env:APPVEYOR_BUILD_FOLDER\nf-interpreter\build\$env:BOARD_NAME-$env:GitVersion_AssemblySemVer.zip")
           }
         }
         else
@@ -173,7 +173,7 @@ build_script:
             {
               $webClient = New-Object System.Net.WebClient
               $webClient.Credentials = new-object System.Net.NetworkCredential("nfbot", $env:BinTrayKey)
-              $webClient.UploadFile("https://api.bintray.com/content/nfbot/nanoframework-images-community-targets/$env:BOARD_NAME/$env:GitVersion_AssemblySemVer/$env:BOARD_NAME-$env:GitVersion_AssemblySemVer.zip?publish=1?explode=0", "PUT", "$env:APPVEYOR_BUILD_FOLDER\nf-interpreter\build\$env:BOARD_NAME-$env:GitVersion_AssemblySemVer.zip")
+              $webClient.UploadFile("https://api.bintray.com/content/nfbot/nanoframework-images-community-targets/$env:BOARD_NAME/$env:GitVersion_AssemblySemVer/$env:BOARD_NAME-$env:GitVersion_AssemblySemVer.zip?publish=1", "PUT", "$env:APPVEYOR_BUILD_FOLDER\nf-interpreter\build\$env:BOARD_NAME-$env:GitVersion_AssemblySemVer.zip")
             }
 
             cd ..
