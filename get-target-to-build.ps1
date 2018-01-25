@@ -25,7 +25,14 @@ if($targetCandidate -is [array])
         {
             if(!$item[0].CompareTo($thisCandidate))
             {
-                $global:BUILD_MATRIX += , $item
+                if($global:BUILD_MATRIX)
+                {
+                    $global:BUILD_MATRIX += , $item
+                }
+                else
+                {
+                    $global:BUILD_MATRIX = , $item
+                }
 
                 break;
             }
@@ -82,6 +89,19 @@ if($env:BOARD_NAME)
 }
 else 
 {
-    Write-Host "Nothing to build"
+    if($global:BUILD_MATRIX)
+    {
+        Write-Host "Build targets:"
+
+        ForEach($item in $global:BUILD_MATRIX)
+        {
+            $env:BOARD_NAME += $item[0]+'|'
+            Write-Host $item[0]
+        }        
+    }
+    else
+    {
+        Write-Host "Nothing to build"
+    }
 }
 
