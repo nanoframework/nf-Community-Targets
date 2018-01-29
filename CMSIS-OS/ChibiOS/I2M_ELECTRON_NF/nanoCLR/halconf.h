@@ -31,9 +31,9 @@
 /**
  * @brief   Enables the ADC subsystem.
  */
-// this option is set at target_board.h (from config file)
+// this option is set at target_platform.h (from config file)
 // #if !defined(HAL_USE_ADC) || defined(__DOXYGEN__)
-// #define HAL_USE_ADC                 FALSE
+// #define HAL_USE_ADC                 TRUE
 // #endif
 
 /**
@@ -53,7 +53,7 @@
 /**
  * @brief   Enables the EXT subsystem.
  */
-// this option is set at target_board.h (from config file)
+// this option is set at target_platform.h (from config file)
 // #if !defined(HAL_USE_EXT) || defined(__DOXYGEN__)
 // #define HAL_USE_EXT                 FALSE
 // #endif
@@ -68,10 +68,11 @@
 /**
  * @brief   Enables the I2C subsystem.
  */
-// this option is set at target_board.h (from config file)
+// this option is set at target_platform.h (from config file)
 //#if !defined(HAL_USE_I2C) || defined(__DOXYGEN__)
 //#define HAL_USE_I2C                 TRUE
 //#endif
+
 /**
  * @brief   Enables the I2S subsystem.
  */
@@ -89,7 +90,7 @@
 /**
  * @brief   Enables the MAC subsystem.
  */
-// this option is set at target_board.h (from config file)
+// this option is set at target_platform.h (from config file)
 // #if !defined(HAL_USE_MAC) || defined(__DOXYGEN__)
 // #define HAL_USE_MAC                 TRUE
 // #endif
@@ -104,15 +105,15 @@
 /**
  * @brief   Enables the PWM subsystem.
  */
-// this option is set at target_board.h (from config file)
+// this option is set at target_platform.h (from config file)
 // #if !defined(HAL_USE_PWM) || defined(__DOXYGEN__)
-// #define HAL_USE_PWM                 FALSE
+// #define HAL_USE_PWM                 TRUE
 // #endif
 
 /**
  * @brief   Enables the RTC subsystem.
  */
-// this option is set at target_board.h (from config file)
+// this option is set at target_platform.h (from config file)
 // #if !defined(HAL_USE_RTC) || defined(__DOXYGEN__)
 // #define HAL_USE_RTC                 TRUE
 // #endif
@@ -120,9 +121,10 @@
 /**
  * @brief   Enables the SDC subsystem.
  */
-#if !defined(HAL_USE_SDC) || defined(__DOXYGEN__)
-#define HAL_USE_SDC                 FALSE
-#endif
+// this option is set at target_platform.h (from config file)
+// #if !defined(HAL_USE_SDC) || defined(__DOXYGEN__)
+// #define HAL_USE_SDC                 FALSE
+// #endif
 
 /**
  * @brief   Enables the SERIAL subsystem.
@@ -141,17 +143,18 @@
 /**
  * @brief   Enables the SPI subsystem.
  */
-// this option is set at target_board.h (from config file)
+// this option is set at target_platform.h (from config file)
 // #if !defined(HAL_USE_SPI) || defined(__DOXYGEN__)
-// #define HAL_USE_SPI                 FALSE
+// #define HAL_USE_SPI                 TRUE
 // #endif
 
 /**
  * @brief   Enables the UART subsystem.
  */
-#if !defined(HAL_USE_UART) || defined(__DOXYGEN__)
-#define HAL_USE_UART                FALSE
-#endif
+// this option is set at target_platform.h (from config file)
+// #if !defined(HAL_USE_UART) || defined(__DOXYGEN__)
+// #define HAL_USE_UART                FALSE
+// #endif
 
 /**
  * @brief   Enables the USB subsystem.
@@ -350,7 +353,7 @@
  * @note    Disabling this option saves both code and data space.
  */
 #if !defined(UART_USE_WAIT) || defined(__DOXYGEN__)
-#define UART_USE_WAIT               FALSE
+#define UART_USE_WAIT               TRUE
 #endif
 
 /**
@@ -358,7 +361,7 @@
  * @note    Disabling this option saves both code and data space.
  */
 #if !defined(UART_USE_MUTUAL_EXCLUSION) || defined(__DOXYGEN__)
-#define UART_USE_MUTUAL_EXCLUSION   FALSE
+#define UART_USE_MUTUAL_EXCLUSION   TRUE
 #endif
 
 /*===========================================================================*/

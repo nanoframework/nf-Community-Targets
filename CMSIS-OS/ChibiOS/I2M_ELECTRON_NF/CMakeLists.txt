@@ -46,7 +46,7 @@ if(USE_FILESYSTEM_OPTION)
     find_package(CHIBIOS_FATFS REQUIRED)
 endif()
 
-####################################################
+#######################################
 # sources for target specifc stuff related with APIs
 list(APPEND API_RELATED_TARGET_SOURCES "")
 
