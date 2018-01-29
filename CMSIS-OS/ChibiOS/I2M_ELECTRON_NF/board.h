@@ -1,4 +1,4 @@
-/*
+/*  
     ChibiOS - Copyright (C) 2006..2016 Giovanni Di Sirio
 
     Licensed under the Apache License, Version 2.0 (the "License");
