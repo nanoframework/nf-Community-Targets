@@ -14,4 +14,4 @@ These pins can be used for:
 
 In addition, the board has two on-board LEDs connected to PA1 and PA8 and are tested for use as GPIO, PWM.
 
-Further information can be found on http://www.ingenuitymicro.com/products/electron/ where various firmware, board layout and schema can be found.
+Further information can be found on http://www.ingenuitymicro.com/products/electron/ where firmware, board layout and schema can be found.
