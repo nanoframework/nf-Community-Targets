@@ -12,8 +12,8 @@
  */
 MEMORY
 {
-    flash       : org = 0x08008000, len = 512k - 32k - 320k   /* flash size less the space reserved for nanoBooter and application deployment*/
-    deployment  : org = 0x08030000, len = 320k                /* space reserved for application deployment */
+    flash       : org = 0x08008000, len = 512k - 32k - 256k   /* flash size less the space reserved for nanoBooter and application deployment*/
+    deployment  : org = 0x08040000, len = 256k                /* space reserved for application deployment */
     ramvt       : org = 0x20000000, len = 0                   /* initial RAM address is reserved for a copy of the vector table */
     ram0        : org = 0x20000000, len = 128k                /* SRAM1 */
     ram1        : org = 0x00000000, len = 0                
@@ -72,23 +72,4 @@ REGION_ALIAS("HEAP_RAM", ram0);
 /* RAM region to be used for the nanoFramework CLR managed heap.*/
 REGION_ALIAS("CLR_MANAGED_HEAP_RAM", ram0);
 
-/* Stacks rules inclusion.*/
-INCLUDE rules_stacks.ld
-
-/* Code rules inclusion.*/
-INCLUDE rules_code.ld
-
-/*  
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
-// rules_clr.ld have to be included **BEFORE** the rules_data.ld 
-// this is because the CRT heap (processed in rules_data.ld) takes up all the remaining free space of the memory region where it's assigned 
-// the size of the managed heap (processed in rules_clr.ld) is set in each target configuration 
-// in case it shares the same region as the CRT heap it won't have any room left if the CRT heap is assigned first 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
-/*  
-
-/* nanoCLR rules inclusion.*/
-INCLUDE rules_clr.ld
-
-/* Data rules inclusion.*/
-INCLUDE rules_data.ld
+INCLUDE rules.ld
