@@ -13,7 +13,7 @@ $targetCandidate = [regex]::Matches("$commitMessage",'[#]+\w+[#]').Value
 
 if($targetCandidate -is [array])
 {
-    $global:BUILD_MATRIX = @(,@()) 
+    $global:BUILD_MATRIX = @(,@())
 
     ForEach($candidate in $targetCandidate)
     {
