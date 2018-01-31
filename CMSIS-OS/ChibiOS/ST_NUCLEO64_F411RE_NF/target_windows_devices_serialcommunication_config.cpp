@@ -16,7 +16,7 @@
 // GPIO alternate pin function is 7 (see "Table 9. Alternate function mapping" in STM32F411xC and STM32F411xE datasheet)
 UART_CONFIG_PINS(2, GPIOA, GPIOA, 2, 3, 7)
 
-// buffers size
+// buffers size 
 // tx buffer size: 1024 bytes
 #define UART2_TX_SIZE  1024
 // rx buffer size: 1024 bytes
