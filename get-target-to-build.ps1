@@ -102,6 +102,6 @@ else
     else
     {
         Write-Host "Nothing to build"
-    }
+    } 
 }
 
