@@ -295,8 +295,8 @@
  */
 #define VAL_GPIOA_MODER             (PIN_MODE_INPUT(GPIOA_PIN0) |           \
                                      PIN_MODE_OUTPUT(GPIOA_LED_GREEN) |           \
-                                     PIN_MODE_INPUT(GPIOA_PIN2) |   \
-                                     PIN_MODE_INPUT(GPIOA_PIN3) |   \
+                                     PIN_MODE_ALTERNATE(GPIOA_PIN2) |   \
+                                     PIN_MODE_ALTERNATE(GPIOA_PIN3) |   \
                                      PIN_MODE_OUTPUT(GPIOA_PIN4) |           \
                                      PIN_MODE_INPUT(GPIOA_PIN5) |     \
                                      PIN_MODE_INPUT(GPIOA_PIN6) |           \
@@ -375,8 +375,8 @@
                                      PIN_ODR_HIGH(GPIOA_PIN15))
 #define VAL_GPIOA_AFRL              (PIN_AFIO_AF(GPIOA_PIN0, 0U) |          \
                                      PIN_AFIO_AF(GPIOA_LED_GREEN, 0U) |          \
-                                     PIN_AFIO_AF(GPIOA_PIN2, 0U) |      \
-                                     PIN_AFIO_AF(GPIOA_PIN3, 0U) |      \
+                                     PIN_AFIO_AF(GPIOA_PIN2, 7U) |      \
+                                     PIN_AFIO_AF(GPIOA_PIN3, 7U) |      \
                                      PIN_AFIO_AF(GPIOA_PIN4, 0U) |          \
                                      PIN_AFIO_AF(GPIOA_PIN5, 0U) |     \
                                      PIN_AFIO_AF(GPIOA_PIN6, 0U) |          \

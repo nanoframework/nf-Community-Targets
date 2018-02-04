@@ -1,8 +1,8 @@
 #build matrx with target names and build options
-$BuildMatrix = ("I2M_ELECTRON_NF", "-DTARGET_SERIES=STM32F4xx -DUSE_FPU=TRUE -DNF_FEATURE_DEBUGGER=TRUE -DSWO_OUTPUT=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON", 'True'),
+$BuildMatrix = ("I2M_ELECTRON_NF", "-DTARGET_SERIES=STM32F4xx -DUSE_FPU=TRUE -DNF_FEATURE_DEBUGGER=TRUE -DSWO_OUTPUT=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON", 'True'),
 ("I2M_OXYGEN_NF", "-DTARGET_SERIES=STM32F4xx -DUSE_FPU=TRUE -DNF_FEATURE_DEBUGGER=TRUE -DSWO_OUTPUT=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON", 'True'),
 ("ST_NUCLEO_F411RE_EX", "-DTARGET_SERIES=STM32F4xx -DUSE_FPU=TRUE -DNF_FEATURE_DEBUGGER=TRUE -DSWO_OUTPUT=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON", 'False'),
-("ST_NUCLEO64_F411RE_NF","-DTARGET_SERIES=STM32F4xx -DUSE_FPU=TRUE -DNF_FEATURE_DEBUGGER=TRUE -DSWO_OUTPUT=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON", 'False')
+("ST_NUCLEO64_F411RE_NF","-DTARGET_SERIES=STM32F4xx -DUSE_FPU=TRUE -DNF_FEATURE_DEBUGGER=TRUE -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON", 'False')
 
 
 # get commit message
@@ -13,7 +13,7 @@ $targetCandidate = [regex]::Matches("$commitMessage",'[#]+\w+[#]').Value
 
 if($targetCandidate -is [array])
 {
-    $global:BUILD_MATRIX = @(,@()) 
+    $global:BUILD_MATRIX = @(,@())
 
     ForEach($candidate in $targetCandidate)
     {
@@ -25,7 +25,14 @@ if($targetCandidate -is [array])
         {
             if(!$item[0].CompareTo($thisCandidate))
             {
-                $global:BUILD_MATRIX += , $item
+                if($global:BUILD_MATRIX)
+                {
+                    $global:BUILD_MATRIX += , $item
+                }
+                else
+                {
+                    $global:BUILD_MATRIX = , $item
+                }
 
                 break;
             }
@@ -82,6 +89,19 @@ if($env:BOARD_NAME)
 }
 else 
 {
-    Write-Host "Nothing to build"
+    if($global:BUILD_MATRIX)
+    {
+        Write-Host "Build targets:"
+
+        ForEach($item in $global:BUILD_MATRIX)
+        {
+            $env:BOARD_NAME += $item[0]+'|'
+            Write-Host $item[0]
+        }        
+    }
+    else
+    {
+        Write-Host "Nothing to build"
+    } 
 }
 
