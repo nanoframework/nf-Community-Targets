@@ -5,7 +5,7 @@ $BuildMatrix = ("GHI_FEZ_CERB40_NF", "-DTARGET_SERIES=STM32F4xx -DUSE_FPU=TRUE -
 ("ST_NUCLEO64_F411RE_NF","-DTARGET_SERIES=STM32F4xx -DUSE_FPU=TRUE -DNF_FEATURE_DEBUGGER=TRUE -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON", 'False')
 
 
-# get commit message
+# get commit message 
 $commitMessage = "$env:APPVEYOR_REPO_COMMIT_MESSAGE" + " " + "$env:APPVEYOR_REPO_COMMIT_MESSAGE_EXTENDED"
 
 # is there a target name in the commit message?
