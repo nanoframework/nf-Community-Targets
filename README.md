@@ -4,9 +4,9 @@
 
 ### Welcome to the **nanoFramework** community targets repository!
 
-This repository contains target boards for the nanoFramework, provided and maintained by community members.
+This repository contains target boards for the **nanoFramework**, provided and maintained by community members.
 
-The provided boards or *NOT* supported by the nanoFramework team and any issues must be communicated with the contributor that _owns_ it.
+The provided boards are **NOT** supported by the **nanoFramework** team and any issues must be communicated with the contributor that _owns_ it.
 
 
 ## Available reference boards
