@@ -10,10 +10,10 @@
 ///////////
 
 // pin configuration for UART1
-// port: GPIOB
+// port: GPIOB 
 // TX pin: is GPIOB_6
 // RX pin: is GPIOB_7
-// GPIO alternate pin function is 7 (see "Table 9. Alternate function mapping" in STM32F405xG datasheet)
+// GPIO alternate pin function is 7 (see "Table 9. Alternate function mapping" in STM32F405xx/STM32F407xx datasheet)
 UART_CONFIG_PINS(1, GPIOB, GPIOB, 6, 7, 7)
 
 // buffers size
@@ -48,7 +48,7 @@ UART_UNINIT(1)
 // port: GPIOA
 // TX pin: is GPIOA_2
 // RX pin: is GPIOA_3
-// GPIO alternate pin function is 7 (see "Table 9. Alternate function mapping" in STM32F411xC and STM32F411xE datasheet)
+// GPIO alternate pin function is 7 (see "Table 9. Alternate function mapping" in STM32F405xx/STM32F407xx datasheet)
 UART_CONFIG_PINS(2, GPIOA, GPIOA, 2, 3, 7)
 
 // buffers size

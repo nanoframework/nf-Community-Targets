@@ -1,4 +1,4 @@
-//
+// 
 // Copyright (c) 2017 The nanoFramework project contributors
 // Portions Copyright (c) 2006..2015 Giovanni Di Sirio.  All rights reserved.
 // See LICENSE file in the project root for full license information.
@@ -116,7 +116,7 @@
  * GPT driver system settings.
  */
 #define STM32_GPT_USE_TIM1                  FALSE
-#define STM32_GPT_USE_TIM2                  TRUE
+#define STM32_GPT_USE_TIM2                  FALSE
 #define STM32_GPT_USE_TIM3                  FALSE
 #define STM32_GPT_USE_TIM4                  FALSE
 #define STM32_GPT_USE_TIM5                  FALSE
