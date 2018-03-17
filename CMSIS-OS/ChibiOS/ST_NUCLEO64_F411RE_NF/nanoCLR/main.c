@@ -60,6 +60,11 @@ int main(void) {
   // start kernel, after this main() will behave like a thread with priority osPriorityNormal
   osKernelStart();
 
+  // initialize block storage device
+  // in CLR this is called in nanoHAL_Initialize()
+  // for nanoBooter we have to init it in order to provide the flash map for Monitor_FlashSectorMap command
+  BlockStorage_AddDevices();
+
   while (true) { 
     osDelay(100);
   }
