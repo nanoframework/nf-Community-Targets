@@ -26,7 +26,7 @@ For documentation, providing feedback, issues and finding out how to contribute 
 
 When you need to discuss something specific about a community target start by doing so in the _community-targets_ channel in our Slack workspace or reach out to the target _owner_.
 
-Join our Slack community by filling in this [invite form](https://nanoframework.wordpress.com/slack-invite-form/).
+Join our Slack community [here](https://join.slack.com/t/nanoframework/shared_invite/enQtMzI3OTg4MTk0NTgwLWQ0ODQ3ZWIwZjgxZWFmNjU3MDIwN2E2YzM2OTdhMWRiY2Q3M2NlOTk2N2IwNTM3MmRlMmQ2NTRlNjZlYzJlMmY).
 
 
 ## Credits
