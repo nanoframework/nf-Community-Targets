@@ -2,7 +2,7 @@
 // Copyright (c) 2017 The nanoFramework project contributors
 // Portions Copyright (c) 2006..2015 Giovanni Di Sirio.  All rights reserved.
 // See LICENSE file in the project root for full license information.
-//
+// 
 
 /**
  * @file    templates/halconf.h
@@ -72,6 +72,7 @@
 //#if !defined(HAL_USE_I2C) || defined(__DOXYGEN__)
 //#define HAL_USE_I2C                 TRUE
 //#endif
+
 /**
  * @brief   Enables the I2S subsystem.
  */
@@ -129,7 +130,7 @@
  * @brief   Enables the SERIAL subsystem.
  */
 #if !defined(HAL_USE_SERIAL) || defined(__DOXYGEN__)
-#define HAL_USE_SERIAL              TRUE
+#define HAL_USE_SERIAL              FALSE
 #endif
 
 /**
@@ -381,4 +382,3 @@
 #endif /* HALCONF_H */
 
 /** @} */
-
