@@ -21,12 +21,11 @@ void BlinkerThread(void const * argument)
   while (!chThdShouldTerminateX()) {
 
       palSetPad(GPIOA, GPIOA_LED_GREEN);
-      osDelay(250);
-      
+      osDelay(500);      
       palClearPad(GPIOA, GPIOA_LED_GREEN);
-      osDelay(250);
-  }
-  
+      osDelay(500);
+
+  }  
   // nothing to deinitialize or cleanup, so it's safe to return
 }
 osThreadDef(BlinkerThread, osPriorityNormal, 128, "BlinkerThread");
@@ -54,22 +53,14 @@ int main(void) {
   osKernelInitialize();
   osDelay(20);    // Let init stabilize
 
-  // the following IF is not mandatory, it's just providing a way for a user to 'force'
-  // the board to remain in nanoBooter and not launching nanoCLR
-
-  // Since the electron board does not provide a user button we can comment the 1st level
-  // if the USER button (blue one) is pressed, skip the check for a valid CLR image and remain in booter
-  //if (palReadPad(GPIOC, GPIOC_BUTTON))
-  //{
-    // check for valid CLR image 
-    if(CheckValidCLRImage((uint32_t)&__nanoImage_end__))
-    {
-      // there seems to be a valid CLR image
-      // launch nanoCLR
-      LaunchCLR((uint32_t)&__nanoImage_end__);
-    }
-  //}
-  
+  // check for valid CLR image 
+  if(CheckValidCLRImage((uint32_t)&__nanoImage_end__))
+  {
+    // there seems to be a valid CLR image
+    // launch nanoCLR
+    LaunchCLR((uint32_t)&__nanoImage_end__);
+  }
+    
   //  Initializes a serial-over-USB CDC driver.
   sduObjectInit(&SDU1);
   sduStart(&SDU1, &serusbcfg);
