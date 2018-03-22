@@ -6,9 +6,9 @@ The board used in this community contribution is a STM32F411CEU6 based board fro
 
 These pins can be used for:
 
-- 1 x TX/RX (Serial is not tested yet (January 3rd, 2018))
+- 1 x TX/RX
 - 4 x PWM
-- 4 X ADC (ADC is not tested yet (January 3rd, 2018))
+- 4 X ADC
 - 1 x I2C
 - 1 x SPI
 
