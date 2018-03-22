@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2017 The nanoFramework project contributors
+# Copyright (c) 2018 The nanoFramework project contributors
 # See LICENSE file in the project root for full license information.
 #
 
@@ -46,13 +46,18 @@ if(USE_FILESYSTEM_OPTION)
     find_package(CHIBIOS_FATFS REQUIRED)
 endif()
 
-#######################################
+####################################################
 # sources for target specifc stuff related with APIs
 list(APPEND API_RELATED_TARGET_SOURCES "")
 
 # Windows.Devices.SerialCommunication
 if(API_Windows.Devices.SerialCommunication)
     list(APPEND API_RELATED_TARGET_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/target_windows_devices_serialcommunication_config.cpp")    
+endif()
+
+# Windows.Devices.Adc
+if(API_Windows.Devices.Adc)
+    list(APPEND API_RELATED_TARGET_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/target_windows_devices_adc_config.cpp")    
 endif()
 
 #######################################
