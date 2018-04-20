@@ -17,6 +17,7 @@ The provided boards are **NOT** supported by the **nanoFramework** team and any 
 | [GHI FEZ CERB40-I](CMSIS-OS/ChibiOS/GHI_FEZ_CERB40_NF) |  [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/GHI_FEZ_CERB40_NF/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/GHI_FEZ_CERB40_NF/_latestVersion)  |
 | [IngenuityMicro Electron](CMSIS-OS/ChibiOS/I2M_ELECTRON_NF) | [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/I2M_ELECTRON_NF/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/I2M_ELECTRON_NF/_latestVersion) |
 | [IngenuityMicro Oxygen](CMSIS-OS/ChibiOS/I2M_OXYGEN_NF) | [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/I2M_OXYGEN_NF/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/I2M_OXYGEN_NF/_latestVersion) |
+| [ST Nucleo64 F401RE](CMSIS-OS/ChibiOS/ST_NUCLEO64_F401RE_NF) | [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/ST_NUCLEO64_F401RE_NF/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/ST_NUCLEO64_F401RE_NF/_latestVersion) |
 | [ST Nucleo64 F411RE](CMSIS-OS/ChibiOS/ST_NUCLEO64_F411RE_NF) | [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/ST_NUCLEO64_F411RE_NF/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/ST_NUCLEO64_F411RE_NF/_latestVersion) |
 
 
