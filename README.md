@@ -9,17 +9,28 @@ This repository contains target boards for the **nanoFramework**, provided and m
 The provided boards are **NOT** supported by the **nanoFramework** team and any issues must be communicated with the contributor that _owns_ it.
 
 
-## Available reference boards
+## Available community boards
 
 
-| Target name | Firmware Images |
-|:-|---|
-| [GHI FEZ CERB40-I](CMSIS-OS/ChibiOS/GHI_FEZ_CERB40_NF) |  [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/GHI_FEZ_CERB40_NF/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/GHI_FEZ_CERB40_NF/_latestVersion)  |
-| [IngenuityMicro Electron](CMSIS-OS/ChibiOS/I2M_ELECTRON_NF) | [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/I2M_ELECTRON_NF/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/I2M_ELECTRON_NF/_latestVersion) |
-| [IngenuityMicro Oxygen](CMSIS-OS/ChibiOS/I2M_OXYGEN_NF) | [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/I2M_OXYGEN_NF/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/I2M_OXYGEN_NF/_latestVersion) |
-| [ST Nucleo64 F401RE](CMSIS-OS/ChibiOS/ST_NUCLEO64_F401RE_NF) | [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/ST_NUCLEO64_F401RE_NF/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/ST_NUCLEO64_F401RE_NF/_latestVersion) |
-| [ST Nucleo64 F411RE](CMSIS-OS/ChibiOS/ST_NUCLEO64_F411RE_NF) | [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/ST_NUCLEO64_F411RE_NF/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/ST_NUCLEO64_F411RE_NF/_latestVersion) |
+| Target name | Firmware Images | MCU | Frequency | FLASH | RAM |
+|:-:|:-:|:-:|:-:|:-:|:-:|
+| [GHI FEZ CERB40-I](CMSIS-OS/ChibiOS/GHI_FEZ_CERB40_NF) |  [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/GHI_FEZ_CERB40_NF/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/GHI_FEZ_CERB40_NF/_latestVersion)  | STM32F405RG | 168 MHz | 1 MB | 192 KB |
+| [IngenuityMicro Electron](CMSIS-OS/ChibiOS/I2M_ELECTRON_NF) | [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/I2M_ELECTRON_NF/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/I2M_ELECTRON_NF/_latestVersion) | STM32F411CE | 100 MHz | 512 KB | 128 KB |
+| [IngenuityMicro Oxygen](CMSIS-OS/ChibiOS/I2M_OXYGEN_NF) | [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/I2M_OXYGEN_NF/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/I2M_OXYGEN_NF/_latestVersion) | STM32F411CE | 100 MHz | 512 KB | 128 KB |
+| [ST Nucleo64 F401RE](CMSIS-OS/ChibiOS/ST_NUCLEO64_F401RE_NF) | [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/ST_NUCLEO64_F401RE_NF/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/ST_NUCLEO64_F401RE_NF/_latestVersion) | STM32F401RE | 84 MHz | 512 KB | 96 KB |
+| [ST Nucleo64 F411RE](CMSIS-OS/ChibiOS/ST_NUCLEO64_F411RE_NF) | [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/ST_NUCLEO64_F411RE_NF/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/ST_NUCLEO64_F411RE_NF/_latestVersion) | STM32F411RE | 100 MHz | 512 KB | 128 KB |
 
+
+The above firmware builds include support for the class libraries and features marked below.
+
+
+| Target | Gpio | Spi | I2c | Pwm | Adc | Serial | Events | SWO | Networking | Large Heap |
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| GHI FEZ CERB40-I | :heavy_check_mark: | | :heavy_check_mark: | | | :heavy_check_mark: | :heavy_check_mark: | | | |
+| IngenuityMicro Electron | :heavy_check_mark: | | | :heavy_check_mark: | | | | | | |
+| IngenuityMicro Oxygen | :heavy_check_mark: | | :heavy_check_mark: | | | | :heavy_check_mark: | | | |
+| ST Nucleo64 F401RE | :heavy_check_mark: | | | | | | | :heavy_check_mark: | | |
+| ST Nucleo64 F411RE | :heavy_check_mark: | | | | | | | :heavy_check_mark: | | |
 
 ## Feedback and documentation
 
