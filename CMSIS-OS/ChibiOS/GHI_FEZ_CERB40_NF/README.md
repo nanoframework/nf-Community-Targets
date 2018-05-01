@@ -31,10 +31,10 @@ The available pins have been set as can be read in the board.h file and it is th
 | 19 | PB6 | UART1 TX | Confirmed and working | 2018-02-09 |
 | 20 | PB5 | GPIO, PWM | GPIO confirmed, PWM not done yet | 2018-02-07 |
 | 21 | Reset | | Confirmed | 2018-02-07 |
-| 22 | PC0 | | | |
-| 23 | PC1 | | | |
-| 24 | PC2 | | | |
-| 25 | PC3 | | | |
+| 22 | PC0 | A0 | | |
+| 23 | PC1 | A1 | | |
+| 24 | PC2 | A2 | | |
+| 25 | PC3 | A3 | | |
 | 26 | PA0 | UART2 CTS | | |
 | 27 | PA1 | UART2 RTS | | |
 | 28 | PA2 | UART2 TX | Confirmed and working | 2018-02-08 |
