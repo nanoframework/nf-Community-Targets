@@ -78,8 +78,8 @@
 #define GPIOA_LED_GREEN             1U
 #define GPIOA_PIN2                  2U
 #define GPIOA_PIN3                  3U
-#define GPIOA_PIN4                  4U
-#define GPIOA_PIN5                  5U
+#define GPIOA_ADC1_4                  4U
+#define GPIOA_ADC1_5                5U
 #define GPIOA_PIN6                  6U
 #define GPIOA_PIN7                  7U
 #define GPIOA_LED_BLUE              8U
@@ -314,8 +314,8 @@
  * PA1  - LED_GREEN                 (output pushpull high).
  * PA2  - USART_TX                  (alternate 7).
  * PA3  - USART_RX                  (alternate 7).
- * PA4  - PIN4                      (input pullup).
- * PA5  - PIN5                      (input pullup).
+ * PA4  - ADC1_4                    (input analog).
+ * PA5  - ADC1_5                    (input analog).
  * PA6  - PIN6                      (input pullup).
  * PA7  - PIN7                      (input pullup).
  * PA8  - LED_BLUE                  (output pushpull high).
@@ -331,8 +331,8 @@
                                      PIN_MODE_OUTPUT(GPIOA_LED_GREEN) |           \
                                      PIN_MODE_ALTERNATE(GPIOA_PIN2) |   \
                                      PIN_MODE_ALTERNATE(GPIOA_PIN3) |   \
-                                     PIN_MODE_OUTPUT(GPIOA_PIN4) |           \
-                                     PIN_MODE_INPUT(GPIOA_PIN5) |     \
+                                     PIN_MODE_ANALOG(GPIOA_ADC1_4) |           \
+                                     PIN_MODE_ANALOG(GPIOA_ADC1_5) |     \
                                      PIN_MODE_INPUT(GPIOA_PIN6) |           \
                                      PIN_MODE_INPUT(GPIOA_PIN7) |           \
                                      PIN_MODE_OUTPUT(GPIOA_LED_BLUE) |           \
@@ -347,8 +347,8 @@
                                      PIN_OTYPE_PUSHPULL(GPIOA_LED_GREEN) |       \
                                      PIN_OTYPE_PUSHPULL(GPIOA_PIN2) |   \
                                      PIN_OTYPE_PUSHPULL(GPIOA_PIN3) |   \
-                                     PIN_OTYPE_PUSHPULL(GPIOA_PIN4) |       \
-                                     PIN_OTYPE_PUSHPULL(GPIOA_PIN5) |  \
+                                     PIN_OTYPE_PUSHPULL(GPIOA_ADC1_4) |       \
+                                     PIN_OTYPE_PUSHPULL(GPIOA_ADC1_5) |  \
                                      PIN_OTYPE_PUSHPULL(GPIOA_PIN6) |       \
                                      PIN_OTYPE_PUSHPULL(GPIOA_PIN7) |       \
                                      PIN_OTYPE_PUSHPULL(GPIOA_LED_BLUE) |       \
@@ -363,8 +363,8 @@
                                      PIN_OSPEED_MEDIUM(GPIOA_LED_GREEN) |          \
                                      PIN_OSPEED_HIGH(GPIOA_PIN2) |    \
                                      PIN_OSPEED_HIGH(GPIOA_PIN3) |    \
-                                     PIN_OSPEED_HIGH(GPIOA_PIN4) |          \
-                                     PIN_OSPEED_HIGH(GPIOA_PIN5) |   \
+                                     PIN_OSPEED_HIGH(GPIOA_ADC1_4) |          \
+                                     PIN_OSPEED_HIGH(GPIOA_ADC1_5) |   \
                                      PIN_OSPEED_HIGH(GPIOA_PIN6) |          \
                                      PIN_OSPEED_HIGH(GPIOA_PIN7) |          \
                                      PIN_OSPEED_MEDIUM(GPIOA_LED_BLUE) |          \
@@ -379,8 +379,8 @@
                                      PIN_PUPDR_FLOATING(GPIOA_LED_GREEN) |         \
                                      PIN_PUPDR_FLOATING(GPIOA_PIN2) |   \
                                      PIN_PUPDR_FLOATING(GPIOA_PIN3) |   \
-                                     PIN_PUPDR_FLOATING(GPIOA_PIN4) |         \
-                                     PIN_PUPDR_PULLUP(GPIOA_PIN5) |  \
+                                     PIN_PUPDR_FLOATING(GPIOA_ADC1_4) |         \
+                                     PIN_PUPDR_FLOATING(GPIOA_ADC1_5) |  \
                                      PIN_PUPDR_PULLUP(GPIOA_PIN6) |         \
                                      PIN_PUPDR_PULLUP(GPIOA_PIN7) |         \
                                      PIN_PUPDR_FLOATING(GPIOA_LED_BLUE) |         \
@@ -395,8 +395,8 @@
                                      PIN_ODR_LOW(GPIOA_LED_GREEN) |             \
                                      PIN_ODR_LOW(GPIOA_PIN2) |         \
                                      PIN_ODR_LOW(GPIOA_PIN3) |         \
-                                     PIN_ODR_LOW(GPIOA_PIN4) |             \
-                                     PIN_ODR_HIGH(GPIOA_PIN5) |         \
+                                     PIN_ODR_LOW(GPIOA_ADC1_4) |             \
+                                     PIN_ODR_LOW(GPIOA_ADC1_5) |         \
                                      PIN_ODR_HIGH(GPIOA_PIN6) |             \
                                      PIN_ODR_HIGH(GPIOA_PIN7) |             \
                                      PIN_ODR_LOW(GPIOA_LED_BLUE) |             \
@@ -411,8 +411,8 @@
                                      PIN_AFIO_AF(GPIOA_LED_GREEN, 0U) |          \
                                      PIN_AFIO_AF(GPIOA_PIN2, 7U) |      \
                                      PIN_AFIO_AF(GPIOA_PIN3, 7U) |      \
-                                     PIN_AFIO_AF(GPIOA_PIN4, 0U) |          \
-                                     PIN_AFIO_AF(GPIOA_PIN5, 0U) |     \
+                                     PIN_AFIO_AF(GPIOA_ADC1_4, 0U) |          \
+                                     PIN_AFIO_AF(GPIOA_ADC1_5, 0U) |     \
                                      PIN_AFIO_AF(GPIOA_PIN6, 0U) |          \
                                      PIN_AFIO_AF(GPIOA_PIN7, 0U))
 #define VAL_GPIOA_AFRH              (PIN_AFIO_AF(GPIOA_LED_BLUE, 0U) |          \
