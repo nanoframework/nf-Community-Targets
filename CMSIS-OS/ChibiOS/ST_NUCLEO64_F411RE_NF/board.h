@@ -108,9 +108,9 @@
 #define GPIOB_ARD_D6                10U
 #define GPIOB_PIN11                 11U
 #define GPIOB_PIN12                 12U
-#define GPIOB_SPI2_SCK                 13U
-#define GPIOB_SPI2_MISO                 14U
-#define GPIOB_SPI2_MOSI                 15U
+#define GPIOB_SPI2_SCK              13U
+#define GPIOB_SPI2_MISO             14U
+#define GPIOB_SPI2_MOSI             15U
 
 #define GPIOC_ARD_A5                0U
 #define GPIOC_ADC1_IN10             0U
@@ -124,9 +124,9 @@
 #define GPIOC_ARD_D9                7U
 #define GPIOC_PIN8                  8U
 #define GPIOC_PIN9                  9U
-#define GPIOC_SPI3_SCK                 10U
-#define GPIOC_SPI3_MISO                 11U
-#define GPIOC_SPI3_MOSI                 12U
+#define GPIOC_SPI3_SCK              10U
+#define GPIOC_SPI3_MISO             11U
+#define GPIOC_SPI3_MOSI             12U
 #define GPIOC_BUTTON                13U
 #define GPIOC_OSC32_IN              14U
 #define GPIOC_OSC32_OUT             15U
