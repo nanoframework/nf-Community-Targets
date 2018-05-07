@@ -47,15 +47,6 @@ if(USE_FILESYSTEM_OPTION)
 endif()
 
 #######################################
-# sources for target specifc stuff related with APIs
-list(APPEND API_RELATED_TARGET_SOURCES "")
-
-# Windows.Devices.SerialCommunication
-if(API_Windows.Devices.SerialCommunication)
-    list(APPEND API_RELATED_TARGET_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/target_windows_devices_serialcommunication_config.cpp")    
-endif()
-
-#######################################
 
 add_subdirectory("common")
 add_subdirectory("nanoBooter")
@@ -113,9 +104,6 @@ add_executable(
 
     # sources for nanoFramework APIs
     "${TARGET_NANO_APIS_SOURCES}"
-
-    # sources for API which are target specific
-    "${API_RELATED_TARGET_SOURCES}"
 )
 
 # add dependency from ChibiOS (this is required to make sure the ChibiOS repo is downloaded before the build starts)
@@ -196,18 +184,3 @@ set_property(TARGET ${NANOCLR_PROJECT_NAME}.elf APPEND_STRING PROPERTY LINK_FLAG
 # generate output files
 nf_generate_build_output_files(${NANOBOOTER_PROJECT_NAME}.elf)
 nf_generate_build_output_files(${NANOCLR_PROJECT_NAME}.elf)
-
-# if HEX2DFU tool is available pack the binaries into a DFU package
-if(HEX2DFU_TOOL_AVAILABLE)
-
-    ####################################################################################################
-    ## when changing the linker file make sure to update the new addresses for the image files bellow ##
-    ## DO NOT use the leading 0x notation, just the address in plain hexadecimal formating            ##
-    ####################################################################################################
-    NF_GENERATE_DFU_PACKAGE(
-        ${PROJECT_SOURCE_DIR}/build/${NANOBOOTER_PROJECT_NAME}.bin 08000000 
-        ${PROJECT_SOURCE_DIR}/build/${NANOCLR_PROJECT_NAME}.bin 08008000 
-        ${PROJECT_SOURCE_DIR}/build/nanoframework-4-electron.dfu
-    )
-
-endif()

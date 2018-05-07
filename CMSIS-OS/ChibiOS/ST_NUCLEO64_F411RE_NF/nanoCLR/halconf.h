@@ -33,7 +33,7 @@
  */
 // this option is set at target_platform.h (from config file)
 // #if !defined(HAL_USE_ADC) || defined(__DOXYGEN__)
-// #define HAL_USE_ADC                 TRUE
+// #define HAL_USE_ADC                 FALSE
 // #endif
 
 /**
@@ -107,7 +107,7 @@
  */
 // this option is set at target_platform.h (from config file)
 // #if !defined(HAL_USE_PWM) || defined(__DOXYGEN__)
-// #define HAL_USE_PWM                 TRUE
+// #define HAL_USE_PWM                 FALSE
 // #endif
 
 /**
@@ -130,7 +130,7 @@
  * @brief   Enables the SERIAL subsystem.
  */
 #if !defined(HAL_USE_SERIAL) || defined(__DOXYGEN__)
-#define HAL_USE_SERIAL              TRUE
+#define HAL_USE_SERIAL              FALSE
 #endif
 
 /**
@@ -145,7 +145,7 @@
  */
 // this option is set at target_platform.h (from config file)
 // #if !defined(HAL_USE_SPI) || defined(__DOXYGEN__)
-// #define HAL_USE_SPI                 TRUE
+// #define HAL_USE_SPI                 FALSE
 // #endif
 
 /**
@@ -382,4 +382,3 @@
 #endif /* HALCONF_H */
 
 /** @} */
-
