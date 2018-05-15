@@ -21,12 +21,11 @@ void BlinkerThread(void const * argument)
   while (!chThdShouldTerminateX()) {
 
       palSetPad(GPIOA, GPIOA_LED_GREEN);
-      osDelay(250);
-      
+      osDelay(500);      
       palClearPad(GPIOA, GPIOA_LED_GREEN);
-      osDelay(250);
-  }
-  
+      osDelay(500);
+
+  }  
   // nothing to deinitialize or cleanup, so it's safe to return
 }
 osThreadDef(BlinkerThread, osPriorityNormal, 128, "BlinkerThread");
@@ -58,6 +57,7 @@ int main(void) {
   // the board to remain in nanoBooter and not launching nanoCLR
 
   // if the USER button (blue one) is pressed, skip the check for a valid CLR image and remain in booter
+  
   if (palReadPad(GPIOC, GPIOC_BUTTON))
   {
     // check for valid CLR image 
@@ -88,6 +88,11 @@ int main(void) {
 
   // start kernel, after this main() will behave like a thread with priority osPriorityNormal
   osKernelStart();
+
+  // initialize block storage device
+  // in CLR this is called in nanoHAL_Initialize()
+  // for nanoBooter we have to init it in order to provide the flash map for Monitor_FlashSectorMap command
+  BlockStorage_AddDevices();
 
   //  Normal main() thread
   while (true) {

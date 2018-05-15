@@ -21,12 +21,11 @@ void BlinkerThread(void const * argument)
   while (!chThdShouldTerminateX()) {
 
       palSetPad(GPIOA, GPIOA_USER_LED);
-      osDelay(250);
-      
+      osDelay(500);      
       palClearPad(GPIOA, GPIOA_USER_LED);
-      osDelay(250);
-  }
-  
+      osDelay(500);
+
+  }  
   // nothing to deinitialize or cleanup, so it's safe to return
 }
 osThreadDef(BlinkerThread, osPriorityNormal, 128, "BlinkerThread");

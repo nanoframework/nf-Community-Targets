@@ -47,15 +47,6 @@ if(USE_FILESYSTEM_OPTION)
 endif()
 
 #######################################
-# sources for target specifc stuff related with APIs
-list(APPEND API_RELATED_TARGET_SOURCES "")
-
-# Windows.Devices.SerialCommunication
-if(API_Windows.Devices.SerialCommunication)
-    list(APPEND API_RELATED_TARGET_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/target_windows_devices_serialcommunication_config.cpp")    
-endif()
-
-#######################################
 
 add_subdirectory("common")
 add_subdirectory("nanoBooter")
@@ -113,9 +104,6 @@ add_executable(
 
     # sources for nanoFramework APIs
     "${TARGET_NANO_APIS_SOURCES}"
-    
-    # sources for API which are target specific
-    "${API_RELATED_TARGET_SOURCES}"
 )
 
 # add dependency from ChibiOS (this is required to make sure the ChibiOS repo is downloaded before the build starts)
