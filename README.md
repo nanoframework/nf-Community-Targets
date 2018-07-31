@@ -27,8 +27,8 @@ The above firmware builds include support for the class libraries and features m
 | Target | Gpio | Spi | I2c | Pwm | Adc | Serial | Events | SWO | Networking | Large Heap |
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 | GHI FEZ CERB40-I | :heavy_check_mark: | | :heavy_check_mark: | | | :heavy_check_mark: | :heavy_check_mark: | | | |
-| IngenuityMicro Electron | :heavy_check_mark: | | | :heavy_check_mark: | | | | | | |
-| IngenuityMicro Oxygen | :heavy_check_mark: | | :heavy_check_mark: | | | | :heavy_check_mark: | | | |
+| IngenuityMicro Electron | :heavy_check_mark: | | | :heavy_check_mark: | | :heavy_check_mark: | | | | |
+| IngenuityMicro Oxygen | :heavy_check_mark: | | :heavy_check_mark: | | | :heavy_check_mark: | :heavy_check_mark: | | | |
 | ST Nucleo64 F401RE | :heavy_check_mark: | | | | | | :heavy_check_mark: | :heavy_check_mark: | | |
 | ST Nucleo64 F411RE | :heavy_check_mark: | | | | | | :heavy_check_mark: | :heavy_check_mark: | | |
 
