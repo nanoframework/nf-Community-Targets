@@ -172,9 +172,8 @@ nf_set_linker_file(${NANOBOOTER_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/na
 nf_set_linker_file(${NANOCLR_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoCLR/STM32F405xG_CLR.ld)
 
 # set linker options
-# using FPU requires enabling printf with FP support for newlib nano, but just for nanoCLR target, don't need to overload nanoBooter with that
-nf_set_linker_options(${NANOBOOTER_PROJECT_NAME}.elf FALSE)
-nf_set_linker_options(${NANOCLR_PROJECT_NAME}.elf TRUE)
+nf_set_linker_options(${NANOBOOTER_PROJECT_NAME}.elf)
+nf_set_linker_options(${NANOCLR_PROJECT_NAME}.elf)
 
 # add other linker flags
 ###########################################################
