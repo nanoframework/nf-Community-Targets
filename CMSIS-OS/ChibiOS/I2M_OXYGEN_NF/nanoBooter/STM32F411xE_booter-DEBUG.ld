@@ -8,17 +8,17 @@
 
 /*
  * STM32F411xE memory setup.
- * Note: Only use of ram0.
+ *
  */
 MEMORY
 {
-    flash       : org = 0x08004000, len = 512k - 16k - 256k   /* flash size less the space reserved for nanoBooter and application deployment*/
-    config      : org = 0x00000000, len = 0                   /* space reserved for configuration block */
-    deployment  : org = 0x08040000, len = 256k                /* space reserved for application deployment */
-    ramvt       : org = 0x20000000, len = 0                   /* initial RAM address is reserved for a copy of the vector table */
-    ram0        : org = 0x20000000, len = 128k                /* SRAM1 */
-    ram1        : org = 0x00000000, len = 0                
-    ram2        : org = 0x00000000, len = 0                
+    flash       : org = 0x08000000, len = 32k     /* space reserved for nanoBooter (1st two sectors 0x08000000 to 0x08007FFF)*/
+    config      : org = 0x00000000, len = 0       /* space reserved for configuration block */
+    deployment  : org = 0x00000000, len = 0       /* space reserved for application deployment */
+    ramvt       : org = 0x00000000, len = 0       /* initial RAM address is reserved for a copy of the vector table */
+    ram0        : org = 0x20000000, len = 128k    /* SRAM1 */
+    ram1        : org = 0x00000000, len = 0
+    ram2        : org = 0x00000000, len = 0
     ram3        : org = 0x00000000, len = 0
     ram4        : org = 0x00000000, len = 0
     ram5        : org = 0x00000000, len = 0
@@ -70,7 +70,11 @@ REGION_ALIAS("BSS_RAM", ram0);
 /* RAM region to be used for the default heap.*/
 REGION_ALIAS("HEAP_RAM", ram0);
 
-/* RAM region to be used for the nanoFramework CLR managed heap.*/
-REGION_ALIAS("CLR_MANAGED_HEAP_RAM", ram0);
+/* Stacks rules inclusion.*/
+INCLUDE rules_stacks.ld
 
-INCLUDE rules.ld
+/* Code rules inclusion.*/
+INCLUDE rules_code.ld
+
+/* Data rules inclusion.*/
+INCLUDE rules_data.ld

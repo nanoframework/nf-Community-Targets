@@ -167,9 +167,14 @@ nf_set_compiler_options(${NANOCLR_PROJECT_NAME}.elf)
 nf_set_compiler_definitions(${NANOBOOTER_PROJECT_NAME}.elf)
 nf_set_compiler_definitions(${NANOCLR_PROJECT_NAME}.elf)
 
-# set linker file
-nf_set_linker_file(${NANOBOOTER_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoBooter/STM32F411xE_booter.ld)
-nf_set_linker_file(${NANOCLR_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoCLR/STM32F411xE_CLR.ld)
+# set linker files
+if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
+    nf_set_linker_file(${NANOBOOTER_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoBooter/STM32F411xE_booter-DEBUG.ld)
+    nf_set_linker_file(${NANOCLR_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoCLR/STM32F411xE_CLR-DEBUG.ld)
+else()
+    nf_set_linker_file(${NANOBOOTER_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoBooter/STM32F411xE_booter.ld)
+    nf_set_linker_file(${NANOCLR_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoCLR/STM32F411xE_CLR.ld)
+endif()
 
 # set linker options
 nf_set_linker_options(${NANOBOOTER_PROJECT_NAME}.elf)
@@ -192,10 +197,18 @@ if(HEX2DFU_TOOL_AVAILABLE)
     ## when changing the linker file make sure to update the new addresses for the image files bellow ##
     ## DO NOT use the leading 0x notation, just the address in plain hexadecimal formating            ##
     ####################################################################################################
-    NF_GENERATE_DFU_PACKAGE(
-        ${PROJECT_SOURCE_DIR}/build/${NANOBOOTER_PROJECT_NAME}.bin 08000000 
-        ${PROJECT_SOURCE_DIR}/build/${NANOCLR_PROJECT_NAME}.bin 08008000 
-        ${PROJECT_SOURCE_DIR}/build/nanoframework-4-oxygen.dfu
-    )
+    if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
+        NF_GENERATE_DFU_PACKAGE(
+            ${PROJECT_SOURCE_DIR}/build/${NANOBOOTER_PROJECT_NAME}.bin 08000000 
+            ${PROJECT_SOURCE_DIR}/build/${NANOCLR_PROJECT_NAME}.bin 08008000 
+            ${PROJECT_SOURCE_DIR}/build/nanoframework-4-oxygen.dfu
+        )
+    else()
+        NF_GENERATE_DFU_PACKAGE(
+            ${PROJECT_SOURCE_DIR}/build/${NANOBOOTER_PROJECT_NAME}.bin 08000000 
+            ${PROJECT_SOURCE_DIR}/build/${NANOCLR_PROJECT_NAME}.bin 08004000 
+            ${PROJECT_SOURCE_DIR}/build/nanoframework-4-oxygen.dfu
+        )
+    endif()
 
 endif()
