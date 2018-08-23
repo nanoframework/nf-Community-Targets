@@ -1,3 +1,6 @@
+[![Discord](https://img.shields.io/discord/478725473862549535.svg)](https://discord.gg/gCyBu8T)
+
+
 ![nanoFramework logo](https://github.com/nanoframework/Home/blob/master/resources/logo/nanoFramework-repo-logo.png)
 
 -----
@@ -38,7 +41,7 @@ For documentation, providing feedback, issues and finding out how to contribute 
 
 When you need to discuss something specific about a community target start by doing so in the _community-targets_ channel in our Slack workspace or reach out to the target _owner_.
 
-Join our Discord community [here](https://discord.gg/XYpqcYW).
+Join our Discord community [here](https://discord.gg/gCyBu8T).
 
 
 ## Credits
