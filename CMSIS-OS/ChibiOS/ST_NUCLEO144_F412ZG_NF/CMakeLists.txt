@@ -39,6 +39,7 @@ endif()
 # nF feature: networking
 if(USE_NETWORKING_OPTION)
     find_package(CHIBIOS_LWIP REQUIRED)
+    find_package(NF_NETWORKING REQUIRED)
 endif()
 
 # nF feature: filesystem
@@ -103,6 +104,10 @@ add_executable(
     "${NF_CoreCLR_SOURCES}"
     "${NF_Debugger_SOURCES}"
     "${NF_Diagnostics_SOURCES}"
+	
+	# sources for nanoFramework Network LWIP and Sockets
+    "${CHIBIOS_LWIP_SOURCES}"
+    "${NF_Networking_SOURCES}"
 
     # sources for nanoFramework APIs
     "${TARGET_NANO_APIS_SOURCES}"
@@ -142,10 +147,10 @@ target_include_directories(${NANOBOOTER_PROJECT_NAME}.elf PUBLIC
 # include directories for nanoCLR
 target_include_directories(${NANOCLR_PROJECT_NAME}.elf PUBLIC
     "${CMAKE_CURRENT_BINARY_DIR}/nanoCLR"
-    ${CMAKE_CURRENT_SOURCE_DIR}/nanoCLR
+     ${CMAKE_CURRENT_SOURCE_DIR}/nanoCLR
 
-    ${TARGET_CMSIS_NANOCLR_INCLUDE_DIRS}
-    ${TARGET_CHIBIOS_NANOCLR_INCLUDE_DIRS}
+     ${TARGET_CMSIS_NANOCLR_INCLUDE_DIRS}
+     ${TARGET_CHIBIOS_NANOCLR_INCLUDE_DIRS}
 
     # directories for nanoFramework libraries
     "${NF_CoreCLR_INCLUDE_DIRS}"
@@ -157,6 +162,9 @@ target_include_directories(${NANOCLR_PROJECT_NAME}.elf PUBLIC
 
     # includes for ChibiOS LwIP
     "${CHIBIOS_LWIP_INCLUDE_DIRS}"
+    
+	# incudes for Networking
+	"${NF_Networking_INCLUDE_DIRS}"
 )
 
 # set compiler options
@@ -167,9 +175,14 @@ nf_set_compiler_options(${NANOCLR_PROJECT_NAME}.elf)
 nf_set_compiler_definitions(${NANOBOOTER_PROJECT_NAME}.elf)
 nf_set_compiler_definitions(${NANOCLR_PROJECT_NAME}.elf)
 
-# set linker file
-nf_set_linker_file(${NANOBOOTER_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoBooter/STM32F405xG_booter.ld)
-nf_set_linker_file(${NANOCLR_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoCLR/STM32F405xG_CLR.ld)
+# set linker files
+if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
+    nf_set_linker_file(${NANOBOOTER_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoBooter/STM32F412xG_booter-DEBUG.ld)
+    nf_set_linker_file(${NANOCLR_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoCLR/STM32F412xG_CLR-DEBUG.ld)
+else()
+    nf_set_linker_file(${NANOBOOTER_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoBooter/STM32F412xG_booter.ld)
+    nf_set_linker_file(${NANOCLR_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoCLR/STM32F412xG_CLR.ld)
+endif()
 
 # set linker options
 nf_set_linker_options(${NANOBOOTER_PROJECT_NAME}.elf)
@@ -178,27 +191,9 @@ nf_set_linker_options(${NANOCLR_PROJECT_NAME}.elf)
 # add other linker flags
 ###########################################################
 # the sizes of CRT heap and ChibiOS stacks are defined here
-############################################################################
-# CRT heap is assigned to RAM4 region @ CCM SRAM so we are OK to use it all
-############################################################################
-set_property(TARGET ${NANOBOOTER_PROJECT_NAME}.elf APPEND_STRING PROPERTY LINK_FLAGS ",--defsym=__main_stack_size__=0x400,--defsym=__process_stack_size__=0x400,--defsym=__crt_heap_size__=0x10000")
-set_property(TARGET ${NANOCLR_PROJECT_NAME}.elf APPEND_STRING PROPERTY LINK_FLAGS ",--defsym=__main_stack_size__=0x400,--defsym=__process_stack_size__=0x800,--defsym=__crt_heap_size__=0x10000")
+set_property(TARGET ${NANOBOOTER_PROJECT_NAME}.elf APPEND_STRING PROPERTY LINK_FLAGS ",--defsym=__main_stack_size__=0x400,--defsym=__process_stack_size__=0x400,--defsym=__crt_heap_size__=0x1000")
+set_property(TARGET ${NANOCLR_PROJECT_NAME}.elf APPEND_STRING PROPERTY LINK_FLAGS ",--defsym=__main_stack_size__=0x400,--defsym=__process_stack_size__=0x800,--defsym=__crt_heap_size__=0x2800")
 
 # generate output files
 nf_generate_build_output_files(${NANOBOOTER_PROJECT_NAME}.elf)
 nf_generate_build_output_files(${NANOCLR_PROJECT_NAME}.elf)
-
-# if HEX2DFU tool is available pack the binaries into a DFU package
-if(HEX2DFU_TOOL_AVAILABLE)
-
-    ####################################################################################################
-    ## when changing the linker file make sure to update the new addresses for the image files bellow ##
-    ## DO NOT use the leading 0x notation, just the address in plain hexadecimal formating            ##
-    ####################################################################################################
-    NF_GENERATE_DFU_PACKAGE(
-        ${PROJECT_SOURCE_DIR}/build/${NANOBOOTER_PROJECT_NAME}.bin 08000000 
-        ${PROJECT_SOURCE_DIR}/build/${NANOCLR_PROJECT_NAME}.bin 08008000 
-        ${PROJECT_SOURCE_DIR}/build/nanoFramework-4-cerb40.dfu
-    )
-
-endif()
