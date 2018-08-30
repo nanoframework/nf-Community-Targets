@@ -1,141 +1,82 @@
-image: Visual Studio 2017
+# Copyright (c) 2017 The nanoFramework project contributors
+# Portions Copyright (c) Sankarsan Kampa (a.k.a. k3rn31p4nic).  All rights reserved.
+# See LICENSE file in the project root for full license information.
 
-build:
-  verbosity: minimal
+$STATUS=$args[0]
+$WEBHOOK_URL=$args[1]
 
-environment:
-  GitHubUserName:
-    secure: 7OBtVAMTodMWK20wg6pGnQ==
-  GitHubUserEmail:
-    secure: HeABB68Sn/Lhbd69C2cUcfWv0ab/rMDEcOLvcxf8gGw=
-  GitHubToken:
-    secure: WOqlCsnwTzfDPJFoNV/h8mEESIpG/9uFn1u6oE8hGZtXwIQQlsY+NyyLt9Y5xoFn
+Write-Output "[Webhook]: Sending webhook to Discord..."
 
-init:
-  - git config --global core.autocrlf true
-  - git config --global credential.helper store
-  - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:GitHubToken):x-oauth-basic@github.com`n"
-  - git config --global user.email "%GitHubUserEmail%"
-  - git config --global user.name "%GitHubUserName%
+Switch ($STATUS) {
+  "success" {
+    $EMBED_COLOR=3066993
+    $STATUS_MESSAGE="Passed"
+    Break
+  }
+  "failure" {
+    $EMBED_COLOR=15158332
+    $STATUS_MESSAGE="Failed"
+    Break
+  }
+  default {
+    Write-Output "Default!"
+    Break
+  }
+}
 
-install: 
-  - ps: |
+if (!$env:APPVEYOR_REPO_COMMIT) {
+  $env:APPVEYOR_REPO_COMMIT="$(git log -1 --pretty="%H")"
+}
 
-        git clone https://github.com/nanoframework/lib-CoreLibrary.git -b develop CoreLibrary --depth 1 -q
+$AUTHOR_NAME="$(git log -1 "$env:APPVEYOR_REPO_COMMIT" --pretty="%aN")"
+$COMMITTER_NAME="$(git log -1 "$env:APPVEYOR_REPO_COMMIT" --pretty="%cN")"
+$COMMIT_SUBJECT="$(git log -1 "$env:APPVEYOR_REPO_COMMIT" --pretty="%s")"
+$COMMIT_MESSAGE="$(git log -1 "$env:APPVEYOR_REPO_COMMIT" --pretty="%b")"
 
-        git clone https://github.com/nanoframework/lib-nanoFramework.Runtime.Events.git -b develop nanoFramework.Runtime.Events --depth 1 -q
+if ($AUTHOR_NAME -eq $COMMITTER_NAME) {
+  $CREDITS = "$AUTHOR_NAME authored & committed"
+}
+else {
+  $CREDITS = "$AUTHOR_NAME authored & $COMMITTER_NAME committed"
+}
 
-        git clone https://github.com/nanoframework/lib-nanoFramework.Runtime.Native.git -b develop nanoFramework.Runtime.Native --depth 1 -q
+if ($env:APPVEYOR_PULL_REQUEST_NUMBER) {
+  $URL="https://github.com/$env:APPVEYOR_REPO_NAME/pull/$env:APPVEYOR_PULL_REQUEST_NUMBER"
+}
+else {
+  $URL=""
+}
 
-        git clone https://github.com/nanoframework/lib-Windows.Devices.Gpio.git -b develop Windows.Devices.Gpio --depth 1 -q
+$BUILD_VERSION = [uri]::EscapeDataString($env:APPVEYOR_BUILD_VERSION)
 
-        git clone https://github.com/nanoframework/lib-Windows.Devices.I2c.git -b develop Windows.Devices.I2c --depth 1 -q
-
-        git clone https://github.com/nanoframework/lib-Windows.Devices.Pwm.git -b develop Windows.Devices.Pwm --depth 1 -q
-
-        git clone https://github.com/nanoframework/lib-Windows.Devices.SerialCommunication.git -b develop Windows.Devices.SerialCommunication --depth 1 -q
-
-        git clone https://github.com/nanoframework/lib-Windows.Devices.Spi.git -b develop Windows.Devices.Spi --depth 1 -q
-
-        git clone https://github.com/nanoframework/lib-Windows.Storage.Streams.git -b develop Windows.Storage.Streams --depth 1 -q
-
-        git clone https://github.com/nanoframework/lib-Windows.Devices.Adc.git -b develop Windows.Devices.Adc --depth 1 -q
-
-        git clone https://github.com/nanoframework/lib-nanoFramework.Hardware.Esp32 -b develop nanoFramework.Hardware.Esp32 --depth 1 -q
-
-        git clone https://github.com/nanoframework/lib-nanoFramework.Networking.Sntp -b develop nanoFramework.Networking.Sntp --depth 1 -q
-
-        git clone https://github.com/nanoframework/lib-nanoFramework.System.Net -b develop nanoFramework.System.Net --depth 1 -q
-
-        .\install-vsix-appveyor.ps1
-
-before_build:
-  - ps: |
-        git checkout $env:APPVEYOR_REPO_BRANCH -q
-        choco install docfx -y
-        # choco install nuget.commandline -y
-      
-        nuget sources add -name MyGet -Source https://www.myget.org/F/nanoframework-dev
-      
-        nuget restore CoreLibrary\source\nanoFramework.CoreLibrary.sln
-
-        nuget restore nanoFramework.Runtime.Events\source\nanoFramework.Runtime.Events.sln
-
-        nuget restore nanoFramework.Runtime.Native\source\nanoFramework.Runtime.Native.sln
-
-        nuget restore Windows.Devices.Gpio\source\nanoFramework.Windows.Devices.Gpio.sln
-
-        nuget restore Windows.Devices.I2c\source\nanoFramework.Windows.Devices.I2c.sln
-
-        nuget restore Windows.Devices.Pwm\source\nanoFramework.Windows.Devices.Pwm.sln
-
-        nuget restore Windows.Devices.SerialCommunication\source\nanoFramework.Windows.Devices.SerialCommunication.sln
-
-        nuget restore Windows.Devices.Spi\source\nanoFramework.Windows.Devices.Spi.sln
-
-        nuget restore Windows.Storage.Streams\source\nanoFramework.Windows.Storage.Streams.sln
-
-        nuget restore Windows.Devices.Adc\source\nanoFramework.Windows.Devices.Adc.sln
-
-        nuget restore nanoFramework.Hardware.Esp32\source\nanoFramework.Hardware.Esp32.sln
-
-        nuget restore nanoFramework.Networking.Sntp\source\nanoFramework.Networking.Sntp.sln
-
-        nuget restore nanoFramework.System.Net\source\nanoFramework.System.Net.sln
-
-build_script:
-  - ps: |
-        msbuild CoreLibrary\source\nanoFramework.CoreLibrary.sln /p:Configuration=Release /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-
-        msbuild nanoFramework.Runtime.Events\source\nanoFramework.Runtime.Events.sln /p:Configuration=Release /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-
-        msbuild nanoFramework.Runtime.Native\source\nanoFramework.Runtime.Native.sln /p:Configuration=Release /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-
-        msbuild Windows.Devices.Gpio\source\nanoFramework.Windows.Devices.Gpio.sln /p:Configuration=Release /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-
-        msbuild Windows.Devices.I2c\source\nanoFramework.Windows.Devices.I2c.sln /p:Configuration=Release /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-
-        msbuild Windows.Devices.Pwm\source\nanoFramework.Windows.Devices.Pwm.sln /p:Configuration=Release /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-
-        msbuild Windows.Devices.SerialCommunication\source\nanoFramework.Windows.Devices.SerialCommunication.sln /p:Configuration=Release /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-
-        msbuild Windows.Devices.Spi\source\nanoFramework.Windows.Devices.Spi.sln /p:Configuration=Release /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-
-        msbuild Windows.Storage.Streams\source\nanoFramework.Windows.Storage.Streams.sln /p:Configuration=Release /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-
-        msbuild Windows.Devices.Adc\source\nanoFramework.Windows.Devices.Adc.sln /p:Configuration=Release /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-
-        msbuild nanoFramework.Hardware.Esp32\source\nanoFramework.Hardware.Esp32.sln /p:Configuration=Release /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-
-        msbuild nanoFramework.Networking.Sntp\source\nanoFramework.Networking.Sntp.sln /p:Configuration=Release /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-
-        msbuild nanoFramework.System.Net\source\nanoFramework.System.Net.sln /p:Configuration=Release /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-
-on_failure:
-- ps: |
-
-      cd ..
-
-      .\appveyor-discord.ps1 failure $env:APPVEYOR_DISCORD_WEBHOOK_URL
-
-after_build:
-  - ps: >-
-
-      .\rename-nfproj-files.ps1
-
-      &docfx docfx.json
-      
-      if ($lastexitcode -ne 0)
+$WEBHOOK_DATA="{
+  ""embeds"": [ {
+    ""color"": $EMBED_COLOR,
+    ""author"": {
+      ""name"": ""Job #$env:APPVEYOR_JOB_NUMBER (Build #$env:APPVEYOR_BUILD_NUMBER) $STATUS_MESSAGE - $env:APPVEYOR_REPO_NAME"",
+      ""url"": ""https://ci.appveyor.com/project/$env:APPVEYOR_ACCOUNT_NAME/$env:APPVEYOR_PROJECT_SLUG/build/$BUILD_VERSION"",
+      ""icon_url"": ""$AVATAR""
+    },
+    ""title"": ""$COMMIT_SUBJECT"",
+    ""url"": ""$URL"",
+    ""description"": ""$COMMIT_MESSAGE $CREDITS"",
+    ""fields"": [
       {
-        throw [System.Exception] "docfx build failed with exit code $lastexitcode."
-      }
-
-      if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE)
+        ""name"": ""Commit"",
+        ""value"": ""[``$($env:APPVEYOR_REPO_COMMIT.substring(0, 7))``](https://github.com/$env:APPVEYOR_REPO_NAME/commit/$env:APPVEYOR_REPO_COMMIT)"",
+        ""inline"": true
+      },
       {
-        git clone https://github.com/nanoframework/nanoframework.github.io.git -b master origin_site -q
-        Copy-Item _site/* origin_site -recurse -Force
-        CD origin_site
-        git add -A 2>&1
-        git commit -m "CI Updates" -q
-        git push origin master -q
+        ""name"": ""Branch/Tag"",
+        ""value"": ""[``$env:APPVEYOR_REPO_BRANCH``](https://github.com/$env:APPVEYOR_REPO_NAME/tree/$env:APPVEYOR_REPO_BRANCH)"",
+        ""inline"": true
       }
+    ]
+  } ],
+  ""content"" : """",
+  ""file"": """"
+}"
+
+Invoke-RestMethod -Uri $WEBHOOK_URL -Method POST -UserAgent AppVeyor-Webhook -ContentType 'application/json' -Body $WEBHOOK_DATA
+
+Write-Output "[Webhook]: Successfully sent the webhook."
