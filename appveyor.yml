@@ -94,7 +94,7 @@ before_build:
               $cmakeOptions += "-DTOOL_HEX2DFU_PREFIX=$env:HEX2DFU_PATH".Replace('\','/')
           }
 
-          &$cmake -G Ninja "-DTOOLCHAIN_PREFIX=$env:GNU_GCC_TOOLCHAIN_PATH" "-DCHIBIOS_BOARD=$env:BOARD_NAME" "-DCMAKE_BUILD_TYPE=$env:CONFIGURATION" $cmakeOptions ..
+          &$cmake -G Ninja "-DTOOLCHAIN_PREFIX=$env:GNU_GCC_TOOLCHAIN_PATH" "-DCHIBIOS_BOARD=$env:BOARD_NAME" "-DCMAKE_BUILD_TYPE=$env:CONFIGURATION" $cmakeOptions "-DBUILD_VERSION=$env:GitVersion_AssemblySemVer" ..
         }
       }
 
