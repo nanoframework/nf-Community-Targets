@@ -61,6 +61,9 @@ add_executable(
     
     "${CMAKE_CURRENT_SOURCE_DIR}/target_common.c"
 
+    # need to add configuration manager to allow get/store configuration blocks
+    "${PROJECT_SOURCE_DIR}/src/HAL/nanoHAL_ConfigurationManager_stubs.c"
+
     ${COMMON_PROJECT_SOURCES}
     ${NANOBOOTER_PROJECT_SOURCES}
 
@@ -96,6 +99,8 @@ add_executable(
 
     ${CHIBIOS_SOURCES}
     ${ChibiOSnfOverlay_SOURCES}
+
+    ${WireProtocol_SOURCES}
 
     # sources for nanoFramework libraries
     "${NF_CoreCLR_SOURCES}"
@@ -170,16 +175,17 @@ nf_set_linker_file(${NANOBOOTER_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/na
 nf_set_linker_file(${NANOCLR_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoCLR/STM32F405xG_CLR.ld)
 
 # set linker options
-# using FPU requires enabling printf with FP support for newlib nano, but just for nanoCLR target, don't need to overload nanoBooter with that
-nf_set_linker_options(${NANOBOOTER_PROJECT_NAME}.elf FALSE)
-nf_set_linker_options(${NANOCLR_PROJECT_NAME}.elf TRUE)
+nf_set_linker_options(${NANOBOOTER_PROJECT_NAME}.elf)
+nf_set_linker_options(${NANOCLR_PROJECT_NAME}.elf)
 
 # add other linker flags
-###################################################
-# the size of the CLR managed heap is defined here
-###################################################
-set_property(TARGET ${NANOBOOTER_PROJECT_NAME}.elf APPEND_STRING PROPERTY LINK_FLAGS ",--defsym=__main_stack_size__=0x400,--defsym=__process_stack_size__=0x400,--defsym=__crt_heap_size__=0x1000")
-set_property(TARGET ${NANOCLR_PROJECT_NAME}.elf APPEND_STRING PROPERTY LINK_FLAGS ",--defsym=__main_stack_size__=0x400,--defsym=__process_stack_size__=0x800,--defsym=__crt_heap_size__=0x2800")
+###########################################################
+# the sizes of CRT heap and ChibiOS stacks are defined here
+############################################################################
+# CRT heap is assigned to RAM4 region @ CCM SRAM so we are OK to use it all
+############################################################################
+set_property(TARGET ${NANOBOOTER_PROJECT_NAME}.elf APPEND_STRING PROPERTY LINK_FLAGS ",--defsym=__main_stack_size__=0x400,--defsym=__process_stack_size__=0x400,--defsym=__crt_heap_size__=0x10000")
+set_property(TARGET ${NANOCLR_PROJECT_NAME}.elf APPEND_STRING PROPERTY LINK_FLAGS ",--defsym=__main_stack_size__=0x400,--defsym=__process_stack_size__=0x800,--defsym=__crt_heap_size__=0x10000")
 
 # generate output files
 nf_generate_build_output_files(${NANOBOOTER_PROJECT_NAME}.elf)
@@ -195,7 +201,7 @@ if(HEX2DFU_TOOL_AVAILABLE)
     NF_GENERATE_DFU_PACKAGE(
         ${PROJECT_SOURCE_DIR}/build/${NANOBOOTER_PROJECT_NAME}.bin 08000000 
         ${PROJECT_SOURCE_DIR}/build/${NANOCLR_PROJECT_NAME}.bin 08008000 
-        ${PROJECT_SOURCE_DIR}/build/nanoFramework-cerb40.dfu
+        ${PROJECT_SOURCE_DIR}/build/nanoFramework-4-cerb40.dfu
     )
 
 endif()

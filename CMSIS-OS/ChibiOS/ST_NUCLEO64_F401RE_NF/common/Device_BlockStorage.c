@@ -6,17 +6,20 @@
 #include <nanoHAL_Types.h>
 #include <nanoPAL_BlockStorage.h>
 
+//16kB block
 const BlockRange BlockRange1[] = 
 {
-    { BlockRange_BLOCKTYPE_BOOTSTRAP ,   0, 1 },            // 08000000 nanoBooter          
-    { BlockRange_BLOCKTYPE_CODE      ,   2, 3 }             // 08008000 nanoCLR          
+    { BlockRange_BLOCKTYPE_BOOTSTRAP ,   0, 0 },            // 08000000 nanoBooter          
+    { BlockRange_BLOCKTYPE_CODE      ,   1, 3 }             // 08004000 nanoCLR          
 };
 
+//64kB block
 const BlockRange BlockRange2[] = 
 {
     { BlockRange_BLOCKTYPE_CODE      ,   0, 0 }             // 08010000 nanoCLR          
 };
 
+//384kB block
 const BlockRange BlockRange3[] =
 {
     { BlockRange_BLOCKTYPE_CODE      ,   0, 1 },            // 08020000 nanoCLR         
@@ -53,14 +56,9 @@ const BlockRegionInfo BlockRegions[] =
 
 const DeviceBlockInfo Device_BlockInfo =
 {
-    {  
-        false,              // BOOL Removable;
-        true,               // BOOL SupportsXIP;
-        false,              // BOOL WriteProtected;
-        false               // BOOL SupportsCopyBack
-    },
+    (MediaAttribute_SupportsXIP),
     ARRAYSIZE_CONST_EXPR(BlockRegions),     // UINT32 NumRegions;
-    BlockRegions,                           // const BlockRegionInfo* pRegions;
+    (BlockRegionInfo*)BlockRegions,         // const BlockRegionInfo* pRegions;
 };
 
 MEMORY_MAPPED_NOR_BLOCK_CONFIG Device_BlockStorageConfig =
@@ -71,7 +69,7 @@ MEMORY_MAPPED_NOR_BLOCK_CONFIG Device_BlockStorageConfig =
             false,      // BOOL                 ActiveState;
         },
 
-        &Device_BlockInfo,             // BlockDeviceinfo
+        (DeviceBlockInfo*)&Device_BlockInfo,    // BlockDeviceinfo
     },
 
     { // CPU_MEMORY_CONFIG

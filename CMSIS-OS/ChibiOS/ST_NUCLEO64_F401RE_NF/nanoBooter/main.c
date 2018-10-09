@@ -11,33 +11,14 @@
 #include <swo.h>
 #include <targetHAL.h>
 #include <WireProtocol_ReceiverThread.h>
+#include <nanoPAL_BlockStorage.h>
 #include <LaunchCLR.h>
 
-void BlinkerThread(void const * argument)
-{
-  (void)argument;
-
-  // loop until thread receives a request to terminate
-  while (!chThdShouldTerminateX()) {
-
-      palSetPad(GPIOA, GPIOA_LED_GREEN);
-      osDelay(500);      
-      palClearPad(GPIOA, GPIOA_LED_GREEN);
-      osDelay(500);
-
-  }  
-  // nothing to deinitialize or cleanup, so it's safe to return
-}
-osThreadDef(BlinkerThread, osPriorityNormal, 128, "BlinkerThread");
-
 // need to declare the Receiver thread here
-osThreadDef(ReceiverThread, osPriorityHigh, 3072, "ReceiverThread");
+osThreadDef(ReceiverThread, osPriorityHigh, 2048, "ReceiverThread");
 
 //  Application entry point.
 int main(void) {
-
-  osThreadId blinkerThreadId;
-  osThreadId receiverThreadId;
 
   // HAL initialization, this also initializes the configured device drivers
   // and performs the board-specific initializations.
@@ -79,11 +60,8 @@ int main(void) {
   usbStart(serusbcfg.usbp, &usbcfg);
   usbConnectBus(serusbcfg.usbp);
 
-  // Creates the blinker thread, it does not start immediately.
-  blinkerThreadId = osThreadCreate(osThread(BlinkerThread), NULL);
-
   // create the receiver thread
-  receiverThreadId = osThreadCreate(osThread(ReceiverThread), NULL);
+  osThreadCreate(osThread(ReceiverThread), NULL);
 
   // start kernel, after this main() will behave like a thread with priority osPriorityNormal
   osKernelStart();
@@ -95,6 +73,9 @@ int main(void) {
 
   //  Normal main() thread
   while (true) {
-    osDelay(500);
+      palSetPad(GPIOA, GPIOA_LED_GREEN);
+      osDelay(500);      
+      palClearPad(GPIOA, GPIOA_LED_GREEN);
+      osDelay(500);
   }
 }

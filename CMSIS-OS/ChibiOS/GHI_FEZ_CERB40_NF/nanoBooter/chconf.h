@@ -19,7 +19,7 @@
 #define CHCONF_H
 
 #define _CHIBIOS_RT_CONF_
-#define _CHIBIOS_RT_CONF_VER_5_0_
+#define _CHIBIOS_RT_CONF_VER_5_1_
 
 /*===========================================================================*/
 /**
@@ -480,8 +480,8 @@
  * @details User initialization code added to the @p chSysInit() function
  *          just before interrupts are enabled globally.
  */
-#define CH_CFG_SYSTEM_INIT_HOOK(tp) {                                       \
-  /* Add threads initialization code here.*/                                \
+#define CH_CFG_SYSTEM_INIT_HOOK() {                                           \
+    /* Add threads initialization code here.*/                                \
 }
 
 /**
