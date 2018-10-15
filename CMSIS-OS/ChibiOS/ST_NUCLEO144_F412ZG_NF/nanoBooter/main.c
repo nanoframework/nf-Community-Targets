@@ -29,12 +29,7 @@ int main(void) {
   SwoInit();
   #endif
 
-  // The kernel is initialized but not started yet, this means that
-  // main() is executing with absolute priority but interrupts are already enabled.
-  osKernelInitialize();
-  osDelay(20);    // Let init stabilize
-  
-   // the following IF is not mandatory, it's just providing a way for a user to 'force'
+  // the following IF is not mandatory, it's just providing a way for a user to 'force'
   // the board to remain in nanoBooter and not launching nanoCLR
 
   // if the USER button (blue one) is pressed, skip the check for a valid CLR image and remain in booter
@@ -43,13 +38,17 @@ int main(void) {
   {
     // check for valid CLR image 
     // we are checking for a valid image right after the configuration block
-    if(CheckValidCLRImage((uint32_t)&__nanoConfig_end__))
+    if(CheckValidCLRImage((uint32_t)&__nanoImage_end__))
     {
       // there seems to be a valid CLR image
       // launch nanoCLR
-      LaunchCLR((uint32_t)&__nanoConfig_end__);
+      LaunchCLR((uint32_t)&__nanoImage_end__);
     }
   }
+
+  // The kernel is initialized but not started yet, this means that
+  // main() is executing with absolute priority but interrupts are already enabled.
+  osKernelInitialize();
 
   //  Initializes a serial-over-USB CDC driver.
   sduObjectInit(&SDU1);

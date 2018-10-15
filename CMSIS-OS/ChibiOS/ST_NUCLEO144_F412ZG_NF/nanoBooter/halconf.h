@@ -228,7 +228,6 @@
 #define CAN_USE_SLEEP_MODE                  TRUE
 #endif
 
-
 /**
  * @brief   Enforces the driver to use direct callbacks rather than OSAL events.
  */
