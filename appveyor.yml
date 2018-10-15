@@ -187,21 +187,15 @@ build_script:
 
 # requires APPVEYOR_DISCORD_WEBHOOK_URL enviroment variable set with Discord webhook URL
 on_failure:
-  - ps: '& "$env:APPVEYOR_BUILD_FOLDER\appveyor-discord.ps1 failure $env:APPVEYOR_DISCORD_WEBHOOK_URL"'
+  - ps: |
+  
+      & $env:APPVEYOR_BUILD_FOLDER\appveyor-discord.ps1 failure $env:APPVEYOR_DISCORD_WEBHOOK_URL
 
 test: off
 
 artifacts:
   - path: '**\*.zip'
     name: nanoImage
-
-# before_deploy:
-#   # need this to keep ruby happy
-#   - ps: md c:\tmp
-#   - bundle exec github_changelog_generator --token %GitHubToken%
-#   # add here the updated changelog and the updated assembly info files
-#   - git add .
-#   - git commit --amend --no-edit
 
 notifications:
   - provider: Email
