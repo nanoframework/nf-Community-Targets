@@ -33,7 +33,7 @@
 /*
  * Board identifier.
  */
-#define BOARD_ST_NUCLEO144_F412ZG
+#define BOARD_ST_NUCLEO144_F412ZG_NF
 #define BOARD_NAME                  "STMicroelectronics STM32 Nucleo144-F412ZG"
 
 /*
@@ -687,8 +687,8 @@
                                      PIN_MODE_INPUT(GPIOB_ZIO_D22) |        \
                                      PIN_MODE_INPUT(GPIOB_ZIO_D26) |        \
                                      PIN_MODE_OUTPUT(GPIOB_LED2) |          \
-                                     PIN_MODE_INPUT(GPIOB_ARD_D15) |        \
-                                     PIN_MODE_INPUT(GPIOB_ARD_D14) |        \
+                                     PIN_MODE_ALTERNATE(GPIOB_ARD_D15) |        \
+                                     PIN_MODE_ALTERNATE(GPIOB_ARD_D14) |        \
                                      PIN_MODE_INPUT(GPIOB_ZIO_D36) |        \
                                      PIN_MODE_INPUT(GPIOB_ZIO_D35) |        \
                                      PIN_MODE_INPUT(GPIOB_ZIO_D19) |        \
@@ -703,8 +703,8 @@
                                      PIN_OTYPE_PUSHPULL(GPIOB_ZIO_D22) |    \
                                      PIN_OTYPE_PUSHPULL(GPIOB_ZIO_D26) |    \
                                      PIN_OTYPE_PUSHPULL(GPIOB_LED2) |       \
-                                     PIN_OTYPE_PUSHPULL(GPIOB_ARD_D15) |    \
-                                     PIN_OTYPE_PUSHPULL(GPIOB_ARD_D14) |    \
+                                     PIN_OTYPE_OPENDRAIN(GPIOB_ARD_D15) |    \
+                                     PIN_OTYPE_OPENDRAIN(GPIOB_ARD_D14) |    \
                                      PIN_OTYPE_PUSHPULL(GPIOB_ZIO_D36) |    \
                                      PIN_OTYPE_PUSHPULL(GPIOB_ZIO_D35) |    \
                                      PIN_OTYPE_PUSHPULL(GPIOB_ZIO_D19) |    \
@@ -735,8 +735,8 @@
                                      PIN_PUPDR_PULLUP(GPIOB_ZIO_D22) |      \
                                      PIN_PUPDR_PULLUP(GPIOB_ZIO_D26) |      \
                                      PIN_PUPDR_FLOATING(GPIOB_LED2) |       \
-                                     PIN_PUPDR_PULLUP(GPIOB_ARD_D15) |      \
-                                     PIN_PUPDR_PULLUP(GPIOB_ARD_D14) |      \
+                                     PIN_PUPDR_FLOATING(GPIOB_ARD_D15) |      \
+                                     PIN_PUPDR_FLOATING(GPIOB_ARD_D14) |      \
                                      PIN_PUPDR_PULLUP(GPIOB_ZIO_D36) |      \
                                      PIN_PUPDR_PULLUP(GPIOB_ZIO_D35) |      \
                                      PIN_PUPDR_PULLUP(GPIOB_ZIO_D19) |      \
@@ -751,8 +751,8 @@
                                      PIN_ODR_HIGH(GPIOB_ZIO_D22) |          \
                                      PIN_ODR_HIGH(GPIOB_ZIO_D26) |          \
                                      PIN_ODR_LOW(GPIOB_LED2) |              \
-                                     PIN_ODR_HIGH(GPIOB_ARD_D15) |          \
-                                     PIN_ODR_HIGH(GPIOB_ARD_D14) |          \
+                                     PIN_ODR_LOW(GPIOB_ARD_D15) |          \
+                                     PIN_ODR_LOW(GPIOB_ARD_D14) |          \
                                      PIN_ODR_HIGH(GPIOB_ZIO_D36) |          \
                                      PIN_ODR_HIGH(GPIOB_ZIO_D35) |          \
                                      PIN_ODR_HIGH(GPIOB_ZIO_D19) |          \
@@ -767,8 +767,8 @@
                                      PIN_AFIO_AF(GPIOB_ZIO_D22, 0U) |       \
                                      PIN_AFIO_AF(GPIOB_ZIO_D26, 0U) |       \
                                      PIN_AFIO_AF(GPIOB_LED2, 0U))
-#define VAL_GPIOB_AFRH              (PIN_AFIO_AF(GPIOB_ARD_D15, 0U) |       \
-                                     PIN_AFIO_AF(GPIOB_ARD_D14, 0U) |       \
+#define VAL_GPIOB_AFRH              (PIN_AFIO_AF(GPIOB_ARD_D15, 4U) |       \
+                                     PIN_AFIO_AF(GPIOB_ARD_D14, 4U) |       \
                                      PIN_AFIO_AF(GPIOB_ZIO_D36, 0U) |       \
                                      PIN_AFIO_AF(GPIOB_ZIO_D35, 0U) |       \
                                      PIN_AFIO_AF(GPIOB_ZIO_D19, 0U) |       \
