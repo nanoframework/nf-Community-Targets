@@ -35,7 +35,7 @@ The above firmware builds include support for the class libraries and features m
 | IngenuityMicro Oxygen | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | | | |
 | ST Nucleo64 F401RE | :heavy_check_mark: | | | | | | :heavy_check_mark: | :heavy_check_mark: | | |
 | ST Nucleo64 F411RE | :heavy_check_mark: | | | | | | :heavy_check_mark: | :heavy_check_mark: | | |
-| ST Nucleo144 F412ZG | | | | | | | | :heavy_check_mark: | | |
+| ST Nucleo144 F412ZG | :heavy_check_mark: | | :heavy_check_mark: | | | | :heavy_check_mark: | :heavy_check_mark: | | |
 
 ## Feedback and documentation
 
