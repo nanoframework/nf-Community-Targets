@@ -3,6 +3,7 @@
 // See LICENSE file in the project root for full license information.
 //
 
+#include "target_windows_devices_serialcommunication_config.h"
 #include "win_dev_serial_native.h"
 
 ///////////
@@ -16,12 +17,6 @@
 // RX pin: is GPIOD_6
 // GPIO alternate pin function is 7 (see "Table 10. STM32F412xE/G alternate function mapping" in datasheet)
 UART_CONFIG_PINS(2, GPIOD, GPIOD, 5, 6, 7)
-
-// buffers size
-// tx buffer size: 256 bytes
-#define UART2_TX_SIZE  256
-// rx buffer size: 256 bytes
-#define UART2_RX_SIZE  256
 
 // buffers
 // buffers that are R/W by DMA are recommended to be aligned with 32 bytes cache page size boundary

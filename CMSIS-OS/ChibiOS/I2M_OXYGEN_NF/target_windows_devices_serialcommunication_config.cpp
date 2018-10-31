@@ -3,6 +3,7 @@
 // See LICENSE file in the project root for full license information.
 //
 
+#include "target_windows_devices_serialcommunication_config.h"
 #include "win_dev_serial_native.h"
 
 ///////////
@@ -15,12 +16,6 @@
 // RX pin: is GPIOA_10
 // GPIO alternate pin function is 7 (see "Table 9. Alternate function mapping" in STM32F411xC and STM32F411xE datasheet)
 UART_CONFIG_PINS(1, GPIOA, GPIOA, 9, 10, 7)
-
-// buffers size
-// tx buffer size: 256 bytes
-#define UART1_TX_SIZE  256
-// rx buffer size: 256 bytes
-#define UART1_RX_SIZE  256
 
 // buffers
 // buffers that are R/W by DMA are recommended to be aligned with 32 bytes cache page size boundary
@@ -52,12 +47,6 @@ UART_UNINIT(1)
 // GPIO alternate pin function is 7 (see "Table 9. Alternate function mapping" in STM32F411xC and STM32F411xE datasheet)
 UART_CONFIG_PINS(2, GPIOA, GPIOA, 2, 3, 7)
 
-// buffers size
-// tx buffer size: 1024 bytes
-#define UART2_TX_SIZE  1024
-// rx buffer size: 1024 bytes
-#define UART2_RX_SIZE  1024
-
 // buffers
 // buffers that are R/W by DMA are recommended to be aligned with 32 bytes cache page size boundary
 // because of issues with cache coherency and DMA (this is particularly important with Cortex-M7 because of cache)
@@ -75,4 +64,3 @@ UART_INIT(2, UART2_TX_SIZE, UART2_RX_SIZE)
 
 // un-initialization for UART2
 UART_UNINIT(2)
-
