@@ -1,0 +1,20 @@
+# Copyright (c) 2018 The nanoFramework project contributors
+# See LICENSE file in the project root for full license information.
+
+steps:
+  # clone nf-interpreter repo to launch the build
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: git clone https://github.com/nanoframework/nf-interpreter.git -b develop nf-interpreter --depth 1 -q
+      errorActionPreference: 'stop'
+    displayName: Clone nf-interpreter repo
+
+  # Copy target files to nf-interpreter folder
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: $(Build.SourcesDirectory)\CMSIS-OS
+      targetFolder: $(Build.SourcesDirectory)\nf-interpreter\targets-community\CMSIS-OS
+      cleanTargetFolder: false
+      overWrite: true
+    displayName: Copy community target to nf-interpreter 
