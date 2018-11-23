@@ -2,37 +2,21 @@
 # See LICENSE file in the project root for full license information.
 
 trigger:
-  batch: true
+  branches:
+    include:
+    - master
   paths:
     exclude:
+    - /*.md
     - .gitignore
-    - README.md
-    - CHANGELOG.md
-    - LICENSE
-    - CONTRIBUTING.md
-    - CODE_OF_CONDUCT.md
-    - CMSIS-OS/ChibiOS/GHI_FEZ_CERB40_NF/README.md
-    - CMSIS-OS/ChibiOS/I2M_ELECTRON_NF/README.md
-    - CMSIS-OS/ChibiOS/I2M_OXYGEN_NF/README.md
-    - CMSIS-OS/ChibiOS/ST_NUCLEO144_F412ZG_NF/README.md
-    - CMSIS-OS/ChibiOS/ST_NUCLEO64_F401RE_NF/README.md
-    - CMSIS-OS/ChibiOS/ST_NUCLEO64_F411RE_NF/README.md
 
 pr:
-  paths:
-    exclude:
-    - .gitignore
-    - README.md
-    - CHANGELOG.md
-    - LICENSE
-    - CONTRIBUTING.md
-    - CODE_OF_CONDUCT.md
-    - CMSIS-OS/ChibiOS/GHI_FEZ_CERB40_NF/README.md
-    - CMSIS-OS/ChibiOS/I2M_ELECTRON_NF/README.md
-    - CMSIS-OS/ChibiOS/I2M_OXYGEN_NF/README.md
-    - CMSIS-OS/ChibiOS/ST_NUCLEO144_F412ZG_NF/README.md
-    - CMSIS-OS/ChibiOS/ST_NUCLEO64_F401RE_NF/README.md
-    - CMSIS-OS/ChibiOS/ST_NUCLEO64_F411RE_NF/README.md
+  branches:
+    include:
+    - master
+    - develop
+    - release/*
+  autoCancel: true
 
 # add nf-tools repo to resources (for Azure Pipelines templates)
 # add nf-interpreter repo to resources (for Azure Pipelines templates)
@@ -64,7 +48,7 @@ jobs:
 
     # get commint message
   - powershell: |
-      $commitMessage = "$(git log -1 "$env:Build_SourceVersion" --pretty="%b")"
+      $commitMessage = "$env:Build_SourceVersionMessage"
       echo "##vso[task.setvariable variable=COMMIT_MESSAGE;isOutput=true]$commitMessage"
     name: getCommitMessage
     displayName: grab commit message
