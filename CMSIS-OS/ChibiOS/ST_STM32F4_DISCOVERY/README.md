@@ -44,6 +44,13 @@ The following ADC channels (and respective GPIO pins) are available to the manag
 - VrefInt ADC1
 - Vbatt ADC1
 
+## I2C configurations
+
+I2C buses available:
+- I2C1
+  - SCL pin: GPIOB_8
+  - SDA pin: GPIOB_9
+
 ## Floating point
 
 The current build is set to add support for single-precision floating point.
