@@ -23,10 +23,9 @@ The provided boards are **NOT** supported by the **nanoFramework** team and any 
 | [ST Nucleo64 F401RE](CMSIS-OS/ChibiOS/ST_NUCLEO64_F401RE_NF) | [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/ST_NUCLEO64_F401RE_NF/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/ST_NUCLEO64_F401RE_NF/_latestVersion) | STM32F401RE | 84 MHz | 512 KB | 96 KB |
 | [ST Nucleo64 F411RE](CMSIS-OS/ChibiOS/ST_NUCLEO64_F411RE_NF) | [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/ST_NUCLEO64_F411RE_NF/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/ST_NUCLEO64_F411RE_NF/_latestVersion) | STM32F411RE | 100 MHz | 512 KB | 128 KB |
 | [ST Nucleo144 F412ZG](CMSIS-OS/ChibiOS/ST_NUCLEO144_F412ZG_NF) | [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/ST_NUCLEO144_F412ZG_NF/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/ST_NUCLEO144_F412ZG_NF/_latestVersion) | STM32F412ZG | 100 MHz | 1024 KB | 256 KB |
-
+| [ST STM32F4DISCO](CMSIS-OS/ChibiOS/ST_STM32F4_DISCOVERY) | [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/ST_STM32F4_DISCOVERY/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/ST_STM32F4_DISCOVERY/_latestVersion) | STM32F407VGT6 | 100 MHz | 1024 KB | 192 KB |
 
 The above firmware builds include support for the class libraries and features marked below.
-
 
 | Target | Gpio | Spi | I2c | Pwm | Adc | Serial | Events | SWO | Networking | Large Heap |
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
@@ -36,6 +35,7 @@ The above firmware builds include support for the class libraries and features m
 | ST Nucleo64 F401RE | :heavy_check_mark: | | | | | | :heavy_check_mark: | :heavy_check_mark: | | |
 | ST Nucleo64 F411RE | :heavy_check_mark: | | | | | | :heavy_check_mark: | :heavy_check_mark: | | |
 | ST Nucleo144 F412ZG | :heavy_check_mark: | | :heavy_check_mark: | | | | :heavy_check_mark: | :heavy_check_mark: | | |
+| ST STM32F4DISCO | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | | |
 
 ## Feedback and documentation
 
