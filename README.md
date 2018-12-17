@@ -1,6 +1,5 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Discord](https://img.shields.io/discord/478725473862549535.svg)](https://discord.gg/gCyBu8T) [![Build Status](https://dev.azure.com/nanoframework/Community-Targets/_apis/build/status/nanoframework.nf-Community-Targets)](https://dev.azure.com/nanoframework/Community-Targets/_build/latest?definitionId=4)
 
-
 ![nanoFramework logo](https://github.com/nanoframework/Home/blob/master/resources/logo/nanoFramework-repo-logo.png)
 
 -----
@@ -11,9 +10,7 @@ This repository contains target boards for the **nanoFramework**, provided and m
 
 The provided boards are **NOT** supported by the **nanoFramework** team and any issues must be communicated with the contributor that _owns_ it.
 
-
 ## Available community boards
-
 
 | Target name | Firmware Images | MCU | Frequency | FLASH | RAM |
 |:-:|:-:|:-:|:-:|:-:|:-:|
@@ -47,19 +44,17 @@ When you need to discuss something specific about a community target start by do
 
 Join our Discord community [here](https://discord.gg/gCyBu8T).
 
-
 ## Credits
 
 The list of contributors to this project can be found at [CONTRIBUTORS](https://github.com/nanoframework/Home/blob/master/CONTRIBUTORS.md).
 
 The individual targets are _owned_ by the contributor and credit is due to the creator of the community board.
 
-
 ## License
 
 The community target contributions are licensed under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0).
 
-
 ## Code of Conduct
+
 This project has adopted the code of conduct defined by the [Contributor Covenant](http://contributor-covenant.org/)
 to clarify expected behavior in our community.
