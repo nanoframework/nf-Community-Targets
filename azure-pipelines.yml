@@ -25,12 +25,12 @@ resources:
     - repository: templates
       type: github
       name: nanoframework/nf-tools
-      endpoint: nfbot
+      endpoint: nanoframework
     - repository: templatesBuild
       type: github
       name: nanoframework/nf-interpreter
       ref: refs/heads/develop
-      endpoint: nfbot
+      endpoint: nanoframework
 
 variables:
   GNU_GCC_TOOLCHAIN_PATH: $(Agent.TempDirectory)\GNU_Tools_ARM_Embedded
