@@ -257,6 +257,39 @@ jobs:
   - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
 
 ##############################
+- job: Build_ST_NUCLEO144_F746ZG
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ST_NUCLEO144_F746ZG#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#') )
+  dependsOn: Get_Commit_Message
+  pool:
+    vmImage: 'VS2017-Win2016'
+
+  variables:
+    BoardName: ST_NUCLEO144_F746ZG
+    BuildOptions: -DTARGET_SERIES=STM32F7xx -DRTOS=CHIBIOS -DNF_FEATURE_DEBUGGER=ON -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DNF_FEATURE_HAS_CONFIG_BLOCK=ON -DAPI_System.Math=ON -DAPI_Hardware.Stm32=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_Windows.Devices.Adc=ON -DAPI_System.Net=ON -DNF_SECURITY_MBEDTLS=ON -DAPI_nanoFramework.Devices.OneWire=ON
+    NeedsDFU: false
+
+  steps:
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+
+  - template: clone-nf-interpreter-repo.yml
+
+  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
+
+  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
+
+  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
+
+  - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
+    parameters:
+      builDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+
+  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
+    parameters:
+      builDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+
+  - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
+
+##############################
 - job: Build_ST_STM32F4_DISCOVERY
   condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ST_STM32F4_DISCOVERY#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#') )
   dependsOn: Get_Commit_Message
@@ -299,8 +332,9 @@ jobs:
   - Build_ST_NUCLEO64_F401RE_NF
   - Build_ST_NUCLEO64_F411RE_NF
   - Build_ST_NUCLEO144_F412ZG_NF
+  - Build_ST_NUCLEO144_F746ZG
   - Build_ST_STM32F4_DISCOVERY
-  condition: or( failed('Build_GHI_FEZ_CERB40_NF'), failed('Build_I2M_ELECTRON_NF'), failed('Build_I2M_OXYGEN_NF'), failed('Build_ST_NUCLEO64_F401RE_NF'), failed('Build_ST_NUCLEO64_F411RE_NF'), failed('Build_ST_NUCLEO144_F412ZG_NF'), failed('Build_ST_STM32F4_DISCOVERY'))
+  condition: or( failed('Build_GHI_FEZ_CERB40_NF'), failed('Build_I2M_ELECTRON_NF'), failed('Build_I2M_OXYGEN_NF'), failed('Build_ST_NUCLEO64_F401RE_NF'), failed('Build_ST_NUCLEO64_F411RE_NF'), failed('Build_ST_NUCLEO144_F412ZG_NF'), failed('Build_ST_NUCLEO144_F746ZG'), failed('Build_ST_STM32F4_DISCOVERY'))
 
   pool:
     vmImage: 'VS2017-Win2016'
