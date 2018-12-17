@@ -1,6 +1,6 @@
 ## STM STM32F4DISCOVERY board
 
-![STM STM32F4DISCOVERY board](../../images/reference-targets/stm32f4_discovery.jpg)
+![STM STM32F4DISCOVERY board](stm32f4_discovery.jpg)
 
 The board used in this community contribution is the STM32F4DISCOVERY board from STM. The board can be purchased from various sources and should be about 20 euros. Further information on this board and links for the user and programming manuals can be found at the product page in ST [website](https://www.st.com/en/evaluation-tools/stm32f4discovery.html).
 
