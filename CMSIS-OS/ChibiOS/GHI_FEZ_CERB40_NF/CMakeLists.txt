@@ -61,6 +61,9 @@ add_executable(
     
     "${CMAKE_CURRENT_SOURCE_DIR}/target_common.c"
 
+    # need to add configuration manager to allow get/store configuration blocks
+    "${PROJECT_SOURCE_DIR}/src/HAL/nanoHAL_ConfigurationManager_stubs.c"
+
     ${COMMON_PROJECT_SOURCES}
     ${NANOBOOTER_PROJECT_SOURCES}
 
@@ -198,7 +201,7 @@ if(HEX2DFU_TOOL_AVAILABLE)
     NF_GENERATE_DFU_PACKAGE(
         ${PROJECT_SOURCE_DIR}/build/${NANOBOOTER_PROJECT_NAME}.bin 08000000 
         ${PROJECT_SOURCE_DIR}/build/${NANOCLR_PROJECT_NAME}.bin 08008000 
-        ${PROJECT_SOURCE_DIR}/build/nanoFramework-cerb40.dfu
+        ${PROJECT_SOURCE_DIR}/build/nanoFramework-4-cerb40.dfu
     )
 
 endif()
