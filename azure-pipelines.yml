@@ -14,8 +14,6 @@ pr:
   branches:
     include:
     - master
-    - develop
-    - release/*
   autoCancel: true
 
 # add nf-tools repo to resources (for Azure Pipelines templates)
@@ -44,11 +42,10 @@ jobs:
 
   steps:
   - checkout: self
-    fetchDepth: 1
 
     # get commint message
   - powershell: |
-      $commitMessage = "$env:Build_SourceVersionMessage"
+      $commitMessage = git log --format='%s' -1
 
       # need to flatten message by removing new lines
       $commitMessage = $commitMessage -replace "`n", " "
