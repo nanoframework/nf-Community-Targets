@@ -42,13 +42,35 @@ jobs:
 
   steps:
   - checkout: self
+    fetchDepth: 1
 
     # get commint message
   - powershell: |
-      $commitMessage = git log --format='%s' -1
+
+      if($env:Build_SourceBranch -like "refs/pull*")
+      {
+        # PR build, get PR message
+
+        # need to get PR number from branch as the Azure Pipeline var can't be trusted
+        if($env:Build_SourceBranch -match '(?<=(pull\/))\w*(?=(\/))')
+        {
+          $prNumber = $matches[0]
+
+          $prUrl = "https://api.github.com/repos/$env:Build_Repository_Name/pulls/$prNumber"
+
+          $commit = Invoke-RestMethod -Uri $prUrl -ContentType "application/json" -Method GET
+
+          $commitMessage = $commit.body
+        }
+      }
+      else
+      {
+        # not a PR, get message from commit
+        $commitMessage = git log --format='%s' -1
+      }
 
       # need to flatten message by removing new lines
-      $commitMessage = $commitMessage -replace "`n", " "
+      $commitMessage = $commitMessage -replace "`r`n", " "
 
       # set variable to foward to jobs
       echo "##vso[task.setvariable variable=COMMIT_MESSAGE;isOutput=true]$commitMessage"
@@ -68,6 +90,9 @@ jobs:
     NeedsDFU: true
 
   steps:
+  - checkout: self
+    fetchDepth: 1  
+
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
 
   - template: clone-nf-interpreter-repo.yml
@@ -101,6 +126,9 @@ jobs:
     NeedsDFU: true
 
   steps:
+  - checkout: self
+    fetchDepth: 1  
+
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
 
   - template: clone-nf-interpreter-repo.yml
@@ -134,6 +162,9 @@ jobs:
     NeedsDFU: true
 
   steps:
+  - checkout: self
+    fetchDepth: 1  
+
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
 
   - template: clone-nf-interpreter-repo.yml
@@ -167,6 +198,9 @@ jobs:
     NeedsDFU: false
 
   steps:
+  - checkout: self
+    fetchDepth: 1  
+
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
 
   - template: clone-nf-interpreter-repo.yml
@@ -200,6 +234,9 @@ jobs:
     NeedsDFU: false
 
   steps:
+  - checkout: self
+    fetchDepth: 1  
+
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
 
   - template: clone-nf-interpreter-repo.yml
@@ -233,6 +270,9 @@ jobs:
     NeedsDFU: false
 
   steps:
+  - checkout: self
+    fetchDepth: 1  
+
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
 
   - template: clone-nf-interpreter-repo.yml
@@ -266,6 +306,9 @@ jobs:
     NeedsDFU: false
 
   steps:
+  - checkout: self
+    fetchDepth: 1  
+
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
 
   - template: clone-nf-interpreter-repo.yml
@@ -299,6 +342,9 @@ jobs:
     NeedsDFU: false
 
   steps:
+  - checkout: self
+    fetchDepth: 1  
+
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
 
   - template: clone-nf-interpreter-repo.yml
