@@ -11,7 +11,7 @@ steps:
           $version = [int]$counter
 
           $buildSimpleVersion = "1.0." + $version.ToString()
-          $buildFullVersion = buildSimpleVersion + ".0"
+          $buildFullVersion = $buildSimpleVersion + ".0"
 
           Write-Host ">>$buildVersion<<"
          
