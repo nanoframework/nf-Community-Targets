@@ -91,6 +91,7 @@ jobs:
 
   steps:
   - checkout: self
+    persistCredentials: true
     fetchDepth: 10
 
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
@@ -127,6 +128,7 @@ jobs:
 
   steps:
   - checkout: self
+    persistCredentials: true
     fetchDepth: 10
 
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
@@ -163,6 +165,7 @@ jobs:
 
   steps:
   - checkout: self
+    persistCredentials: true
     fetchDepth: 10
 
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
@@ -199,6 +202,7 @@ jobs:
 
   steps:
   - checkout: self
+    persistCredentials: true
     fetchDepth: 10
 
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
@@ -235,6 +239,7 @@ jobs:
 
   steps:
   - checkout: self
+    persistCredentials: true
     fetchDepth: 10
 
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
@@ -271,6 +276,7 @@ jobs:
 
   steps:
   - checkout: self
+    persistCredentials: true
     fetchDepth: 10
 
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
@@ -307,6 +313,7 @@ jobs:
 
   steps:
   - checkout: self
+    persistCredentials: true
     fetchDepth: 10
 
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
@@ -343,6 +350,7 @@ jobs:
 
   steps:
   - checkout: self
+    persistCredentials: true
     fetchDepth: 10
 
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
