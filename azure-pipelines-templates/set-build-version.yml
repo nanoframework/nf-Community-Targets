@@ -10,7 +10,7 @@ steps:
           $counter = $env:REVISION
           $version = [int]$counter
 
-          $buildSimpleVersion = "1.0." + $version.ToString()
+          $buildSimpleVersion = "1.1." + $version.ToString()
           $buildFullVersion = $buildSimpleVersion + ".0"
 
           Write-Host ">>$buildFullVersion<<"
