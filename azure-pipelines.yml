@@ -65,8 +65,8 @@ jobs:
       }
       else
       {
-        # not a PR, get message from commit
-        $commitMessage = git log --format='%s' -1
+        # not a PR, get subject and commit message for commit
+        $commitMessage = git log --format='%B' -1
       }
 
       # need to flatten message by removing new lines
