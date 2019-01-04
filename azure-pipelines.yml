@@ -87,15 +87,17 @@ jobs:
   variables:
     BoardName: GHI_FEZ_CERB40_NF
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DNF_FEATURE_DEBUGGER=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_Windows.Devices.Adc=ON
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('GHI_FEZ_CERB40_NF_versioncounter', 3)]
     NeedsDFU: true
 
   steps:
   - checkout: self
-    persistCredentials: true
+    fetchDepth: 1
 
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+  - template: azure-pipelines-templates/set-build-version.yml
 
-  - template: clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
 
@@ -123,15 +125,17 @@ jobs:
   variables:
     BoardName: I2M_ELECTRON_NF
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_Windows.Devices.Adc=ON
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('I2M_ELECTRON_NF_versioncounter', 3)]
     NeedsDFU: true
 
   steps:
   - checkout: self
-    persistCredentials: true
+    fetchDepth: 1
 
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+  - template: azure-pipelines-templates/set-build-version.yml
 
-  - template: clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
 
@@ -159,15 +163,17 @@ jobs:
   variables:
     BoardName: I2M_OXYGEN_NF
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_Windows.Devices.Adc=ON
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('I2M_OXYGEN_NF_versioncounter', 3)]
     NeedsDFU: true
 
   steps:
   - checkout: self
-    persistCredentials: true
+    fetchDepth: 1
 
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+  - template: azure-pipelines-templates/set-build-version.yml
 
-  - template: clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
 
@@ -195,15 +201,17 @@ jobs:
   variables:
     BoardName: ST_NUCLEO64_F401RE_NF
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_Windows.Devices.Adc=ON
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('ST_NUCLEO64_F401RE_NF_versioncounter', 3)]
     NeedsDFU: false
 
   steps:
   - checkout: self
-    persistCredentials: true
+    fetchDepth: 1
 
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+  - template: azure-pipelines-templates/set-build-version.yml
 
-  - template: clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
 
@@ -231,15 +239,17 @@ jobs:
   variables:
     BoardName: ST_NUCLEO64_F411RE_NF
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_Windows.Devices.Adc=ON
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('ST_NUCLEO64_F411RE_NF_versioncounter', 3)]
     NeedsDFU: false
 
   steps:
   - checkout: self
-    persistCredentials: true
+    fetchDepth: 1
 
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+  - template: azure-pipelines-templates/set-build-version.yml
 
-  - template: clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
 
@@ -267,15 +277,17 @@ jobs:
   variables:
     BoardName: ST_NUCLEO144_F412ZG_NF
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DNF_FEATURE_DEBUGGER=ON -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=OFF -DAPI_Windows.Devices.Adc=ON
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('ST_NUCLEO144_F412ZG_NF_versioncounter', 3)]
     NeedsDFU: false
 
   steps:
   - checkout: self
-    persistCredentials: true
+    fetchDepth: 1
 
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+  - template: azure-pipelines-templates/set-build-version.yml
 
-  - template: clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
 
@@ -303,15 +315,17 @@ jobs:
   variables:
     BoardName: ST_NUCLEO144_F746ZG
     BuildOptions: -DTARGET_SERIES=STM32F7xx -DRTOS=CHIBIOS -DNF_FEATURE_DEBUGGER=ON -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DNF_FEATURE_HAS_CONFIG_BLOCK=ON -DAPI_System.Math=ON -DAPI_Hardware.Stm32=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_Windows.Devices.Adc=ON -DAPI_System.Net=ON -DNF_SECURITY_MBEDTLS=ON -DAPI_nanoFramework.Devices.OneWire=ON
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('ST_NUCLEO144_F746ZG_versioncounter', 3)]
     NeedsDFU: false
 
   steps:
   - checkout: self
-    persistCredentials: true
+    fetchDepth: 1
 
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+  - template: azure-pipelines-templates/set-build-version.yml
 
-  - template: clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
 
@@ -339,15 +353,17 @@ jobs:
   variables:
     BoardName: ST_STM32F4_DISCOVERY
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=CHIBIOS -DSUPPORT_ANY_BASE_CONVERSION=ON -DNF_FEATURE_DEBUGGER=ON -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_System.Math=ON -DAPI_Hardware.Stm32=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_Windows.Devices.Adc=ON -DAPI_nanoFramework.Devices.OneWire=ON -DAPI_nanoFramework.Devices.Can=ON
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('ST_STM32F4_DISCOVERY_versioncounter', 3)]
     NeedsDFU: false
 
   steps:
   - checkout: self
-    persistCredentials: true
+    fetchDepth: 1
 
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+  - template: azure-pipelines-templates/set-build-version.yml
 
-  - template: clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
 
