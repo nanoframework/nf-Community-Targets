@@ -1,0 +1,24 @@
+# Copyright (c) 2018 The nanoFramework project contributors
+# See LICENSE file in the project root for full license information.
+
+steps:
+  # compute build version
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+          $counter = $env:REVISION
+          $version = [int]$counter
+
+          $buildSimpleVersion = "1.1." + $version.ToString()
+          $buildFullVersion = $buildSimpleVersion + ".0"
+
+          Write-Host ">>$buildFullVersion<<"
+         
+          # need to hijack NBGV variable that is expected in the build CMake command and others that follow
+          Write-Host "$("##vso[task.setvariable variable=NBGV_Version]")$buildFullVersion"
+          Write-Host "$("##vso[task.setvariable variable=NBGV_SimpleVersion]")$buildSimpleVersion"
+          Write-Host "$("##vso[task.setvariable variable=NBGV_PrereleaseVersion]").0"
+
+    condition: succeeded()
+    displayName: compute the build version

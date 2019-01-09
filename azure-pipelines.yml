@@ -14,8 +14,6 @@ pr:
   branches:
     include:
     - master
-    - develop
-    - release/*
   autoCancel: true
 
 # add nf-tools repo to resources (for Azure Pipelines templates)
@@ -48,10 +46,31 @@ jobs:
 
     # get commint message
   - powershell: |
-      $commitMessage = "$env:Build_SourceVersionMessage"
+
+      if($env:Build_SourceBranch -like "refs/pull*")
+      {
+        # PR build, get PR message
+
+        # need to get PR number from branch as the Azure Pipeline var can't be trusted
+        if($env:Build_SourceBranch -match '(?<=(pull\/))\w*(?=(\/))')
+        {
+          $prNumber = $matches[0]
+
+          $prUrl = "https://api.github.com/repos/$env:Build_Repository_Name/pulls/$prNumber"
+
+          $commit = Invoke-RestMethod -Uri $prUrl -ContentType "application/json" -Method GET
+
+          $commitMessage = $commit.body
+        }
+      }
+      else
+      {
+        # not a PR, get subject and commit message for commit
+        $commitMessage = git log --format='%B' -1
+      }
 
       # need to flatten message by removing new lines
-      $commitMessage = $commitMessage -replace "`n", " "
+      $commitMessage = $commitMessage -replace "`r`n", " "
 
       # set variable to foward to jobs
       echo "##vso[task.setvariable variable=COMMIT_MESSAGE;isOutput=true]$commitMessage"
@@ -60,7 +79,7 @@ jobs:
 
 ##############################
 - job: Build_GHI_FEZ_CERB40_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#GHI_FEZ_CERB40_NF#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#') )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#GHI_FEZ_CERB40_NF#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#'), eq(variables['BUILD_ALL'], 'true') )
   dependsOn: Get_Commit_Message
   pool:
     vmImage: 'VS2017-Win2016'
@@ -68,12 +87,17 @@ jobs:
   variables:
     BoardName: GHI_FEZ_CERB40_NF
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DNF_FEATURE_DEBUGGER=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_Windows.Devices.Adc=ON
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('GHI_FEZ_CERB40_NF_versioncounter', 3)]
     NeedsDFU: true
 
   steps:
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+  - checkout: self
+    fetchDepth: 1
 
-  - template: clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/set-build-version.yml
+
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
 
@@ -93,7 +117,7 @@ jobs:
 
 ##############################
 - job: Build_I2M_ELECTRON_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#I2M_ELECTRON_NF#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#') )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#I2M_ELECTRON_NF#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#'), eq(variables['BUILD_ALL'], 'true') )
   dependsOn: Get_Commit_Message
   pool:
     vmImage: 'VS2017-Win2016'
@@ -101,12 +125,17 @@ jobs:
   variables:
     BoardName: I2M_ELECTRON_NF
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_Windows.Devices.Adc=ON
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('I2M_ELECTRON_NF_versioncounter', 3)]
     NeedsDFU: true
 
   steps:
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+  - checkout: self
+    fetchDepth: 1
 
-  - template: clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/set-build-version.yml
+
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
 
@@ -126,7 +155,7 @@ jobs:
 
 ##############################
 - job: Build_I2M_OXYGEN_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#I2M_OXYGEN_NF#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#') )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#I2M_OXYGEN_NF#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#'), eq(variables['BUILD_ALL'], 'true') )
   dependsOn: Get_Commit_Message
   pool:
     vmImage: 'VS2017-Win2016'
@@ -134,12 +163,17 @@ jobs:
   variables:
     BoardName: I2M_OXYGEN_NF
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_Windows.Devices.Adc=ON
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('I2M_OXYGEN_NF_versioncounter', 3)]
     NeedsDFU: true
 
   steps:
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+  - checkout: self
+    fetchDepth: 1
 
-  - template: clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/set-build-version.yml
+
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
 
@@ -159,7 +193,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO64_F401RE_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ST_NUCLEO64_F401RE_NF#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#') )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ST_NUCLEO64_F401RE_NF#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#'), eq(variables['BUILD_ALL'], 'true') )
   dependsOn: Get_Commit_Message
   pool:
     vmImage: 'VS2017-Win2016'
@@ -167,12 +201,17 @@ jobs:
   variables:
     BoardName: ST_NUCLEO64_F401RE_NF
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_Windows.Devices.Adc=ON
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('ST_NUCLEO64_F401RE_NF_versioncounter', 3)]
     NeedsDFU: false
 
   steps:
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+  - checkout: self
+    fetchDepth: 1
 
-  - template: clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/set-build-version.yml
+
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
 
@@ -192,7 +231,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO64_F411RE_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ST_NUCLEO64_F411RE_NF#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#') )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ST_NUCLEO64_F411RE_NF#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#'), eq(variables['BUILD_ALL'], 'true') )
   dependsOn: Get_Commit_Message
   pool:
     vmImage: 'VS2017-Win2016'
@@ -200,12 +239,17 @@ jobs:
   variables:
     BoardName: ST_NUCLEO64_F411RE_NF
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_Windows.Devices.Adc=ON
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('ST_NUCLEO64_F411RE_NF_versioncounter', 3)]
     NeedsDFU: false
 
   steps:
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+  - checkout: self
+    fetchDepth: 1
 
-  - template: clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/set-build-version.yml
+
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
 
@@ -225,7 +269,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO144_F412ZG_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ST_NUCLEO144_F412ZG_NF#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#') )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ST_NUCLEO144_F412ZG_NF#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#'), eq(variables['BUILD_ALL'], 'true') )
   dependsOn: Get_Commit_Message
   pool:
     vmImage: 'VS2017-Win2016'
@@ -233,12 +277,17 @@ jobs:
   variables:
     BoardName: ST_NUCLEO144_F412ZG_NF
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DNF_FEATURE_DEBUGGER=ON -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=OFF -DAPI_Windows.Devices.Adc=ON
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('ST_NUCLEO144_F412ZG_NF_versioncounter', 3)]
     NeedsDFU: false
 
   steps:
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+  - checkout: self
+    fetchDepth: 1
 
-  - template: clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/set-build-version.yml
+
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
 
@@ -258,7 +307,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO144_F746ZG
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ST_NUCLEO144_F746ZG#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#') )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ST_NUCLEO144_F746ZG#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#'), eq(variables['BUILD_ALL'], 'true') )
   dependsOn: Get_Commit_Message
   pool:
     vmImage: 'VS2017-Win2016'
@@ -266,12 +315,17 @@ jobs:
   variables:
     BoardName: ST_NUCLEO144_F746ZG
     BuildOptions: -DTARGET_SERIES=STM32F7xx -DRTOS=CHIBIOS -DNF_FEATURE_DEBUGGER=ON -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DNF_FEATURE_HAS_CONFIG_BLOCK=ON -DAPI_System.Math=ON -DAPI_Hardware.Stm32=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_Windows.Devices.Adc=ON -DAPI_System.Net=ON -DNF_SECURITY_MBEDTLS=ON -DAPI_nanoFramework.Devices.OneWire=ON
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('ST_NUCLEO144_F746ZG_versioncounter', 3)]
     NeedsDFU: false
 
   steps:
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+  - checkout: self
+    fetchDepth: 1
 
-  - template: clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/set-build-version.yml
+
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
 
@@ -291,7 +345,7 @@ jobs:
 
 ##############################
 - job: Build_ST_STM32F4_DISCOVERY
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ST_STM32F4_DISCOVERY#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#') )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ST_STM32F4_DISCOVERY#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#'), eq(variables['BUILD_ALL'], 'true') )
   dependsOn: Get_Commit_Message
   pool:
     vmImage: 'VS2017-Win2016'
@@ -299,12 +353,17 @@ jobs:
   variables:
     BoardName: ST_STM32F4_DISCOVERY
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=CHIBIOS -DSUPPORT_ANY_BASE_CONVERSION=ON -DNF_FEATURE_DEBUGGER=ON -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_System.Math=ON -DAPI_Hardware.Stm32=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_Windows.Devices.Adc=ON -DAPI_nanoFramework.Devices.OneWire=ON -DAPI_nanoFramework.Devices.Can=ON
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('ST_STM32F4_DISCOVERY_versioncounter', 3)]
     NeedsDFU: false
 
   steps:
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+  - checkout: self
+    fetchDepth: 1
 
-  - template: clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/set-build-version.yml
+
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
 
