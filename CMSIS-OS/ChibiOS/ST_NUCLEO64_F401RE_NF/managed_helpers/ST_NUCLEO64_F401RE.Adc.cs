@@ -1,12 +1,12 @@
 //
-// Copyright (c) 2018 The nanoFramework project contributors
+// Copyright (c) 2019 The nanoFramework project contributors
 // See LICENSE file in the project root for full license information.
 //
 
-namespace nanoFramework.Targets.ST_NUCLEO64_F411RE_NF
+namespace nanoFramework.Targets.ST_NUCLEO64_F401RE
 {
     /// <summary>
-    /// Enumeration of ADC channels available on ST_NUCLEO64_F411RE_NF
+    /// Enumeration of ADC channels available on ST_NUCLEO64_F401RE
     /// </summary>
     public static class AdcChannels
     {
