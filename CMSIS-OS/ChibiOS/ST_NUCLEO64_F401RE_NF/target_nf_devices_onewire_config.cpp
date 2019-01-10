@@ -4,17 +4,17 @@
 //
 
 #include "target_nf_devices_onewire_config.h"
-#include <hal.h>
+#include <nf_devices_onewire_native.h>
 
 ///////////
-// UART4 //
+// UART1 //
 ///////////
 
-// pin configuration for UART4
-// port for TX pin is: GPIOC
-// TX pin: is GPIOC_10
-// GPIO alternate pin function is 8
-UART_CONFIG_PINS(4, GPIOC, 10, 8)
+// pin configuration for UART1
+// port for TX pin is: GPIOA
+// TX pin: is GPIOB_9
+// GPIO alternate pin function is 7 (see "Table 9. Alternate function mapping" in STM32F401RE datasheet)
+UART_CONFIG_PINS(1, GPIOA, 9, 7)
 
 // buffers
 // buffers that are R/W by DMA are recommended to be aligned with 32 bytes cache page size boundary
@@ -22,8 +22,9 @@ UART_CONFIG_PINS(4, GPIOC, 10, 8)
 #if defined(__GNUC__)
 __attribute__((aligned (32)))
 #endif
-uint8_t Uart4_TxBuffer[UART4_TX_SIZE];
+uint8_t Uart1_TxBuffer[UART1_TX_SIZE];
+
 #if defined(__GNUC__)
 __attribute__((aligned (32)))
 #endif
-uint8_t Uart4_RxBuffer[UART4_RX_SIZE];
+uint8_t Uart1_RxBuffer[UART1_RX_SIZE];
