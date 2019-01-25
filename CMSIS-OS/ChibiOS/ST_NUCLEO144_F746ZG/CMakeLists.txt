@@ -30,6 +30,11 @@ find_package(NF_CoreCLR REQUIRED)
 #######################################
 # optional
 
+# ChibiOS contrib repo
+if(CHIBIOS_CONTRIB_REQUIRED)
+    find_package(ChibiOS-Contrib REQUIRED)
+endif()
+
 # nF feature: debugger
 if(NF_FEATURE_DEBUGGER)
     find_package(NF_Debugger REQUIRED)
@@ -151,8 +156,8 @@ include_directories(
 
     ${WireProtocol_INCLUDE_DIRS}
     ${CHIBIOS_INCLUDE_DIRS}
-    ${CHIBIOS_CONTRIB_INCLUDE_DIRS}
     ${ChibiOSnfOverlay_INCLUDE_DIRS}
+    ${CHIBIOS_CONTRIB_INCLUDE_DIRS}
 
     ${TARGET_CMSIS_COMMON_INCLUDE_DIRS}
     ${TARGET_CHIBIOS_COMMON_INCLUDE_DIRS}
