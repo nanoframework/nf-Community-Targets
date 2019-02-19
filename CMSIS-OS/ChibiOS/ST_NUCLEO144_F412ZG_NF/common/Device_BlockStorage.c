@@ -28,6 +28,7 @@ const BlockRange BlockRange3[] =
 const BlockRegionInfo BlockRegions[] = 
 {
     {
+        (0),                                // no attributes for this region
         0x08000000,                         // start address for block region
         4,                                  // total number of blocks in this region
         0x8000,                             // total number of bytes per block
@@ -36,6 +37,7 @@ const BlockRegionInfo BlockRegions[] =
     },
 
     {
+        (0),                                // no attributes for this region
         0x08020000,                         // start address for block region
         1,                                  // total number of blocks in this region
         0x20000,                            // total number of bytes per block
@@ -44,6 +46,7 @@ const BlockRegionInfo BlockRegions[] =
     },
 
     {
+        (0),                                // no attributes for this region
         0x08040000,                         // start address for block region
         3,                                  // total number of blocks in this region
         0x40000,                            // total number of bytes per block
@@ -56,6 +59,7 @@ const BlockRegionInfo BlockRegions[] =
 const DeviceBlockInfo Device_BlockInfo =
 {
     (MediaAttribute_SupportsXIP),
+    2,                                      // UINT32 BytesPerSector
     ARRAYSIZE_CONST_EXPR(BlockRegions),     // UINT32 NumRegions;
     (BlockRegionInfo*)BlockRegions,         // const BlockRegionInfo* pRegions;
 };
