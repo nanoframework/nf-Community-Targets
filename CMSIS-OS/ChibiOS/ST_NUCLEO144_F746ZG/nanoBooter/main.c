@@ -7,7 +7,7 @@
 #include <hal.h>
 #include <cmsis_os.h>
 
-#include <usbcfg.h>
+#include <serialcfg.h>
 #include <swo.h>
 #include <targetHAL.h>
 #include <WireProtocol_ReceiverThread.h>
@@ -26,7 +26,7 @@ int main(void) {
   halInit();
 
   // init SWO as soon as possible to make it available to output ASAP
-  #if (SWO_OUTPUT == TRUE)
+  #if (SWO_OUTPUT == TRUE)  
   SwoInit();
   #endif
 
@@ -40,9 +40,9 @@ int main(void) {
 
   // if the USER button (blue one) is pressed, skip the check for a valid CLR image and remain in booter
   // the user button in this board has a pull-up resistor so the check has to be inverted
-  if (!palReadPad(GPIOC, GPIOC_BUTTON))
+  if (!palReadLine(LINE_BUTTON))
   {
-    // check for valid CLR image 
+    // check for valid CLR image
     // we are checking for a valid image right after the configuration block
     if(CheckValidCLRImage((uint32_t)&__nanoConfig_end__))
     {
@@ -52,16 +52,12 @@ int main(void) {
     }
   }
 
-  //  Initializes a serial-over-USB CDC driver.
-  sduObjectInit(&SDU1);
-  sduStart(&SDU1, &serusbcfg);
+  // The kernel is initialized but not started yet, this means that
+  // main() is executing with absolute priority but interrupts are already enabled.
+  osKernelInitialize();
 
-  // Activates the USB driver and then the USB bus pull-up on D+.
-  // Note, a delay is inserted in order to not have to disconnect the cable after a reset.
-  usbDisconnectBus(serusbcfg.usbp);
-  chThdSleepMilliseconds(1500);
-  usbStart(serusbcfg.usbp, &usbcfg);
-  usbConnectBus(serusbcfg.usbp);
+  // starts the serial driver
+  sdStart(&SERIAL_DRIVER, NULL);
 
   // create the receiver thread
   osThreadCreate(osThread(ReceiverThread), NULL);
@@ -82,9 +78,9 @@ int main(void) {
 
   //  Normal main() thread
   while (true) {
-      palSetPad(GPIOB, GPIOB_LED1);
-      osDelay(250);
-      palClearPad(GPIOB, GPIOB_LED1);
-      osDelay(250);
+      palSetLine(LINE_LED1);
+      osDelay(500);
+      palClearLine(LINE_LED1);
+      osDelay(500);   
   }
 }

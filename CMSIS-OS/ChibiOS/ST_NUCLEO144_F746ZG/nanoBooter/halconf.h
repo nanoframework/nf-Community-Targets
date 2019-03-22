@@ -62,7 +62,7 @@
  * @brief   Enables the EXT subsystem.
  */
 #if !defined(HAL_USE_EXT) || defined(__DOXYGEN__)
-#define HAL_USE_EXT                         FALSE
+#define HAL_USE_EXT                          FALSE
 #endif
 
 /**
@@ -139,14 +139,14 @@
  * @brief   Enables the SERIAL subsystem.
  */
 #if !defined(HAL_USE_SERIAL) || defined(__DOXYGEN__)
-#define HAL_USE_SERIAL                          FALSE
+#define HAL_USE_SERIAL                          TRUE
 #endif
 
 /**
  * @brief   Enables the SERIAL over USB subsystem.
  */
 #if !defined(HAL_USE_SERIAL_USB) || defined(__DOXYGEN__)
-#define HAL_USE_SERIAL_USB                  TRUE
+#define HAL_USE_SERIAL_USB                  FALSE
 #endif
 
 /**
@@ -167,7 +167,7 @@
  * @brief   Enables the USB subsystem.
  */
 #if !defined(HAL_USE_USB) || defined(__DOXYGEN__)
-#define HAL_USE_USB                         TRUE
+#define HAL_USE_USB                         FALSE
 #endif
 
 /**
@@ -176,7 +176,6 @@
 #if !defined(HAL_USE_WDG) || defined(__DOXYGEN__)
 #define HAL_USE_WDG                         FALSE
 #endif
-
 /*===========================================================================*/
 /* PAL driver related settings.                                              */
 /*===========================================================================*/
@@ -227,7 +226,6 @@
 #if !defined(CAN_USE_SLEEP_MODE) || defined(__DOXYGEN__)
 #define CAN_USE_SLEEP_MODE                  TRUE
 #endif
-
 
 /**
  * @brief   Enforces the driver to use direct callbacks rather than OSAL events.
@@ -506,7 +504,6 @@
 
 // header for nanoFramework overlay
 #include "halconf_nf.h"
-
 #endif /* HALCONF_H */
 
 /** @} */
