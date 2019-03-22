@@ -31,6 +31,13 @@
 #define HAL_USE_PAL                         TRUE
 #endif
 
+#if !defined(FATFS_HAL_DEVICE) || defined(__DOXYGEN__)
+//this board requires SDCD2 not SDCD1
+#define FATFS_HAL_DEVICE SDCD2
+#endif
+
+//#define STM32_SDC_SDMMC_50MHZ               TRUE
+
 /**
  * @brief   Enables the ADC subsystem.
  */
@@ -81,7 +88,7 @@
  */
 // this option is set at target_platform.h (from config file)
 //#if !defined(HAL_USE_I2C) || defined(__DOXYGEN__)
-//#define HAL_USE_I2C                          TRUE
+//#define HAL_USE_I2C                       TRUE
 //#endif
 
 /**
@@ -116,7 +123,7 @@
 /**
  * @brief   Enables the PWM subsystem.
  */
-// this option is set at target_platform.h (from config file) 
+// this option is set at target_platform.h (from config file)
 // #if !defined(HAL_USE_PWM) || defined(__DOXYGEN__)
 // #define HAL_USE_PWM                          FALSE
 // #endif
@@ -141,21 +148,21 @@
  */
 // this option is set at target_platform.h (from config file)
 // #if !defined(HAL_USE_SDC) || defined(__DOXYGEN__)
-// #define HAL_USE_SDC                          FALSE
+// #define HAL_USE_SDC                          TRUE
 // #endif
 
 /**
  * @brief   Enables the SERIAL subsystem.
  */
 #if !defined(HAL_USE_SERIAL) || defined(__DOXYGEN__)
-#define HAL_USE_SERIAL                          FALSE
+#define HAL_USE_SERIAL                          TRUE
 #endif
 
 /**
  * @brief   Enables the SERIAL over USB subsystem.
  */
 #if !defined(HAL_USE_SERIAL_USB) || defined(__DOXYGEN__)
-#define HAL_USE_SERIAL_USB                  TRUE
+#define HAL_USE_SERIAL_USB                  FALSE
 #endif
 
 /**
@@ -163,7 +170,7 @@
  */
 // this option is set at target_platform.h (from config file)
 // #if !defined(HAL_USE_SPI) || defined(__DOXYGEN__)
-// #define HAL_USE_SPI                         FALSE
+// #define HAL_USE_SPI                          FALSE
 // #endif
 
 /**
@@ -178,7 +185,7 @@
  * @brief   Enables the USB subsystem.
  */
 #if !defined(HAL_USE_USB) || defined(__DOXYGEN__)
-#define HAL_USE_USB                         TRUE
+#define HAL_USE_USB                         FALSE
 #endif
 
 /**
@@ -239,6 +246,7 @@
 #if !defined(CAN_USE_SLEEP_MODE) || defined(__DOXYGEN__)
 #define CAN_USE_SLEEP_MODE                  TRUE
 #endif
+
 /**
  * @brief   Enforces the driver to use direct callbacks rather than OSAL events.
  */
@@ -408,7 +416,7 @@
  *          default configuration.
  */
 #if !defined(SERIAL_DEFAULT_BITRATE) || defined(__DOXYGEN__)
-#define SERIAL_DEFAULT_BITRATE              38400
+#define SERIAL_DEFAULT_BITRATE              115200
 #endif
 
 /**
@@ -419,7 +427,7 @@
  *          buffers.
  */
 #if !defined(SERIAL_BUFFERS_SIZE) || defined(__DOXYGEN__)
-#define SERIAL_BUFFERS_SIZE                 16
+#define SERIAL_BUFFERS_SIZE                 64
 #endif
 
 /*===========================================================================*/
@@ -516,7 +524,6 @@
 
 // header for nanoFramework overlay
 #include "halconf_nf.h"
-
 #endif /* HALCONF_H */
 
 /** @} */
