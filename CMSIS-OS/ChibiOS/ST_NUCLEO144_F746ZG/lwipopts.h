@@ -137,7 +137,7 @@
  * a lot of data that needs to be copied, this should be set high.
  */
 #ifndef MEM_SIZE
-#define MEM_SIZE                        (10 * 1024)
+#define MEM_SIZE                        (16 * 1024)
 #endif
 
 /**
@@ -266,7 +266,7 @@
  * (requires the LWIP_TCP option)
  */
 #ifndef MEMP_NUM_TCP_PCB
-#define MEMP_NUM_TCP_PCB                4
+#define MEMP_NUM_TCP_PCB                5
 #endif
 
 /**
@@ -274,7 +274,7 @@
  * (requires the LWIP_TCP option)
  */
 #ifndef MEMP_NUM_TCP_PCB_LISTEN
-#define MEMP_NUM_TCP_PCB_LISTEN         4
+#define MEMP_NUM_TCP_PCB_LISTEN         8
 #endif
 
 /**
@@ -282,7 +282,7 @@
  * (requires the LWIP_TCP option)
  */
 #ifndef MEMP_NUM_TCP_SEG
-#define MEMP_NUM_TCP_SEG                8
+#define MEMP_NUM_TCP_SEG                16
 #endif
 
 /**
