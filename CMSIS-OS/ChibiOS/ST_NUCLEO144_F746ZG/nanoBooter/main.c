@@ -78,9 +78,7 @@ int main(void) {
 
   //  Normal main() thread
   while (true) {
-      palSetLine(LINE_LED1);
-      osDelay(500);
-      palClearLine(LINE_LED1);
-      osDelay(500);   
+      palToggleLine(LINE_LED1);
+      osDelay(500); 
   }
 }
