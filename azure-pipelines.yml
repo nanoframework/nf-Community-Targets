@@ -108,11 +108,11 @@ jobs:
 
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      builDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
 
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      builDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
 
   - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
 
@@ -147,11 +147,11 @@ jobs:
 
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      builDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
 
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      builDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
 
   - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
 
@@ -186,11 +186,11 @@ jobs:
 
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      builDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
 
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      builDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
 
   - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
 
@@ -225,11 +225,11 @@ jobs:
 
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      builDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
 
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      builDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
 
   - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
 
@@ -264,11 +264,11 @@ jobs:
 
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      builDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
 
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      builDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
 
   - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
 
@@ -303,11 +303,11 @@ jobs:
 
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      builDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
 
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      builDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
 
   - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
 
@@ -342,11 +342,11 @@ jobs:
 
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      builDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
 
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      builDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
 
   - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
 
@@ -381,11 +381,11 @@ jobs:
 
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      builDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
 
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      builDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
 
   - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
 
