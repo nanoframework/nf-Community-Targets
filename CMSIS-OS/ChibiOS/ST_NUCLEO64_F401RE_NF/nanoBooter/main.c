@@ -7,7 +7,7 @@
 #include <hal.h>
 #include <cmsis_os.h>
 
-#include <usbcfg.h>
+#include <serialcfg.h>
 #include <swo.h>
 #include <targetHAL.h>
 #include <WireProtocol_ReceiverThread.h>
@@ -28,11 +28,6 @@ int main(void) {
   #if (SWO_OUTPUT == TRUE)  
   SwoInit();
   #endif
-
-  // The kernel is initialized but not started yet, this means that
-  // main() is executing with absolute priority but interrupts are already enabled.
-  osKernelInitialize();
-  osDelay(20);    // Let init stabilize
   
   // the following IF is not mandatory, it's just providing a way for a user to 'force'
   // the board to remain in nanoBooter and not launching nanoCLR
@@ -49,17 +44,13 @@ int main(void) {
     }
   }
 
-  //  Initializes a serial-over-USB CDC driver.
-  sduObjectInit(&SDU1);
-  sduStart(&SDU1, &serusbcfg);
+  // The kernel is initialized but not started yet, this means that
+  // main() is executing with absolute priority but interrupts are already enabled.
+  osKernelInitialize();
 
-  // Activates the USB driver and then the USB bus pull-up on D+.
-  // Note, a delay is inserted in order to not have to disconnect the cable after a reset.
-  usbDisconnectBus(serusbcfg.usbp);
-  chThdSleepMilliseconds(1500);
-  usbStart(serusbcfg.usbp, &usbcfg);
-  usbConnectBus(serusbcfg.usbp);
-
+  // starts the serial driver
+  sdStart(&SERIAL_DRIVER, NULL);
+  
   // create the receiver thread
   osThreadCreate(osThread(ReceiverThread), NULL);
 
