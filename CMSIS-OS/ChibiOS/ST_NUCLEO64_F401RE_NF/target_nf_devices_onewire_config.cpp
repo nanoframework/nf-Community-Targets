@@ -11,8 +11,8 @@
 ///////////
 
 // pin configuration for UART1
-// port for TX pin is: GPIOA
-// TX pin: is GPIOB_9
+// port for TX pin is: GPIOA_9
+// port for RX pin is: GPIOB_7
 // GPIO alternate pin function is 7 (see "Table 9. Alternate function mapping" in STM32F401RE datasheet)
 UART_CONFIG_PINS(1, GPIOA, 9, 7)
 
