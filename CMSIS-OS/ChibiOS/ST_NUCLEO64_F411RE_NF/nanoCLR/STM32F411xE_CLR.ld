@@ -1,6 +1,6 @@
 /*
 //
-// Copyright (c) 2017 The nanoFramework project contributors
+// Copyright (c) 2017..2019 The nanoFramework project contributors
 // Portions Copyright (c) 2006..2015 Giovanni Di Sirio.  All rights reserved.
 // See LICENSE file in the project root for full license information.
 //
@@ -12,10 +12,10 @@
  */
 MEMORY
 {
-    flash       : org = 0x08008000, len = 512k - 32k - 256k   /* flash size less the space reserved for nanoBooter and application deployment*/
+    flash       : org = 0x08004000, len = 512k - 16k - 256k   /* flash size less the space reserved for nanoBooter and application deployment*/
     config      : org = 0x00000000, len = 0                   /* space reserved for configuration block */
     deployment  : org = 0x08040000, len = 256k                /* space reserved for application deployment */
-    ramvt       : org = 0x20000000, len = 0                   /* initial RAM address is reserved for a copy of the vector table */
+    ramvt       : org = 0x00000000, len = 0                   /* initial RAM address is reserved for a copy of the vector table */
     ram0        : org = 0x20000000, len = 128k                /* SRAM1 */
     ram1        : org = 0x00000000, len = 0                
     ram2        : org = 0x00000000, len = 0                

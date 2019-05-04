@@ -9,8 +9,8 @@
 //16kB block
 const BlockRange BlockRange1[] = 
 {
-    { BlockRange_BLOCKTYPE_BOOTSTRAP ,   0, 0 },            // 08000000 nanoBooter          
-    { BlockRange_BLOCKTYPE_CODE      ,   1, 3 }             // 08004000 nanoCLR          
+    { BlockRange_BLOCKTYPE_BOOTSTRAP ,   0, 1 },            // 08000000 nanoBooter          
+    { BlockRange_BLOCKTYPE_CODE      ,   2, 3 }             // 08008000 nanoCLR          
 };
 
 //64kB block
