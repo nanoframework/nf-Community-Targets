@@ -136,7 +136,7 @@ include_directories(
     ${CHIBIOS_INCLUDE_DIRS}
     ${ChibiOSnfOverlay_INCLUDE_DIRS}
     ${CHIBIOS_CONTRIB_INCLUDE_DIRS}
-
+    
     ${TARGET_CMSIS_COMMON_INCLUDE_DIRS}
     ${TARGET_CHIBIOS_COMMON_INCLUDE_DIRS}
 )
@@ -178,9 +178,14 @@ nf_set_compiler_options(${NANOCLR_PROJECT_NAME}.elf)
 nf_set_compiler_definitions(${NANOBOOTER_PROJECT_NAME}.elf)
 nf_set_compiler_definitions(${NANOCLR_PROJECT_NAME}.elf)
 
-# set linker file
-nf_set_linker_file(${NANOBOOTER_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoBooter/STM32F411xE_booter.ld)
-nf_set_linker_file(${NANOCLR_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoCLR/STM32F411xE_CLR.ld)
+# set linker files
+if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
+    nf_set_linker_file(${NANOBOOTER_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoBooter/STM32F411xE_booter-DEBUG.ld)
+    nf_set_linker_file(${NANOCLR_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoCLR/STM32F411xE_CLR-DEBUG.ld)
+else()
+    nf_set_linker_file(${NANOBOOTER_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoBooter/STM32F411xE_booter.ld)
+    nf_set_linker_file(${NANOCLR_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoCLR/STM32F411xE_CLR.ld)
+endif()
 
 # set linker options
 nf_set_linker_options(${NANOBOOTER_PROJECT_NAME}.elf)

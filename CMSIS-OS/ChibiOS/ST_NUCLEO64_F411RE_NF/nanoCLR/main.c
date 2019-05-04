@@ -7,8 +7,9 @@
 #include <hal.h>
 #include <cmsis_os.h>
 
-#include "usbcfg.h"
+#include <serialcfg.h>
 #include <swo.h>
+#include <targetHAL.h>
 #include <CLR_Startup_Thread.h>
 #include <WireProtocol_ReceiverThread.h>
 #include <nanoCLR_Application.h>
@@ -32,24 +33,16 @@ int main(void) {
   #if (SWO_OUTPUT == TRUE)  
   SwoInit();
   #endif
-
+  
   // The kernel is initialized but not started yet, this means that
   // main() is executing with absolute priority but interrupts are already enabled.
   osKernelInitialize();
 
-  // Start Watchdog
+  // start watchdog
   Watchdog_Init();
 
-  //  Initializes a serial-over-USB CDC driver.
-  sduObjectInit(&SDU1);
-  sduStart(&SDU1, &serusbcfg);
-
-  // Activates the USB driver and then the USB bus pull-up on D+.
-  // Note, a delay is inserted in order to not have to disconnect the cable after a reset
-  usbDisconnectBus(serusbcfg.usbp);
-  chThdSleepMilliseconds(1500);
-  usbStart(serusbcfg.usbp, &usbcfg);
-  usbConnectBus(serusbcfg.usbp);
+  // starts the serial driver
+  sdStart(&SERIAL_DRIVER, NULL);
 
   // create the receiver thread
   osThreadCreate(osThread(ReceiverThread), NULL);
@@ -64,11 +57,6 @@ int main(void) {
 
   // create the CLR Startup thread 
   osThreadCreate(osThread(CLRStartupThread), &clrSettings);
-
-  // EXT driver needs to be started from main   
-  #if (HAL_USE_EXT == TRUE)
-  extStart(&EXTD1, &extInterruptsConfiguration);
-  #endif
 
   // start kernel, after this main() will behave like a thread with priority osPriorityNormal
   osKernelStart();
