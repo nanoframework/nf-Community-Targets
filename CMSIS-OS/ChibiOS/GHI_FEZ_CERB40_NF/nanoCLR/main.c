@@ -37,7 +37,7 @@ int main(void) {
   // main() is executing with absolute priority but interrupts are already enabled.
   osKernelInitialize();
 
-  // Start Watchdog
+  // start watchdog
   Watchdog_Init();
 
   //  Initializes a serial-over-USB CDC driver.
@@ -64,11 +64,6 @@ int main(void) {
 
   // create the CLR Startup thread 
   osThreadCreate(osThread(CLRStartupThread), &clrSettings);
-
-  // EXT driver needs to be started from main   
-  #if (HAL_USE_EXT == TRUE)
-  extStart(&EXTD1, &extInterruptsConfiguration);
-  #endif
 
   // start kernel, after this main() will behave like a thread with priority osPriorityNormal
   osKernelStart();
