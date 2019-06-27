@@ -79,7 +79,7 @@ jobs:
 
 ##############################
 - job: Build_GHI_FEZ_CERB40_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#GHI_FEZ_CERB40_NF#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#'), eq(variables['BUILD_ALL'], 'true') )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***GHI_FEZ_CERB40_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') )
   dependsOn: Get_Commit_Message
   pool:
     vmImage: 'VS2017-Win2016'
@@ -118,7 +118,7 @@ jobs:
 
 ##############################
 - job: Build_I2M_ELECTRON_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#I2M_ELECTRON_NF#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#'), eq(variables['BUILD_ALL'], 'true') )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***I2M_ELECTRON_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') )
   dependsOn: Get_Commit_Message
   pool:
     vmImage: 'VS2017-Win2016'
@@ -157,7 +157,7 @@ jobs:
 
 ##############################
 - job: Build_I2M_OXYGEN_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#I2M_OXYGEN_NF#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#'), eq(variables['BUILD_ALL'], 'true') )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***I2M_OXYGEN_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') )
   dependsOn: Get_Commit_Message
   pool:
     vmImage: 'VS2017-Win2016'
@@ -196,7 +196,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO64_F401RE_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ST_NUCLEO64_F401RE_NF#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#'), eq(variables['BUILD_ALL'], 'true') )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO64_F401RE_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') )
   dependsOn: Get_Commit_Message
   pool:
     vmImage: 'VS2017-Win2016'
@@ -235,7 +235,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO64_F411RE_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ST_NUCLEO64_F411RE_NF#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#'), eq(variables['BUILD_ALL'], 'true') )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO64_F411RE_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') )
   dependsOn: Get_Commit_Message
   pool:
     vmImage: 'VS2017-Win2016'
@@ -274,7 +274,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO144_F412ZG_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ST_NUCLEO144_F412ZG_NF#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#'), eq(variables['BUILD_ALL'], 'true') )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO144_F412ZG_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') )
   dependsOn: Get_Commit_Message
   pool:
     vmImage: 'VS2017-Win2016'
@@ -313,7 +313,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO144_F746ZG
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ST_NUCLEO144_F746ZG#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#'), eq(variables['BUILD_ALL'], 'true') )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO144_F746ZG***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') )
   dependsOn: Get_Commit_Message
   pool:
     vmImage: 'VS2017-Win2016'
@@ -352,7 +352,7 @@ jobs:
 
 ##############################
 - job: Build_ST_STM32F4_DISCOVERY
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ST_STM32F4_DISCOVERY#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#'), eq(variables['BUILD_ALL'], 'true') )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_STM32F4_DISCOVERY***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') )
   dependsOn: Get_Commit_Message
   pool:
     vmImage: 'VS2017-Win2016'
@@ -391,7 +391,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO144_F439ZI
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ST_NUCLEO144_F439ZI#'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '#ALL#'), eq(variables['BUILD_ALL'], 'true') )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO144_F439ZI***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') )
   dependsOn: Get_Commit_Message
   pool:
     vmImage: 'VS2017-Win2016'
