@@ -1,5 +1,7 @@
 # Copyright (c) 2018 The nanoFramework project contributors
 # See LICENSE file in the project root for full license information.
+parameters:
+  versionNumber: 0
 
 steps:
   # compute build version
@@ -7,10 +9,10 @@ steps:
     inputs:
       targetType: 'inline'
       script: |
-          $counter = $env:REVISION
+          $counter = ${{ parameters.versionNumber }}
           $version = [int]$counter
 
-          $buildSimpleVersion = "1.1." + $version.ToString()
+          $buildSimpleVersion = "1.2." + $version.ToString()
           $buildFullVersion = $buildSimpleVersion + ".0"
 
           Write-Host ">>$buildFullVersion<<"

@@ -97,6 +97,8 @@ jobs:
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
+    parameters:
+      versionNumber: $(REVISION)
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
@@ -136,6 +138,8 @@ jobs:
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
+    parameters:
+      versionNumber: $(REVISION)
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
@@ -175,6 +179,8 @@ jobs:
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
+    parameters:
+      versionNumber: $(REVISION)
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
@@ -214,6 +220,8 @@ jobs:
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
+    parameters:
+      versionNumber: $(REVISION)
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
@@ -253,6 +261,8 @@ jobs:
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
+    parameters:
+      versionNumber: $(REVISION)
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
@@ -292,6 +302,8 @@ jobs:
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
+    parameters:
+      versionNumber: $(REVISION)
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
@@ -331,6 +343,8 @@ jobs:
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
+    parameters:
+      versionNumber: $(REVISION)
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
@@ -370,6 +384,8 @@ jobs:
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
+    parameters:
+      versionNumber: $(REVISION)
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
@@ -409,6 +425,8 @@ jobs:
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
+    parameters:
+      versionNumber: $(REVISION)
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
 
