@@ -16,6 +16,7 @@ pr:
     - master
   autoCancel: true
 
+# scheduled build
 schedules:
 - cron: "50 23 * * *"
   branches:
