@@ -95,7 +95,6 @@ jobs:
 
 ##############################
 - job: Get_Commit_Message
-  condition: eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true )
   pool:
     vmImage: 'VS2017-Win2016'
 
