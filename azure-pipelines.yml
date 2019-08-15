@@ -60,6 +60,10 @@ jobs:
         # this is a PR: always build
         echo "##vso[task.setvariable variable=GO;isOutput=true]true"  
       }
+      elif($env:BUILD_ALL -like "True")
+      {
+        echo "##vso[task.setvariable variable=GO;isOutput=true]true"  
+      }
       else
       {
         # clone nf-interpreter
