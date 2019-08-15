@@ -16,7 +16,7 @@ steps:
           Write-Host ">>$buildFullVersion<<"
          
           # need to hijack NBGV variable that is expected in the build CMake command and others that follow
-          Write-Host "$("##vso[task.setvariable variable=NBGV_Version]")$buildFullVersion"
+          Write-Host "$("##vso[task.setvariable variable=NBGV_AssemblyVersion]")$buildFullVersion"
           Write-Host "$("##vso[task.setvariable variable=NBGV_SimpleVersion]")$buildSimpleVersion"
           Write-Host "$("##vso[task.setvariable variable=NBGV_PrereleaseVersion]").0"
 
