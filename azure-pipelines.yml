@@ -44,9 +44,55 @@ variables:
 jobs:
 
 ##############################
+- job: Get_Commit_Message
+  pool:
+    vmImage: 'VS2017-Win2016'
+
+  steps:
+  - checkout: self
+    fetchDepth: 1
+
+    # get commit message
+  - powershell: |
+
+      if($env:Build_SourceBranch -like "refs/pull*")
+      {
+        # PR build, get PR message
+
+        # need to get PR number from branch as the Azure Pipeline var can't be trusted
+        if($env:Build_SourceBranch -match '(?<=(pull\/))\w*(?=(\/))')
+        {
+          $prNumber = $matches[0]
+
+          $prUrl = "https://api.github.com/repos/$env:Build_Repository_Name/pulls/$prNumber"
+
+          $commit = Invoke-RestMethod -Uri $prUrl -ContentType "application/json" -Method GET
+
+          $commitMessage = $commit.body
+        }
+      }
+      else
+      {
+        # not a PR, get subject and commit message for commit
+        $commitMessage = git log --format='%B' -1
+      }
+
+      # need to flatten message by removing new lines
+      $commitMessage = $commitMessage -replace "`r`n", " "
+
+
+      # set variable to foward to jobs
+      echo "##vso[task.setvariable variable=COMMIT_MESSAGE;isOutput=true]$commitMessage"
+    name: getCommitMessage
+    displayName: grab commit message
+
+##############################
 - job: Check_Build_Options
   pool:
     vmImage: 'VS2017-Win2016'
+
+  dependsOn: 
+  - Get_Commit_Message
 
   steps:
   - checkout: self
@@ -94,58 +140,8 @@ jobs:
     displayName: Evaluate build options
 
 ##############################
-- job: Get_Commit_Message
-  pool:
-    vmImage: 'VS2017-Win2016'
-
-  dependsOn: 
-  - Check_Build_Options
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-
-    # get commint message
-  - powershell: |
-
-      if($env:Build_SourceBranch -like "refs/pull*")
-      {
-        # PR build, get PR message
-
-        # need to get PR number from branch as the Azure Pipeline var can't be trusted
-        if($env:Build_SourceBranch -match '(?<=(pull\/))\w*(?=(\/))')
-        {
-          $prNumber = $matches[0]
-
-          $prUrl = "https://api.github.com/repos/$env:Build_Repository_Name/pulls/$prNumber"
-
-          $commit = Invoke-RestMethod -Uri $prUrl -ContentType "application/json" -Method GET
-
-          $commitMessage = $commit.body
-        }
-      }
-      else
-      {
-        # not a PR, get subject and commit message for commit
-        $commitMessage = git log --format='%B' -1
-      }
-
-      # need to flatten message by removing new lines
-      $commitMessage = $commitMessage -replace "`r`n", " "
-
-      if($commitMessage -like "***ALL***")
-      {
-        echo "##vso[task.setvariable variable=GO;isOutput=true]true"  
-      }
-
-      # set variable to foward to jobs
-      echo "##vso[task.setvariable variable=COMMIT_MESSAGE;isOutput=true]$commitMessage"
-    name: getCommitMessage
-    displayName: grab commit message
-
-##############################
 - job: Build_GHI_FEZ_CERB40_NF
-  condition: and( or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***GHI_FEZ_CERB40_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') ), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***GHI_FEZ_CERB40_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true'), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
 
   dependsOn: 
   - Get_Commit_Message
@@ -188,7 +184,7 @@ jobs:
 
 ##############################
 - job: Build_I2M_ELECTRON_NF
-  condition: and( or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***I2M_ELECTRON_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') ), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***I2M_ELECTRON_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true'), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
 
   dependsOn: 
   - Get_Commit_Message
@@ -231,7 +227,7 @@ jobs:
 
 ##############################
 - job: Build_I2M_OXYGEN_NF
-  condition: and( or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***I2M_OXYGEN_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') ), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***I2M_OXYGEN_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true'), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) ) 
 
   dependsOn: 
   - Get_Commit_Message
@@ -274,7 +270,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO64_F401RE_NF
-  condition: and( or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO64_F401RE_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') ), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO64_F401RE_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true'), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
 
   dependsOn: 
   - Get_Commit_Message
@@ -317,7 +313,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO64_F411RE_NF
-  condition: and( or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO64_F411RE_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') ), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO64_F411RE_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true'), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
 
   dependsOn: 
   - Get_Commit_Message
@@ -360,7 +356,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO144_F412ZG_NF
-  condition: and( or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO144_F412ZG_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') ), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO144_F412ZG_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true'), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
 
   dependsOn: 
   - Get_Commit_Message
@@ -403,7 +399,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO144_F746ZG
-  condition: and( or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO144_F746ZG***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') ), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO144_F746ZG***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true'), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
 
   dependsOn: 
   - Get_Commit_Message
@@ -446,7 +442,7 @@ jobs:
 
 ##############################
 - job: Build_ST_STM32F4_DISCOVERY
-  condition: and( or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_STM32F4_DISCOVERY***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') ), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_STM32F4_DISCOVERY***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true'), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
 
   dependsOn: 
   - Get_Commit_Message
@@ -489,7 +485,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO144_F439ZI
-  condition: and( or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO144_F439ZI***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') ), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO144_F439ZI***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true'), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
 
   dependsOn: 
   - Get_Commit_Message
