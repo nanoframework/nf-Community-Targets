@@ -100,39 +100,58 @@ jobs:
 
   - powershell: |
 
-      # get commit date, if this is NOT a PR
       if($env:Build_SourceBranch -like "refs/pull*")
       {
         # this is a PR: always build
-        echo "##vso[task.setvariable variable=GO;isOutput=true]true"  
-      }
-      elseif($env:BUILD_ALL -like "True")
-      {
-        echo "##vso[task.setvariable variable=GO;isOutput=true]true"  
+        echo "##vso[task.setvariable variable=GO;isOutput=true]True"  
       }
       else
       {
-        # clone nf-interpreter
-        git clone https://github.com/nanoframework/nf-interpreter.git -b develop nf-interpreter --depth 1 -q
-        cd "nf-interpreter" > $null
-
-        $commitDate = git show -s --format=%cd --date=short
-        $commitDate = [DateTime]$commitDate
-
-        if($commitDate -eq [System.DateTime]::UtcNow.Date)
+        # this has BUILD ALL build var set to true
+        if($env:BUILD_ALL -like "True")
         {
-          # last commit from nf-interpreter is from today, build images
-          echo "##vso[task.setvariable variable=GO;isOutput=true]true"  
+          echo "##vso[task.setvariable variable=GO;isOutput=true]True"  
+        }
+        elseif(
+          ($COMMIT_MESSAGE -like "***GHI_FEZ_CERB40_NF***") -Or
+          ($COMMIT_MESSAGE -like "***I2M_ELECTRON_NF***") -Or
+          ($COMMIT_MESSAGE -like "***I2M_OXYGEN_NF***") -Or
+          ($COMMIT_MESSAGE -like "***ST_NUCLEO64_F401RE_NF***") -Or
+          ($COMMIT_MESSAGE -like "***ST_NUCLEO64_F411RE_NF***") -Or
+          ($COMMIT_MESSAGE -like "***ST_NUCLEO144_F412ZG_NF***") -Or
+          ($COMMIT_MESSAGE -like "***ST_NUCLEO144_F746ZG***") -Or
+          ($COMMIT_MESSAGE -like "***ST_STM32F4_DISCOVERY***") -Or
+          ($COMMIT_MESSAGE -like "***ST_NUCLEO144_F439ZI***") 
+        )
+        {
+            # there is a tag to build a valid target, build images
+            echo "##vso[task.setvariable variable=GO;isOutput=true]True"
         }
         else
         {
-          # last commit from nf-interpreter is older than today, skip build
+          # daily build: get commit date 
+          # clone nf-interpreter
+          git clone https://github.com/nanoframework/nf-interpreter.git -b develop nf-interpreter --depth 1 -q
+          cd "nf-interpreter" > $null
 
-          "**********************************************************************" | Write-Host
-          "* Last commit from nf-interpreter is older than today, skiping build *" | Write-Host
-          "**********************************************************************" | Write-Host
+          $commitDate = git show -s --format=%cd --date=short
+          $commitDate = [DateTime]$commitDate
 
-          echo "##vso[task.setvariable variable=GO;isOutput=true]false"
+          if($commitDate -eq [System.DateTime]::UtcNow.Date)
+          {
+            # last commit from nf-interpreter is from today, build images
+            echo "##vso[task.setvariable variable=GO;isOutput=true]True"  
+          }
+          else
+          {
+            # last commit from nf-interpreter is older than today, skip build
+
+            "**********************************************************************" | Write-Host
+            "* Last commit from nf-interpreter is older than today, skiping build *" | Write-Host
+            "**********************************************************************" | Write-Host
+
+            echo "##vso[task.setvariable variable=GO;isOutput=true]False"
+          }
         }
       }
 
@@ -141,7 +160,7 @@ jobs:
 
 ##############################
 - job: Build_GHI_FEZ_CERB40_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***GHI_FEZ_CERB40_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true'), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
+  condition: and( or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***GHI_FEZ_CERB40_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') ), dependencies.Check_Build_Options.outputs['BuildOptions.GO'] )
 
   dependsOn: 
   - Get_Commit_Message
@@ -184,7 +203,7 @@ jobs:
 
 ##############################
 - job: Build_I2M_ELECTRON_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***I2M_ELECTRON_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true'), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
+  condition: and( or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***I2M_ELECTRON_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') ), dependencies.Check_Build_Options.outputs['BuildOptions.GO'] )
 
   dependsOn: 
   - Get_Commit_Message
@@ -227,7 +246,7 @@ jobs:
 
 ##############################
 - job: Build_I2M_OXYGEN_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***I2M_OXYGEN_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true'), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) ) 
+  condition: and( or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***I2M_OXYGEN_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') ), dependencies.Check_Build_Options.outputs['BuildOptions.GO'] ) 
 
   dependsOn: 
   - Get_Commit_Message
@@ -270,7 +289,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO64_F401RE_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO64_F401RE_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true'), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
+  condition: and( or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO64_F401RE_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') ), dependencies.Check_Build_Options.outputs['BuildOptions.GO'] )
 
   dependsOn: 
   - Get_Commit_Message
@@ -313,7 +332,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO64_F411RE_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO64_F411RE_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true'), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
+  condition: and( or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO64_F411RE_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') ), dependencies.Check_Build_Options.outputs['BuildOptions.GO'] )
 
   dependsOn: 
   - Get_Commit_Message
@@ -356,7 +375,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO144_F412ZG_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO144_F412ZG_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true'), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
+  condition: and( or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO144_F412ZG_NF***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') ), dependencies.Check_Build_Options.outputs['BuildOptions.GO'] )
 
   dependsOn: 
   - Get_Commit_Message
@@ -399,7 +418,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO144_F746ZG
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO144_F746ZG***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true'), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
+  condition: and( or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO144_F746ZG***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') ), dependencies.Check_Build_Options.outputs['BuildOptions.GO'] )
 
   dependsOn: 
   - Get_Commit_Message
@@ -442,7 +461,7 @@ jobs:
 
 ##############################
 - job: Build_ST_STM32F4_DISCOVERY
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_STM32F4_DISCOVERY***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true'), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
+  condition: and( or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_STM32F4_DISCOVERY***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') ), dependencies.Check_Build_Options.outputs['BuildOptions.GO'] )
 
   dependsOn: 
   - Get_Commit_Message
@@ -485,7 +504,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO144_F439ZI
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO144_F439ZI***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true'), eq( dependencies.Check_Build_Options.outputs['BuildOptions.GO'], true ) )
+  condition: and( or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_NUCLEO144_F439ZI***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true') ), dependencies.Check_Build_Options.outputs['BuildOptions.GO'] )
 
   dependsOn: 
   - Get_Commit_Message
