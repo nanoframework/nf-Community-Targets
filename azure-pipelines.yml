@@ -103,14 +103,18 @@ jobs:
       if($env:Build_SourceBranch -like "refs/pull*")
       {
         # this is a PR: always build
-        echo "##vso[task.setvariable variable=GO;isOutput=true]True"  
+        echo "##vso[task.setvariable variable=GO;isOutput=true]True"
+
+        "**PR build**" | Write-Host
       }
       else
       {
         # this has BUILD ALL build var set to true
         if($env:BUILD_ALL -like "True")
         {
-          echo "##vso[task.setvariable variable=GO;isOutput=true]True"  
+          echo "##vso[task.setvariable variable=GO;isOutput=true]True"
+
+          "**Build ALL**" | Write-Host
         }
         elseif(
           ($COMMIT_MESSAGE -like "***GHI_FEZ_CERB40_NF***") -Or
@@ -126,6 +130,8 @@ jobs:
         {
             # there is a tag to build a valid target, build images
             echo "##vso[task.setvariable variable=GO;isOutput=true]True"
+
+            "**Build target(s)**" | Write-Host
         }
         else
         {
@@ -141,6 +147,8 @@ jobs:
           {
             # last commit from nf-interpreter is from today, build images
             echo "##vso[task.setvariable variable=GO;isOutput=true]True"  
+
+            "**Update upstream: Build ALL**" | Write-Host
           }
           else
           {
