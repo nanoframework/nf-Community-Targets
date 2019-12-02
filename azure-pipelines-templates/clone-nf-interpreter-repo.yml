@@ -18,3 +18,12 @@ steps:
       cleanTargetFolder: false
       overWrite: true
     displayName: Copy community target to nf-interpreter 
+
+  # Copy target files to nf-interpreter folder
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: $(Build.SourcesDirectory)\TI-SimpleLink
+      targetFolder: $(Build.SourcesDirectory)\nf-interpreter\targets-community\TI-SimpleLink
+      cleanTargetFolder: false
+      overWrite: true
+    displayName: Copy community target to nf-interpreter 

@@ -553,6 +553,49 @@ jobs:
 
   - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
 
+##############################
+- job: Build_TI_CC1352P1_LAUNCHXL
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***TI_CC1352P1_LAUNCHXL***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+
+  dependsOn: 
+  - Get_Commit_Message
+  - Check_Build_Options
+
+  pool:
+    vmImage: 'VS2017-Win2016'
+
+  variables:
+    BoardName: TI_CC1352P1_LAUNCHXL
+    BuildOptions: -DTARGET_SERIES=CC13x2_26x2 -DRTOS=TI_SIMPLELINK -DSUPPORT_ANY_BASE_CONVERSION=OFF -DNF_FEATURE_DEBUGGER=ON -DNF_FEATURE_RTC=ON -DNF_FEATURE_WATCHDOG=OFF -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=OFF -DAPI_Windows.Devices.I2c=OFF -DAPI_Windows.Devices.Pwm=OFF -DAPI_Windows.Devices.SerialCommunication=OFF -DAPI_Windows.Devices.Adc=OFF -DAPI_nanoFramework.TI.EasyLink=ON
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('TI_CC1352P1_LAUNCHXL_versioncounter', 3)]
+    GccArm_Version:
+    NeedsDFU: false
+
+  steps:
+  - checkout: self
+    fetchDepth: 1
+
+  - template: azure-pipelines-templates/set-build-version.yml
+
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
+
+  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
+
+  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
+
+  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
+
+  - template: azure-pipelines-templates/build-ti-simplelink.yml@templatesBuild
+    parameters:
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+
+  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
+    parameters:
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+
+  - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
+
 ##################################
 # report build failure to Discord
 - job: Report_Build_Failure
@@ -565,7 +608,8 @@ jobs:
   - Build_ST_NUCLEO144_F412ZG_NF
   - Build_ST_NUCLEO144_F746ZG
   - Build_ST_STM32F4_DISCOVERY
-  condition: or( failed('Build_GHI_FEZ_CERB40_NF'), failed('Build_I2M_ELECTRON_NF'), failed('Build_I2M_OXYGEN_NF'), failed('Build_ST_NUCLEO64_F401RE_NF'), failed('Build_ST_NUCLEO64_F411RE_NF'), failed('Build_ST_NUCLEO144_F412ZG_NF'), failed('Build_ST_NUCLEO144_F746ZG'), failed('Build_ST_STM32F4_DISCOVERY'))
+  - Build_TI_CC1352P1_LAUNCHXL
+  condition: or( failed('Build_GHI_FEZ_CERB40_NF'), failed('Build_I2M_ELECTRON_NF'), failed('Build_I2M_OXYGEN_NF'), failed('Build_ST_NUCLEO64_F401RE_NF'), failed('Build_ST_NUCLEO64_F411RE_NF'), failed('Build_ST_NUCLEO144_F412ZG_NF'), failed('Build_ST_NUCLEO144_F746ZG'), failed('Build_ST_STM32F4_DISCOVERY'), failed('Build_TI_CC1352P1_LAUNCHXL'))
 
   pool:
     vmImage: 'VS2017-Win2016'
