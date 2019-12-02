@@ -23,6 +23,7 @@ The provided boards are **NOT** supported by the **nanoFramework** team and any 
 | [ST Nucleo144 F746ZG](CMSIS-OS/ChibiOS/ST_NUCLEO144_F746ZG) | [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/ST_NUCLEO144_F746ZG/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/ST_NUCLEO144_F746ZG/_latestVersion) | STM32F746ZG | 216 MHz | 1024 KB | 320 KB |
 | [ST STM32F4DISCO](CMSIS-OS/ChibiOS/ST_STM32F4_DISCOVERY) | [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/ST_STM32F4_DISCOVERY/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/ST_STM32F4_DISCOVERY/_latestVersion) | STM32F407VGT6 | 168 MHz | 1024 KB | 192 KB |
 | [ST Nucleo144 F439ZI](CMSIS-OS/ChibiOS/ST_NUCLEO144_F439ZI) | [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/ST_NUCLEO144_F439ZI/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/ST_NUCLEO144_F439ZI/_latestVersion) | STM32F439ZI | 180 MHz | 2048 KB | 256 KB |
+| [TI_CC1352P1_LAUNCHXL](TI-SimpleLink/TI_CC1352P1_LAUNCHXL) | [ ![Download](https://api.bintray.com/packages/nfbot/nanoframework-images-community-targets/TI_CC1352P1_LAUNCHXL/images/download.svg) ](https://bintray.com/nfbot/nanoframework-images-community-targets/TI_CC1352P1_LAUNCHXL/_latestVersion) | TI CC1352 | 48MHz | 352kB | 80kB |
 
 The above firmware builds include support for the class libraries and features marked below.
 
@@ -37,6 +38,7 @@ The above firmware builds include support for the class libraries and features m
 | ST Nucleo144 F746ZG | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | ST STM32F4DISCO | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | | |
 | ST Nucleo144 F439ZI | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | | | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| TI CC1352P1 LAUNCHXL | :heavy_check_mark: |  |  |  |  |  | | |  |  |  |  |
 
 ## Feedback and documentation
 
