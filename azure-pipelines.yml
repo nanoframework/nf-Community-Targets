@@ -122,6 +122,7 @@ jobs:
           ($COMMIT_MESSAGE -like "***I2M_OXYGEN_NF***") -Or
           ($COMMIT_MESSAGE -like "***ST_NUCLEO64_F401RE_NF***") -Or
           ($COMMIT_MESSAGE -like "***ST_NUCLEO64_F411RE_NF***") -Or
+          ($COMMIT_MESSAGE -like "***ST_STM32F411_DISCOVERY***") -Or
           ($COMMIT_MESSAGE -like "***ST_NUCLEO144_F412ZG_NF***") -Or
           ($COMMIT_MESSAGE -like "***ST_NUCLEO144_F746ZG***") -Or
           ($COMMIT_MESSAGE -like "***ST_STM32F4_DISCOVERY***") -Or
@@ -154,9 +155,9 @@ jobs:
           {
             # last commit from nf-interpreter is older than today, skip build
 
-            "**********************************************************************" | Write-Host
-            "* Last commit from nf-interpreter is older than today, skiping build *" | Write-Host
-            "**********************************************************************" | Write-Host
+            "***********************************************************************" | Write-Host
+            "* Last commit from nf-interpreter is older than today, skipping build *" | Write-Host
+            "***********************************************************************" | Write-Host
 
             echo "##vso[task.setvariable variable=GO;isOutput=true]False"
           }
@@ -354,6 +355,49 @@ jobs:
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_Windows.Devices.Adc=ON
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_NUCLEO64_F411RE_NF_versioncounter', 3)]
+    GccArm_Version:
+    NeedsDFU: false
+
+  steps:
+  - checkout: self
+    fetchDepth: 1
+
+  - template: azure-pipelines-templates/set-build-version.yml
+
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
+
+  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
+
+  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
+
+  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
+
+  - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
+    parameters:
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+
+  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
+    parameters:
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+
+  - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
+
+##############################
+- job: Build_ST_STM32F411_DISCOVERY
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ST_STM32F411_DISCOVERY***'), contains(dependencies.Get_Commit_Message.outputs['getCommitMessage.COMMIT_MESSAGE'], '***ALL***'), eq(variables['BUILD_ALL'], 'true'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+
+  dependsOn: 
+  - Get_Commit_Message
+  - Check_Build_Options
+
+  pool:
+    vmImage: 'VS2017-Win2016'
+
+  variables:
+    BoardName: ST_STM32F411_DISCOVERY
+    BuildOptions: -DTARGET_SERIES=STM32F4xx -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_Windows.Devices.Adc=ON
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('ST_STM32F411_DISCOVERY_versioncounter', 3)]
     GccArm_Version:
     NeedsDFU: false
 
@@ -604,12 +648,13 @@ jobs:
   - Build_I2M_ELECTRON_NF
   - Build_I2M_OXYGEN_NF
   - Build_ST_NUCLEO64_F401RE_NF
+  - Build_ST_STM32F411_DISCOVERY
   - Build_ST_NUCLEO64_F411RE_NF
   - Build_ST_NUCLEO144_F412ZG_NF
   - Build_ST_NUCLEO144_F746ZG
   - Build_ST_STM32F4_DISCOVERY
   - Build_TI_CC1352P1_LAUNCHXL
-  condition: or( failed('Build_GHI_FEZ_CERB40_NF'), failed('Build_I2M_ELECTRON_NF'), failed('Build_I2M_OXYGEN_NF'), failed('Build_ST_NUCLEO64_F401RE_NF'), failed('Build_ST_NUCLEO64_F411RE_NF'), failed('Build_ST_NUCLEO144_F412ZG_NF'), failed('Build_ST_NUCLEO144_F746ZG'), failed('Build_ST_STM32F4_DISCOVERY'), failed('Build_TI_CC1352P1_LAUNCHXL'))
+  condition: or( failed('Build_GHI_FEZ_CERB40_NF'), failed('Build_I2M_ELECTRON_NF'), failed('Build_I2M_OXYGEN_NF'), failed('Build_ST_NUCLEO64_F401RE_NF'), failed('Build_ST_NUCLEO64_F411RE_NF'), failed('Build_ST_STM32F411_DISCOVERY'), failed('Build_ST_NUCLEO144_F412ZG_NF'), failed('Build_ST_NUCLEO144_F746ZG'), failed('Build_ST_STM32F4_DISCOVERY'), failed('Build_TI_CC1352P1_LAUNCHXL'))
 
   pool:
     vmImage: 'VS2017-Win2016'
