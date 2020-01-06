@@ -33,11 +33,6 @@
 #define BOARD_NAME                  "STMicroelectronics STM32 Nucleo64-F411RE for nanoFramework"
 
 /*
- * USB OTG Force
- */
-#define BOARD_OTG_NOVBUSSENS
-
-/*
  * Completely wacko definition of a flash sector here
  */
 #define FLASH_SECTOR_11    ((uint32_t)11U)
@@ -54,7 +49,7 @@
 #define STM32_HSECLK                8000000U
 #endif
 
-//#define STM32_HSE_BYPASS
+#define STM32_HSE_BYPASS
 
 /*
  * Board voltages.
@@ -277,7 +272,6 @@
 #define LINE_BUTTON                 PAL_LINE(GPIOC, 13U)
 #define LINE_OSC32_IN               PAL_LINE(GPIOC, 14U)
 #define LINE_OSC32_OUT              PAL_LINE(GPIOC, 15U)
-
 
 
 
