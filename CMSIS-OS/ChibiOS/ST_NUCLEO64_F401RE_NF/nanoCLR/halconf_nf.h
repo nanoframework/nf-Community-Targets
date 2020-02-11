@@ -7,18 +7,18 @@
 #define _HALCONF_NF_H_
 
 // enables STM32 Flash driver
-#if !defined(HAL_USE_STM32_FLASH) 
-#define HAL_USE_STM32_FLASH         TRUE
+#if !defined(HAL_NF_USE_STM32_FLASH) 
+#define HAL_NF_USE_STM32_FLASH         TRUE
 #endif
 
 //  Disables the FSMC subsystem.
-#if !defined(HAL_USE_FSMC)
-#define HAL_USE_FSMC                FALSE
+#if !defined(HAL_NF_USE_FSMC)
+#define HAL_NF_USE_FSMC                FALSE
 #endif
 
 //  STM32F401xx Does not support TRNG
-#if !defined(HAL_USE_STM32_RNG)
-#define HAL_USE_STM32_RNG           FALSE
+#if !defined(HAL_NF_USE_STM32_RNG)
+#define HAL_NF_USE_STM32_RNG           FALSE
 #endif
 
 #endif // _HALCONF_NF_H_
