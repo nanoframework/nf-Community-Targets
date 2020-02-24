@@ -5,6 +5,7 @@
 
 #include <ch.h>
 #include <hal.h>
+#include <hal_nf_community.h>
 #include <cmsis_os.h>
 
 #include <usbcfg.h>
@@ -50,6 +51,11 @@ int main(void) {
       LaunchCLR((uint32_t)&__nanoImage_end__);
     }
   }
+
+  #if (HAL_NF_USE_STM32_CRC == TRUE)
+  // startup crc
+  crcStart(NULL);
+  #endif
 
   //  Initializes a serial-over-USB CDC driver.
   sduObjectInit(&SDU1);

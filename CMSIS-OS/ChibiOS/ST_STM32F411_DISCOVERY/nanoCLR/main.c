@@ -5,6 +5,7 @@
 
 #include <ch.h>
 #include <hal.h>
+#include <hal_nf_community.h>
 #include <cmsis_os.h>
 
 #include <serialcfg.h>
@@ -46,6 +47,10 @@ int main(void) {
   // start watchdog
   Watchdog_Init();
 
+  #if (HAL_NF_USE_STM32_CRC == TRUE)
+  // startup crc
+  crcStart(NULL);
+  #endif
 
   #if NF_FEATURE_USE_SPIFFS
   // config and init SPIFFS
