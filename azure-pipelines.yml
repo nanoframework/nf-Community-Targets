@@ -126,7 +126,8 @@ jobs:
           ($COMMIT_MESSAGE -like "***ST_NUCLEO144_F412ZG_NF***") -Or
           ($COMMIT_MESSAGE -like "***ST_NUCLEO144_F746ZG***") -Or
           ($COMMIT_MESSAGE -like "***ST_STM32F4_DISCOVERY***") -Or
-          ($COMMIT_MESSAGE -like "***ST_NUCLEO144_F439ZI***") 
+          ($COMMIT_MESSAGE -like "***ST_NUCLEO144_F439ZI***") -Or
+          ($COMMIT_MESSAGE -like "***TI_CC1352P1_LAUNCHXL***")
         )
         {
             # there is a tag to build a valid target, build images
@@ -653,8 +654,9 @@ jobs:
   - Build_ST_NUCLEO144_F412ZG_NF
   - Build_ST_NUCLEO144_F746ZG
   - Build_ST_STM32F4_DISCOVERY
+  - Build_ST_NUCLEO144_F439ZI
   - Build_TI_CC1352P1_LAUNCHXL
-  condition: or( failed('Build_GHI_FEZ_CERB40_NF'), failed('Build_I2M_ELECTRON_NF'), failed('Build_I2M_OXYGEN_NF'), failed('Build_ST_NUCLEO64_F401RE_NF'), failed('Build_ST_NUCLEO64_F411RE_NF'), failed('Build_ST_STM32F411_DISCOVERY'), failed('Build_ST_NUCLEO144_F412ZG_NF'), failed('Build_ST_NUCLEO144_F746ZG'), failed('Build_ST_STM32F4_DISCOVERY'), failed('Build_TI_CC1352P1_LAUNCHXL'))
+  condition: or( failed('Build_GHI_FEZ_CERB40_NF'), failed('Build_I2M_ELECTRON_NF'), failed('Build_I2M_OXYGEN_NF'), failed('Build_ST_NUCLEO64_F401RE_NF'), failed('Build_ST_NUCLEO64_F411RE_NF'), failed('Build_ST_STM32F411_DISCOVERY'), failed('Build_ST_NUCLEO144_F412ZG_NF'), failed('Build_ST_NUCLEO144_F746ZG'), failed('Build_ST_STM32F4_DISCOVERY'), failed('Build_ST_NUCLEO144_F439ZI'), failed('Build_TI_CC1352P1_LAUNCHXL'))
 
   pool:
     vmImage: 'VS2017-Win2016'
