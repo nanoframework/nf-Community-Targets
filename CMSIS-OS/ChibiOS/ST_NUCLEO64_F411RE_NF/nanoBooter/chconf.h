@@ -39,7 +39,7 @@
  * @details Frequency of the system timer that drives the system ticks. This
  *          setting also defines the system tick time unit.
  */
-#define CH_CFG_ST_FREQUENCY                 10000 // this is 1 millisecond
+#define CH_CFG_ST_FREQUENCY                 10000 // these are are 100 microseconds
 
 /**
  * @brief   Time intervals data size.
