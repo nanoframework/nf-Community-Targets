@@ -30,10 +30,10 @@ int main(void) {
   // and performs the board-specific initializations.
   halInit();
 
-  // init SWO as soon as possible to make it available to output ASAP
-  #if (SWO_OUTPUT == TRUE)  
+  // Init SWO to make it available to output as soon as possible
+#if (SWO_OUTPUT == TRUE)  
   SwoInit();
-  #endif
+#endif
   
   // The kernel is initialized but not started yet, this means that
   // main() is executing with absolute priority but interrupts are already enabled.
