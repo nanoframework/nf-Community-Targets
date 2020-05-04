@@ -102,8 +102,8 @@ jobs:
 
       if($env:Build_SourceBranch -like "refs/pull*")
       {
-        # this is a PR: always build
-        echo "##vso[task.setvariable variable=GO;isOutput=true]True"
+        # this is a PR: always build depending on target tag
+        echo "##vso[task.setvariable variable=GO;isOutput=true]False"
 
         "**PR build**" | Write-Host
       }
