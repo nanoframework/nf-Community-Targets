@@ -3,7 +3,6 @@
 # See LICENSE file in the project root for full license information.
 #
 
-cmake_minimum_required(VERSION 3.0)
 ENABLE_LANGUAGE(ASM)
 
 # add header files with common OS definitions and board definitions specific for each image
@@ -129,6 +128,8 @@ include_directories(
 
     "${WireProtocol_INCLUDE_DIRS}"
     "${TI_SimpleLink_INCLUDE_DIRS}"
+
+    ${TI_XDCTools_INCLUDE_DIR}
 
     "${TARGET_TI_SimpleLink_COMMON_INCLUDE_DIRS}"
 )
