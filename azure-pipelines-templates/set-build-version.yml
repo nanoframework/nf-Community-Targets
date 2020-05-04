@@ -17,7 +17,7 @@ steps:
          
           # need to hijack NBGV variables that are expected in the build CMake command and others that follow
           Write-Host "$("##vso[task.setvariable variable=NBGV_Version]")$buildSimpleVersion"
-          Write-Host "$("##vso[task.setvariable variable=NBGV_VersionHeight]").0"
+          Write-Host "$("##vso[task.setvariable variable=NBGV_VersionHeight]")0"
 
     condition: succeeded()
     displayName: compute the build version
