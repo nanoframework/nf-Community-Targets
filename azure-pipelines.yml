@@ -137,30 +137,40 @@ jobs:
         }
         else
         {
-          # daily build: get commit date 
-          # clone nf-interpreter
-          git clone https://github.com/nanoframework/nf-interpreter.git -b develop nf-interpreter --depth 1 -q
-          cd "nf-interpreter" > $null
-
-          $commitDate = git show -s --format=%cd --date=short
-          $commitDate = [DateTime]$commitDate
-
-          if($commitDate -eq [System.DateTime]::UtcNow.Date)
+          if($build.reason -eq "Scheduled")
           {
-            # last commit from nf-interpreter is from today, build images
-            echo "##vso[task.setvariable variable=GO;isOutput=true]True"  
+            # scheduled daily build: get commit date 
+            # clone nf-interpreter
+            git clone https://github.com/nanoframework/nf-interpreter.git -b develop nf-interpreter --depth 1 -q
+            cd "nf-interpreter" > $null
 
-            "**Update upstream: Build ALL**" | Write-Host
+            $commitDate = git show -s --format=%cd --date=short
+            $commitDate = [DateTime]$commitDate
+
+            if($commitDate -eq [System.DateTime]::UtcNow.Date)
+            {
+              # last commit from nf-interpreter is from today, build images
+              echo "##vso[task.setvariable variable=GO;isOutput=true]True"  
+
+              "**Update upstream: Build ALL**" | Write-Host
+            }
+            else
+            {
+              # last commit from nf-interpreter is older than today, skip build
+
+              "***********************************************************************" | Write-Host
+              "* Last commit from nf-interpreter is older than today, skipping build *" | Write-Host
+              "***********************************************************************" | Write-Host
+
+              echo "##vso[task.setvariable variable=GO;isOutput=true]False"
+            }
           }
           else
           {
-            # last commit from nf-interpreter is older than today, skip build
-
-            "***********************************************************************" | Write-Host
-            "* Last commit from nf-interpreter is older than today, skipping build *" | Write-Host
-            "***********************************************************************" | Write-Host
-
+            # build for other reasons: build depending on target tag
             echo "##vso[task.setvariable variable=GO;isOutput=true]False"
+
+            "**build for other reasons**" | Write-Host  
           }
         }
       }
