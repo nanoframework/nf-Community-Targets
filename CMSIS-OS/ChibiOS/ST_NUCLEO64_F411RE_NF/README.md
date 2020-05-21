@@ -1,17 +1,14 @@
 ## ST of the shelve board ##
 
-The board used in this community contribution is the NUCLEO64_F411RE board from ST. The board can be purchased from various sources and should be about 20 euros. Further information on the Nucleo64 boards can be found in the user manual UM1724 on the ST side (www.st.com). The board used here is of revision c as can be found on the board's lower backside sticker. The board MB1136 C-02 is configured to use ST-LINK MCO as clock input for HSE so we have an HSE of 8 MHz. Plus X2 is mounted we do have an LSE as well. This is reflected in the mcuconf.h in both nanoBooter and nanoCLR paths. If it is chosen to activate LSE as this is a for more accurate clock for RTC the board.h file needs to be adjusted accordingly to use 32768 frequency for LSE.
+The board used in this community contribution is the NUCLEO64_F411RE board from ST. The board can be purchased from various sources and should be about 20 euros. Further information on the Nucleo64 boards can be found in the user manual UM1724 on the ST side (www.st.com). The board used here is of revision c as can be found on the board's lower backside sticker. The board MB1136 C-02 is configured to use ST-LINK MCO as clock input for HSE so we have an HSE of 8 MHz. Plus X2 is mounted we do have an LSE as well. This is reflected in the mcuconf.h in both nanoBooter and nanoCLR paths. If it is chosen to activate LSE as this is a more accurate clock for RTC then board.h file needs to be adjusted accordingly to use 32768 frequency for LSE.
 
-I prepared a custom made a 4-wire jumper to USB cable by cutting off one end (Type A part) and figuring out the required D+, D-, 5V and GND. These need to be connected as follows:
+Serial port 2 (USART2) is used to communicate thru the ST-Link connector, so only one Mini-USB cable is used to start the nanoFramework adventure.
 
- * USB V5  ->  Can be ignored
- * USB GND ->  GND on CN7
- * USB D-  ->  PA11 on CN10 (outer row 7th pin from top)
- * USB D+  ->  PA12 on CN10 (outer row 6th pin from top)
+The nanoFramework firmware can be flashed using the nanoFramework Firmware Flasher (nanoff) in the package manager console. If you are not familiar with nanoff look on https://github.com/nanoframework/nanoFirmwareFlasher for more info. 
 
-Once these are connected and nanoFramework is flashed using the STM32 ST-LINK Utility the device should be visible in the Printf via SWO viewer function in the ST-LINK utility. Please set the frequency to match to what has been set in mcuconf.h (mostly 96000000) and the Stimulus port to 0 and than hit start. If the board doesn't show then a reset (Black button on board) should do it.
+The firmware can still be flashed using the STM32 ST-LINK Utility if you prefer. The device should be visible in the Printf via SWO viewer function in the ST-LINK utility. Please set the frequency to match to what has been set in mcuconf.h (here 96000000) and the Stimulus port to 0 and than hit start. If the board doesn't show then a reset (Black button on board) could be of help or a power cycle by disconnecting, connecting the Mini-USB cable and try ST-LINK Utility again.
 
-We can now fire up Visual Studio and view the Device explorer window the board should be visible there as well. Select the board (if not done already) and hit the device capabilities button. The board specifics can than be seen in the output window. 
+In Visual Studio and with nanoFramework extension being installed, open the Device Explorer window and the board should be visible. Select the board and press the Device Capability button. The board specifics should be visible in the output window. 
 
 Now you can start your adventure in the nanoFramework world and use one of the samples and adjust to the board specific features. Try to make a sample of yourself and publish it on f.e. www.hackster.io to show your achievement.
 
@@ -19,11 +16,10 @@ For your convenience I've listed below the features and on what pins they can be
 
 Arduino header pins:
 ====================
- * D0 = COM2 RX
- * D1 = COM2 TX
+ * D0, D1 can not be used as serial connection is used for nanoFramework communication. Plus the required solder bridges are not fitted by default.
 
- * D2 - D9  can be used for an intermix of GPIO and PWM
-
+ * D2 - D10 can be used for an intermix of GPIO and PWM
+ * D11 - D13 are setup and configured for SPI1 however the on board LED (LD2) is connected to D13 as well and might be of influence. In that case solder bridge SB21 needs to be removed. 
  * D14 = I2C1 SDA
  * D15 = I2C1 SCL
 
