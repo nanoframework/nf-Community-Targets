@@ -1126,10 +1126,10 @@
  * PF3  - ARD_A3 ADC3_IN9           (input pullup).
  * PF4  - ZIO_A8 ADC3_IN14          (input pullup).
  * PF5  - ARD_A4 ADC3_IN15          (input pullup).
- * PF6  - PIN6                      (input pullup).
- * PF7  - SPI5_SCK				    (Alternate 5).
- * PF8  - SPI5_MISO			        (Alternate 5).
- * PF9  - SPI5_MOSI			        (Alternate 5).
+ * PF6  - PIN6                      (output pushpull maximum).
+ * PF7  - SPI5_SCK                  (Alternate 5).
+ * PF8  - SPI5_MISO                 (Alternate 5).
+ * PF9  - SPI5_MOSI                 (Alternate 5).
  * PF10 - ARD_A5 ADC3_IN8           (input pullup).
  * PF11 - PIN11                     (input pullup).
  * PF12 - ARD_D8                    (input pullup).
@@ -1143,16 +1143,16 @@
                                      PIN_MODE_INPUT(GPIOF_ARD_A3) |         \
                                      PIN_MODE_INPUT(GPIOF_ZIO_A8) |         \
                                      PIN_MODE_INPUT(GPIOF_ARD_A4) |         \
-                                     PIN_MODE_INPUT(GPIOF_PIN6) |           \
+                                     PIN_MODE_OUTPUT(GPIOF_PIN6) |           \
                                      PIN_MODE_ALTERNATE(GPIOF_SPI5_SCK) |        \
                                      PIN_MODE_ALTERNATE(GPIOF_SPI5_MISO) |        \
                                      PIN_MODE_ALTERNATE(GPIOF_SPI5_MOSI) |        \
                                      PIN_MODE_INPUT(GPIOF_ARD_A5) |         \
                                      PIN_MODE_INPUT(GPIOF_PIN11) |          \
                                      PIN_MODE_INPUT(GPIOF_ARD_D8) |         \
-                                     PIN_MODE_INPUT(GPIOF_ARD_D7) |         \
-                                     PIN_MODE_INPUT(GPIOF_ARD_D4) |         \
-                                     PIN_MODE_INPUT(GPIOF_ARD_D2))
+                                     PIN_MODE_OUTPUT(GPIOF_ARD_D7) |         \
+                                     PIN_MODE_OUTPUT(GPIOF_ARD_D4) |         \
+                                     PIN_MODE_OUTPUT(GPIOF_ARD_D2))
 #define VAL_GPIOF_OTYPER            (PIN_OTYPE_PUSHPULL(GPIOF_ZIO_D68) |    \
                                      PIN_OTYPE_PUSHPULL(GPIOF_ZIO_D69) |    \
                                      PIN_OTYPE_PUSHPULL(GPIOF_ZIO_D70) |    \
@@ -1175,39 +1175,39 @@
                                      PIN_OSPEED_HIGH(GPIOF_ARD_A3) |        \
                                      PIN_OSPEED_HIGH(GPIOF_ZIO_A8) |        \
                                      PIN_OSPEED_HIGH(GPIOF_ARD_A4) |        \
-                                     PIN_OSPEED_VERYLOW(GPIOF_PIN6) |       \
+                                     PIN_OSPEED_HIGH(GPIOF_PIN6) |       \
                                      PIN_OSPEED_HIGH(GPIOF_SPI5_SCK) |       \
                                      PIN_OSPEED_HIGH(GPIOF_SPI5_MISO) |       \
                                      PIN_OSPEED_HIGH(GPIOF_SPI5_MOSI) |       \
                                      PIN_OSPEED_HIGH(GPIOF_ARD_A5) |        \
                                      PIN_OSPEED_VERYLOW(GPIOF_PIN11) |      \
                                      PIN_OSPEED_VERYLOW(GPIOF_ARD_D8) |     \
-                                     PIN_OSPEED_VERYLOW(GPIOF_ARD_D7) |     \
-                                     PIN_OSPEED_VERYLOW(GPIOF_ARD_D4) |     \
-                                     PIN_OSPEED_VERYLOW(GPIOF_ARD_D2))
+                                     PIN_OSPEED_HIGH(GPIOF_ARD_D7) |     \
+                                     PIN_OSPEED_HIGH(GPIOF_ARD_D4) |     \
+                                     PIN_OSPEED_HIGH(GPIOF_ARD_D2))
 #define VAL_GPIOF_PUPDR             (PIN_PUPDR_PULLUP(GPIOF_ZIO_D68) |      \
                                      PIN_PUPDR_PULLUP(GPIOF_ZIO_D69) |      \
                                      PIN_PUPDR_PULLUP(GPIOF_ZIO_D70) |      \
                                      PIN_PUPDR_PULLUP(GPIOF_ARD_A3) |       \
                                      PIN_PUPDR_PULLUP(GPIOF_ZIO_A8) |       \
                                      PIN_PUPDR_PULLUP(GPIOF_ARD_A4) |       \
-                                     PIN_PUPDR_PULLUP(GPIOF_PIN6) |         \
+                                     PIN_PUPDR_FLOATING(GPIOF_PIN6) |         \
                                      PIN_PUPDR_FLOATING(GPIOF_SPI5_SCK) |      \
                                      PIN_PUPDR_FLOATING(GPIOF_SPI5_MISO) |      \
                                      PIN_PUPDR_FLOATING(GPIOF_SPI5_MOSI) |      \
                                      PIN_PUPDR_PULLUP(GPIOF_ARD_A5) |       \
                                      PIN_PUPDR_PULLUP(GPIOF_PIN11) |        \
                                      PIN_PUPDR_PULLUP(GPIOF_ARD_D8) |       \
-                                     PIN_PUPDR_PULLUP(GPIOF_ARD_D7) |       \
-                                     PIN_PUPDR_PULLUP(GPIOF_ARD_D4) |       \
-                                     PIN_PUPDR_PULLUP(GPIOF_ARD_D2))
+                                     PIN_PUPDR_FLOATING(GPIOF_ARD_D7) |       \
+                                     PIN_PUPDR_FLOATING(GPIOF_ARD_D4) |       \
+                                     PIN_PUPDR_FLOATING(GPIOF_ARD_D2))
 #define VAL_GPIOF_ODR               (PIN_ODR_HIGH(GPIOF_ZIO_D68) |          \
                                      PIN_ODR_HIGH(GPIOF_ZIO_D69) |          \
                                      PIN_ODR_HIGH(GPIOF_ZIO_D70) |          \
                                      PIN_ODR_HIGH(GPIOF_ARD_A3) |           \
                                      PIN_ODR_HIGH(GPIOF_ZIO_A8) |           \
                                      PIN_ODR_HIGH(GPIOF_ARD_A4) |           \
-                                     PIN_ODR_HIGH(GPIOF_PIN6) |             \
+                                     PIN_ODR_LOW(GPIOF_PIN6) |             \
                                      PIN_ODR_HIGH(GPIOF_SPI5_SCK) |          \
                                      PIN_ODR_HIGH(GPIOF_SPI5_MISO) |          \
                                      PIN_ODR_HIGH(GPIOF_SPI5_MOSI) |          \
@@ -1216,7 +1216,7 @@
                                      PIN_ODR_HIGH(GPIOF_ARD_D8) |           \
                                      PIN_ODR_HIGH(GPIOF_ARD_D7) |           \
                                      PIN_ODR_HIGH(GPIOF_ARD_D4) |           \
-                                     PIN_ODR_HIGH(GPIOF_ARD_D2))
+                                     PIN_ODR_LOW(GPIOF_ARD_D2))
 #define VAL_GPIOF_AFRL              (PIN_AFIO_AF(GPIOF_ZIO_D68, 0U) |       \
                                      PIN_AFIO_AF(GPIOF_ZIO_D69, 0U) |       \
                                      PIN_AFIO_AF(GPIOF_ZIO_D70, 0U) |       \
