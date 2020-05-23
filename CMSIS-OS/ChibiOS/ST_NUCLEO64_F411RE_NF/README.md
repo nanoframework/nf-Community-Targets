@@ -1,5 +1,5 @@
 ## ST of the shelve board ##
- 
+
 The board used in this community contribution is the NUCLEO64_F411RE board from ST. The board can be purchased from various sources and should be about 20 euros. Further information on the Nucleo64 boards can be found in the user manual UM1724 on the ST side (www.st.com). The board used here is of revision c as can be found on the board's lower backside sticker. The board MB1136 C-02 is configured to use ST-LINK MCO as clock input for HSE so we have an HSE of 8 MHz. Plus X2 is mounted we do have an LSE as well. This is reflected in the mcuconf.h in both nanoBooter and nanoCLR paths. If it is chosen to activate LSE as this is a more accurate clock for RTC then board.h file needs to be adjusted accordingly to use 32768 frequency for LSE.
 
 Serial port 2 (USART2) is used to communicate thru the ST-Link connector, so only one Mini-USB cable is used to start the nanoFramework adventure.
