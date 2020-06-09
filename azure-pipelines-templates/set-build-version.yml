@@ -10,16 +10,16 @@ steps:
           $counter = $env:REVISION
           $version = [int]$counter
 
-          $buildSimpleVersion = "1.1." + $version.ToString()
+          $buildSimpleVersion = "1.4." + $version.ToString()
           $buildFullVersion = $buildSimpleVersion + ".0"
 
           Write-Host ">>$buildFullVersion<<"
          
           # need to hijack NBGV variables that are expected in the build CMake command and others that follow
-          Write-Host "$("##vso[task.setvariable variable=NBGV_Version]")$buildSimpleVersion"
+          Write-Host "$("##vso[task.setvariable variable=NBGV_AssemblyVersion]")$buildFullVersion"
+          Write-Host "$("##vso[task.setvariable variable=NBGV_Version]")$buildFullVersion"
           Write-Host "$("##vso[task.setvariable variable=NBGV_VersionHeight]")0"
-          Write-Host "$("##vso[task.setvariable variable=NBGV_SimpleVersion]")$buildFullVersion"
-          Write-Host "$("##vso[task.setvariable variable=NBGV_PrereleaseVersion]")"
+          Write-Host "$("##vso[task.setvariable variable=NBGV_SimpleVersion]")$buildSimpleVersion"
 
     condition: succeeded()
     displayName: compute the build version
