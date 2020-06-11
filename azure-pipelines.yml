@@ -277,7 +277,7 @@ jobs:
 
   variables:
     BoardName: I2M_OXYGEN_NF
-    BuildOptions: -DTARGET_SERIES=STM32F4xx -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_Windows.Devices.Adc=ON
+    BuildOptions: -DTARGET_SERIES=STM32F4xx -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_Windows.Devices.Adc=ON -DAPI_System.Math=ON -DAPI_Hardware.Stm32=ON
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('I2M_OXYGEN_NF_versioncounter', 0)]
     GccArm_Version:
