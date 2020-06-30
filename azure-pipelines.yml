@@ -137,7 +137,7 @@ jobs:
         }
         else
         {
-          if($build.reason -eq "Scheduled")
+          if($env:Build_Reason -eq "Scheduled")
           {
             # scheduled daily build: get commit date 
             # clone nf-interpreter
