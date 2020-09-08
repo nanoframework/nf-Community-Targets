@@ -496,7 +496,7 @@ jobs:
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_NUCLEO144_F746ZG_versioncounter', 0)]
     GccArm_Version:
-    NeedsDFU: false
+    NeedsDFU: true
 
   steps:
   - checkout: self
