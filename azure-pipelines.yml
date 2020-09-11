@@ -496,7 +496,7 @@ jobs:
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_NUCLEO144_F746ZG_versioncounter', 0)]
     GccArm_Version:
-    NeedsDFU: false
+    NeedsDFU: true
 
   steps:
   - checkout: self
@@ -621,7 +621,7 @@ jobs:
 
   variables:
     BoardName: TI_CC1352P1_LAUNCHXL
-    BuildOptions: -DTARGET_SERIES=CC13x2_26x2 -DRTOS=TI_SIMPLELINK -DSUPPORT_ANY_BASE_CONVERSION=OFF -DNF_FEATURE_DEBUGGER=ON -DNF_FEATURE_RTC=ON -DNF_FEATURE_WATCHDOG=OFF -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=OFF -DAPI_Windows.Devices.I2c=OFF -DAPI_Windows.Devices.Pwm=OFF -DAPI_Windows.Devices.SerialCommunication=OFF -DAPI_Windows.Devices.Adc=OFF -DAPI_nanoFramework.TI.EasyLink=ON
+    BuildOptions: -DTARGET_SERIES=CC13x2_26x2 -DRTOS=TI_SIMPLELINK -DSUPPORT_ANY_BASE_CONVERSION=OFF -DNF_FEATURE_DEBUGGER=ON -DNF_FEATURE_RTC=ON -DNF_FEATURE_WATCHDOG=OFF -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=OFF -DAPI_Windows.Devices.I2c=OFF -DAPI_Windows.Devices.Pwm=OFF -DAPI_Windows.Devices.SerialCommunication=OFF -DAPI_Windows.Devices.Adc=ON -DAPI_nanoFramework.TI.EasyLink=ON -DAPI_nanoFramework.Hardware.TI=ON
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('TI_CC1352P1_LAUNCHXL_versioncounter', 0)]
     GccArm_Version:

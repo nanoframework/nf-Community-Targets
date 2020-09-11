@@ -9,16 +9,16 @@ steps:
 
   # Copy CMSIS-OS target files to nf-interpreter folder
   - task: CopyFiles@2
-    displayName: Copy community target to nf-interpreter
+    displayName: Copy CMSIS-OS target files
     inputs:
       sourceFolder: $(Build.SourcesDirectory)\nf-Community-Targets\CMSIS-OS
       targetFolder: $(Build.SourcesDirectory)\nf-interpreter\targets-community\CMSIS-OS
       cleanTargetFolder: false
       overWrite: true
 
-  # Copy TI-SimpleLinkS target files to nf-interpreter folder
+  # Copy TI-SimpleLink target files to nf-interpreter folder
   - task: CopyFiles@2
-    displayName: Copy community target to nf-interpreter
+    displayName: Copy TI-SimpleLink target files
     inputs:
       sourceFolder: $(Build.SourcesDirectory)\nf-Community-Targets\TI-SimpleLink
       targetFolder: $(Build.SourcesDirectory)\nf-interpreter\targets-community\TI-SimpleLink
@@ -27,7 +27,7 @@ steps:
 
   # Copy install scripts folder from nf-interpreter folder
   - task: CopyFiles@2
-    displayName: Copy nf-interpreter to community target folder
+    displayName: Copy install scripts
     inputs:
       sourceFolder: $(Build.SourcesDirectory)\nf-interpreter\install-scripts
       targetFolder: $(Build.SourcesDirectory)\install-scripts
