@@ -3,22 +3,25 @@
 // See LICENSE file in the project root for full license information.
 //
 
+
 #include <stdint.h>
 #include <nanoCLR_Application.h>
-// // POSIX Header files
-// #include <pthread.h>
-// #include <unistd.h>
+#include <nanoHAL_v2.h>
 
 // RTOS header files
-//#include "FreeRTOS.h"
-//#include "task.h"
 #include <xdc/std.h>
 #include <xdc/runtime/Error.h>
 #include <ti/sysbios/BIOS.h>
 #include <ti/sysbios/knl/Task.h>
 
 // board Header files
-#include <Board.h>
+#include <ti_drivers_config.h>
+
+#include <ti/drivers/gpio/GPIOCC26XX.h>
+// clang-format off
+#include DeviceFamily_constructPath(inc/hw_prcm.h)
+#include DeviceFamily_constructPath(driverlib/sys_ctrl.h)
+// clang-format on
 
 //////////////////////////////
 
@@ -30,6 +33,21 @@ Task_Handle clrHandle;
 
 CLR_SETTINGS clrSettings;
 
+// this define has to match the one in cpu_gpio.cpp
+#define GPIO_MAX_PINS 16
+
+// these are declared in cpu_gpio.cpp
+extern GPIO_PinConfig gpioPinConfigs[GPIO_MAX_PINS];
+extern GPIO_CallbackFxn gpioCallbackFunctions[GPIO_MAX_PINS];
+
+// this has to be define in a C file, otherwise the linker can't replace the weak one declared in the SDK driver library
+const GPIOCC26XX_Config GPIOCC26XX_config = {
+    .pinConfigs = (GPIO_PinConfig *)gpioPinConfigs,
+    .callbacks = (GPIO_CallbackFxn *)gpioCallbackFunctions,
+    .numberOfPinConfigs = GPIO_MAX_PINS,
+    .numberOfCallbacks = GPIO_MAX_PINS,
+    .intPriority = (~0)};
+
 extern void ReceiverThread(UArg arg0, UArg arg1);
 extern void CLRStartupThread(UArg arg0, UArg arg1);
 
@@ -37,8 +55,12 @@ int main(void)
 {
     Task_Params taskParams;
 
+    // get and store reset reason
+    // must be called before PIN_init()
+    WakeupReasonStore = SysCtrlResetSourceGet();
+
     // Call board init functions
-    Board_initGeneral();
+    Board_init();
 
     // setup Task thread
     Task_Params_init(&taskParams);
@@ -70,14 +92,21 @@ int main(void)
     }
 
     GPIO_init();
-    UART_init();
+    ADC_init();
     ConfigUART();
-
-    // Switch off all LEDs on board
-    GPIO_write(Board_GPIO_RLED, Board_GPIO_LED_OFF);
-    GPIO_write(Board_GPIO_GLED, Board_GPIO_LED_OFF);
     
     BIOS_start();
 
     return (0);
+}
+
+///////////////////////////////////////////////////////////////////////
+// need this dummy implementation here (started with SDK 4.20.01.04) //
+///////////////////////////////////////////////////////////////////////
+void __attribute__((naked)) _exit(int code)
+{
+    (void)code;
+
+    for (;;)
+        ;
 }
