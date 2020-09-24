@@ -1,4 +1,4 @@
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Discord](https://img.shields.io/discord/478725473862549535.svg)](https://discord.gg/gCyBu8T) [![Build Status](https://dev.azure.com/nanoframework/Community-Targets/_apis/build/status/nanoframework.nf-Community-Targets)](https://dev.azure.com/nanoframework/Community-Targets/_build/latest?definitionId=4)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![Discord](https://img.shields.io/discord/478725473862549535.svg)](https://discord.gg/gCyBu8T) [![Build Status](https://dev.azure.com/nanoframework/Community-Targets/_apis/build/status/nanoframework.nf-Community-Targets)](https://dev.azure.com/nanoframework/Community-Targets/_build/latest?definitionId=4)
 
 ![nanoFramework logo](https://github.com/nanoframework/Home/blob/master/resources/logo/nanoFramework-repo-logo.png)
 
@@ -58,7 +58,7 @@ The individual targets are _owned_ by the contributor and credit is due to the c
 
 ## License
 
-The community target contributions are licensed under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0).
+The community target contributions are licensed under the [MIT license](LICENSE.md).
 
 ## Code of Conduct
 
