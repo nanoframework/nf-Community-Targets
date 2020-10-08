@@ -20,6 +20,8 @@ const easylink = scripting.addModule("/ti/easylink/easylink");
 /**
  * Write custom configuration values to the imported modules.
  */
+CCFG.xoscCapArray       = true;
+CCFG.xoscCapArrayDelta  = 0xC1;
 CCFG.ccfgTemplate.$name = "ti_devices_CCFGTemplate0";
 
 ADC1.$name                = "ADC_0";
