@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 The nanoFramework project contributors
+// Copyright (c) .NET Foundation and Contributors
 // See LICENSE file in the project root for full license information.
 //
 
@@ -11,8 +11,8 @@ const BlockRange BlockRange1[] =
 {
     // the last block is reserved for Customer Configuration Area and Bootloader Backdoor configuration
     // so we don't take it into account for the map
-    { BlockRange_BLOCKTYPE_CODE          ,   0  , 27 },           // 0x00000000 nanoCLR
-    { BlockRange_BLOCKTYPE_DEPLOYMENT    ,   28 , 42 },           // 0x00038000 deployment
+    { BlockRange_BLOCKTYPE_CODE          ,   0  , 30 },           // 0x00000000 nanoCLR
+    { BlockRange_BLOCKTYPE_DEPLOYMENT    ,   31 , 42 },           // 0x0003E000 deployment
 };
 
 const BlockRegionInfo BlockRegions[] = 
