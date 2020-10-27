@@ -200,25 +200,19 @@ jobs:
   steps:
   - checkout: self
     fetchDepth: 1
-
+  
   - template: azure-pipelines-templates/set-build-version.yml
-
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-
+  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
-
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
 
 ##############################
@@ -245,23 +239,17 @@ jobs:
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
-
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-
+  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
-
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
 
 ##############################
@@ -288,23 +276,17 @@ jobs:
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
-
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-
+  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
-
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
 
 ##############################
@@ -331,23 +313,17 @@ jobs:
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
-
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-
+  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
-
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
 
 ##############################
@@ -374,23 +350,17 @@ jobs:
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
-
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-
+  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
-
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
 
 ##############################
@@ -417,23 +387,17 @@ jobs:
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
-
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-
+  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
-
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
 
 ##############################
@@ -460,23 +424,17 @@ jobs:
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
-
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-
+  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
-
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
 
 ##############################
@@ -503,23 +461,17 @@ jobs:
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
-
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-
+  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
-
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
 
 ##############################
@@ -546,23 +498,17 @@ jobs:
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
-
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-
+  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
-
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
 
 ##############################
@@ -589,23 +535,17 @@ jobs:
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
-
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-
+  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
-
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
 
 ##############################
@@ -632,23 +572,17 @@ jobs:
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
-
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-
+  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
-
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-
   - template: azure-pipelines-templates/build-ti-simplelink.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - template: azure-pipelines-templates/publish-bintray.yml@templatesBuild
 
 ##################################
