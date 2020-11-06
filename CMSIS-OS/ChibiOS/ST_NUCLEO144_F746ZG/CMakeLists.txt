@@ -21,6 +21,7 @@ find_package(BuildUtils REQUIRED)
 find_package(CHIBIOS REQUIRED)
 find_package(ChibiOSnfOverlay REQUIRED)
 find_package(WireProtocol REQUIRED)
+find_package(nanoHALCore REQUIRED)
 
 # packages for nanoFramework libraries
 #######################################
@@ -89,6 +90,7 @@ add_executable(
     ${ChibiOSnfOverlay_SOURCES}
 
     ${WireProtocol_SOURCES}
+    ${nanoHALCore_SOURCES}
 )
 
 #######################
@@ -114,6 +116,7 @@ add_executable(
     ${ChibiOSnfOverlay_SOURCES}
 
     ${WireProtocol_SOURCES}
+    ${nanoHALCore_SOURCES}
 
     # sources for nanoFramework libraries
     ${NF_CoreCLR_SOURCES}
@@ -159,6 +162,7 @@ include_directories(
     ${CHIBIOS_INCLUDE_DIRS}
     ${ChibiOSnfOverlay_INCLUDE_DIRS}
     ${CHIBIOS_CONTRIB_INCLUDE_DIRS}
+    ${nanoHALCore_INCLUDE_DIRS}
 
     ${TARGET_CMSIS_COMMON_INCLUDE_DIRS}
     ${TARGET_CHIBIOS_COMMON_INCLUDE_DIRS}
