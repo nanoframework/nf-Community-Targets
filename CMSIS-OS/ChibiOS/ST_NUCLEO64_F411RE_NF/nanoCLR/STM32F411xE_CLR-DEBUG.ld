@@ -16,7 +16,7 @@ MEMORY
     config      : org = 0x00000000, len = 0                   /* space reserved for configuration block */
     deployment  : org = 0x08040000, len = 256k                /* space reserved for application deployment */
     ramvt       : org = 0x00000000, len = 0                   /* initial RAM address is reserved for a copy of the vector table */
-    ram0        : org = 0x20000000, len = 128k                /* SRAM1 */
+    ram0        : org = 0x20000000, len = 128k-48             /* SRAM1 */
     ram1        : org = 0x00000000, len = 0                
     ram2        : org = 0x00000000, len = 0                
     ram3        : org = 0x00000000, len = 0
@@ -72,5 +72,8 @@ REGION_ALIAS("HEAP_RAM", ram0);
 
 /* RAM region to be used for the nanoFramework CLR managed heap.*/
 REGION_ALIAS("CLR_MANAGED_HEAP_RAM", ram0);
+
+/* RAM region to be used for the boot clipboard.*/
+REGION_ALIAS("SECTION_FOR_BOOTCLIPBOARD", bootclpbrd);
 
 INCLUDE rules.ld
