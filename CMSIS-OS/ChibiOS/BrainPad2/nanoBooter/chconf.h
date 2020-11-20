@@ -19,7 +19,7 @@
 #define CHCONF_H
 
 #define _CHIBIOS_RT_CONF_
-#define _CHIBIOS_RT_CONF_VER_6_0_
+#define _CHIBIOS_RT_CONF_VER_6_1_
 
 /*===========================================================================*/
 /**
@@ -485,7 +485,9 @@
  * @{
  */
 /*===========================================================================*/
-
+#define CH_CFG_USE_DELEGATES                 FALSE
+#define CH_CFG_USE_OBJ_CACHES                 FALSE
+#define CH_CFG_USE_JOBS                               FALSE
 /**
  * @brief   System structure extension.
  * @details User fields added to the end of the @p ch_system_t structure.
