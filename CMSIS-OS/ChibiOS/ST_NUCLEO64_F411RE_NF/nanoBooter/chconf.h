@@ -485,7 +485,9 @@
  * @{
  */
 /*===========================================================================*/
-
+#define CH_CFG_USE_DELEGATES                 FALSE
+#define CH_CFG_USE_OBJ_CACHES                 FALSE
+#define CH_CFG_USE_JOBS                               FALSE
 /**
  * @brief   System structure extension.
  * @details User fields added to the end of the @p ch_system_t structure.
