@@ -23,6 +23,9 @@ int main(void) {
   // HAL initialization, this also initializes the configured device drivers
   // and performs the board-specific initializations.
   halInit();
+  
+  // init boot clipboard
+  InitBootClipboard();
 
   // check for valid CLR image at address contiguous to nanoBooter
   // this target DOES NOT have configuration block, so we need to use the __nanoImage_end__ address here
