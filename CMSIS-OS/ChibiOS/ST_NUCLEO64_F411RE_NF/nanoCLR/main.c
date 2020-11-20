@@ -29,7 +29,10 @@ int main(void) {
   // HAL initialization, this also initializes the configured device drivers
   // and performs the board-specific initializations.
   halInit();
-
+  
+  // init boot clipboard
+  InitBootClipboard();
+  
   // Init SWO to make it available to output as soon as possible
 #if (SWO_OUTPUT == TRUE)  
   SwoInit();
