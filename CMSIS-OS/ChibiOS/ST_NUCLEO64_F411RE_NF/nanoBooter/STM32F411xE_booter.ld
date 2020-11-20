@@ -16,7 +16,7 @@ MEMORY
     config      : org = 0x00000000, len = 0       /* space reserved for configuration block */
     deployment  : org = 0x00000000, len = 0       /* space reserved for application deployment */
     ramvt       : org = 0x00000000, len = 0       /* initial RAM address is reserved for a copy of the vector table */
-    ram0        : org = 0x20000000, len = 128k    /* SRAM1 */
+    ram0        : org = 0x20000000, len = 128k-48 /* SRAM1 */
     ram1        : org = 0x00000000, len = 0
     ram2        : org = 0x00000000, len = 0
     ram3        : org = 0x00000000, len = 0
@@ -78,3 +78,9 @@ INCLUDE rules_code.ld
 
 /* Data rules inclusion.*/
 INCLUDE rules_data.ld
+
+/* Data rules inclusion.*/
+INCLUDE rules_memory.ld
+
+/* boot clipboard rules inclusion.*/
+INCLUDE rules_bootclipboard.ld
