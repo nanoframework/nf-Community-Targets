@@ -1,3 +1,5 @@
+# This board is now old and has no owner. As such, it may not work out of the box.
+
 ## Configuration of Chibios, HAL and MCU ##
 
 For a successful build the following changes are required:
