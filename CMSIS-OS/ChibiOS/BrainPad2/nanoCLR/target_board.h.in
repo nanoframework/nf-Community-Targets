@@ -12,7 +12,6 @@
 #define _TARGET_BOARD_NANOCLR_H_
 
 #include <target_common.h>
-#include <chversion.h>
 
 #define OEMSYSTEMINFOSTRING "nanoCLR running @ @TARGET_BOARD@"
 
