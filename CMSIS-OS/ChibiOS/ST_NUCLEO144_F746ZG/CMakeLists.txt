@@ -29,6 +29,8 @@ add_executable(
     ${CMAKE_SOURCE_DIR}/src/HAL/nanoHAL_ConfigurationManager.c
 )
 
+NF_ADD_PLATFORM_DEPENDENCIES(${NANOBOOTER_PROJECT_NAME})
+
 NF_ADD_COMMON_SOURCES(${NANOBOOTER_PROJECT_NAME})
 NF_ADD_PLATFORM_SOURCES(${NANOBOOTER_PROJECT_NAME})
 
@@ -43,6 +45,8 @@ add_executable(
     # executables for project, project sources
     ${NANOCLR_PROJECT_NAME}.elf
 )
+
+NF_ADD_PLATFORM_DEPENDENCIES(${NANOCLR_PROJECT_NAME})
 
 NF_ADD_COMMON_SOURCES(${NANOCLR_PROJECT_NAME})
 NF_ADD_PLATFORM_SOURCES(${NANOCLR_PROJECT_NAME})
@@ -103,5 +107,6 @@ if(HEX2DFU_TOOL_AVAILABLE)
             ${CMAKE_SOURCE_DIR}/build/nanobooter-nanoclr.dfu       
         )
     endif()
+
 
 endif()

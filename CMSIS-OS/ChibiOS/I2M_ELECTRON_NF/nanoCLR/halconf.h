@@ -19,7 +19,7 @@
 #define HALCONF_H
 
 #define _CHIBIOS_HAL_CONF_
-#define _CHIBIOS_HAL_CONF_VER_7_0_
+#define _CHIBIOS_HAL_CONF_VER_7_1_
 
 #include <target_platform.h>
 #include "mcuconf.h"
@@ -62,10 +62,10 @@
 // #endif
 
 /**
- * @brief   Enables the DAC subsystem.
+ * @brief   Enables the EFlash subsystem.
  */
-#if !defined(HAL_USE_DAC) || defined(__DOXYGEN__)
-#define HAL_USE_DAC                         FALSE
+#if !defined(HAL_USE_EFL) || defined(__DOXYGEN__)
+#define HAL_USE_EFL                         FALSE
 #endif
 
 /**
@@ -320,7 +320,7 @@
 #endif
 
 /**
- * @brief   Enables an event sources for incoming packets.
+ * @brief   Enables the zero-copy API.
  */
 #if !defined(MAC_USE_EVENTS) || defined(__DOXYGEN__)
 #define MAC_USE_EVENTS                      TRUE
