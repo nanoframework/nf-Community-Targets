@@ -100,6 +100,7 @@
 #define STM32_IRQ_EXTI20_PRIORITY           6
 #define STM32_IRQ_EXTI21_PRIORITY           15
 #define STM32_IRQ_EXTI22_PRIORITY           15
+#define STM32_IRQ_EXTI23_PRIORITY           6
 
 /*
  * ADC driver system settings.
