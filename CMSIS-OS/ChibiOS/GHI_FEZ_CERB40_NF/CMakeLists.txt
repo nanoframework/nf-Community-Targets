@@ -26,6 +26,8 @@ add_executable(
     ${NANOBOOTER_PROJECT_NAME}.elf
 )
 
+NF_ADD_PLATFORM_DEPENDENCIES(${NANOBOOTER_PROJECT_NAME})
+
 NF_ADD_COMMON_SOURCES(${NANOBOOTER_PROJECT_NAME})
 NF_ADD_PLATFORM_SOURCES(${NANOBOOTER_PROJECT_NAME})
 
@@ -40,6 +42,8 @@ add_executable(
     # executables for project, project sources
     ${NANOCLR_PROJECT_NAME}.elf
 )
+
+NF_ADD_PLATFORM_DEPENDENCIES(${NANOCLR_PROJECT_NAME})
 
 NF_ADD_COMMON_SOURCES(${NANOCLR_PROJECT_NAME})
 NF_ADD_PLATFORM_SOURCES(${NANOCLR_PROJECT_NAME})
@@ -86,9 +90,10 @@ nf_generate_build_output_files(${NANOCLR_PROJECT_NAME}.elf)
 if(HEX2DFU_TOOL_AVAILABLE)
 
     ####################################################################################################
-    ## when changing the linker file make sure to update the new addresses for the image files bellow ##
+    ## when changing the linker file make sure to update the new addresses for the image files below  ##
     ## DO NOT use the leading 0x notation, just the address in plain hexadecimal formating            ##
     ####################################################################################################
+
     if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
         NF_GENERATE_DFU_PACKAGE(
             ${CMAKE_SOURCE_DIR}/build/${NANOBOOTER_PROJECT_NAME}.bin 08000000 
@@ -102,5 +107,6 @@ if(HEX2DFU_TOOL_AVAILABLE)
             ${CMAKE_SOURCE_DIR}/build/nanobooter-nanoclr.dfu
         )
     endif()
+
 
 endif()
