@@ -46,7 +46,7 @@ jobs:
 ##############################
 - job: Get_Commit_Message
   pool:
-    vmImage: 'VS2017-Win2016'
+    vmImage: 'windows-2019'
 
   steps:
   - checkout: self
@@ -89,7 +89,7 @@ jobs:
 ##############################
 - job: Check_Build_Options
   pool:
-    vmImage: 'VS2017-Win2016'
+    vmImage: 'windows-2019'
 
   dependsOn: 
   - Get_Commit_Message
@@ -189,7 +189,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'VS2017-Win2016'
+    vmImage: 'windows-2019'
 
   variables:
     TargetBoard: MBN_QUAIL
@@ -226,7 +226,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'VS2017-Win2016'
+    vmImage: 'windows-2019'
 
   variables:
     TargetBoard: GHI_FEZ_CERB40_NF
@@ -263,7 +263,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'VS2017-Win2016'
+    vmImage: 'windows-2019'
 
   variables:
     TargetBoard: I2M_ELECTRON_NF
@@ -300,7 +300,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'VS2017-Win2016'
+    vmImage: 'windows-2019'
 
   variables:
     TargetBoard: I2M_OXYGEN_NF
@@ -337,7 +337,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'VS2017-Win2016'
+    vmImage: 'windows-2019'
 
   variables:
     TargetBoard: ST_NUCLEO64_F401RE_NF
@@ -374,7 +374,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'VS2017-Win2016'
+    vmImage: 'windows-2019'
 
   variables:
     TargetBoard: ST_NUCLEO64_F411RE_NF
@@ -411,7 +411,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'VS2017-Win2016'
+    vmImage: 'windows-2019'
 
   variables:
     TargetBoard: ST_STM32F411_DISCOVERY
@@ -448,7 +448,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'VS2017-Win2016'
+    vmImage: 'windows-2019'
 
   variables:
     TargetBoard: ST_NUCLEO144_F412ZG_NF
@@ -485,7 +485,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'VS2017-Win2016'
+    vmImage: 'windows-2019'
 
   variables:
     TargetBoard: ST_NUCLEO144_F746ZG
@@ -522,7 +522,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'VS2017-Win2016'
+    vmImage: 'windows-2019'
 
   variables:
     TargetBoard: ST_STM32F4_DISCOVERY
@@ -559,7 +559,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'VS2017-Win2016'
+    vmImage: 'windows-2019'
 
   variables:
     TargetBoard: ST_NUCLEO144_F439ZI
@@ -596,7 +596,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'VS2017-Win2016'
+    vmImage: 'windows-2019'
 
   variables:
     TargetBoard: TI_CC1352P1_LAUNCHXL
@@ -642,7 +642,7 @@ jobs:
   condition: or( failed('Build_GHI_FEZ_CERB40_NF'), failed('Build_I2M_ELECTRON_NF'), failed('Build_I2M_OXYGEN_NF'), failed('Build_ST_NUCLEO64_F401RE_NF'), failed('Build_ST_NUCLEO64_F411RE_NF'), failed('Build_ST_STM32F411_DISCOVERY'), failed('Build_ST_NUCLEO144_F412ZG_NF'), failed('Build_ST_NUCLEO144_F746ZG'), failed('Build_ST_STM32F4_DISCOVERY'), failed('Build_ST_NUCLEO144_F439ZI'), failed('Build_TI_CC1352P1_LAUNCHXL'))
 
   pool:
-    vmImage: 'VS2017-Win2016'
+    vmImage: 'windows-2019'
 
   steps:
   - checkout: self
