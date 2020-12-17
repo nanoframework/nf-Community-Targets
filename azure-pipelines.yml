@@ -103,6 +103,8 @@ jobs:
       if($env:System_PullRequest_PullRequestId -ne $null)
       {
         # this is a PR: always build depending on target tag
+        echo "##vso[task.setvariable variable=GO;isOutput=true]False"
+
         "**PR build**" | Write-Host
       }
       else
@@ -129,6 +131,8 @@ jobs:
         )
         {
             # there is a tag to build a valid target (or ALL), build images
+            echo "##vso[task.setvariable variable=GO;isOutput=true]False"
+
             "**Build target(s)**" | Write-Host
         }
         else
