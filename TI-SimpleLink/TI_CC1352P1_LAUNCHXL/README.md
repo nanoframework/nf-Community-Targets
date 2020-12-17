@@ -7,6 +7,10 @@ The CC1352P1 LaunchPad board contains a TI CC1352P1 device.
 - Detailed documentation for this target reference can be found [here](http://docs.nanoframework.net/content/reference-targets/ti-CC1352P1-launchxl.html).
 - Instructions on how to flash the CC1352P1 LaunchPad can be found [here](http://docs.nanoframework.net/content/ti-simplelink/flash-nanoclr-cc13x2_26x2.html)
 
+## Radio frequency
+
+The radio frequency can be set during the build using the `RADIO_FREQUENCY` option. Valid values are 868 and 915 (MHz).
+
 ## Jumper Settings
 
 * For any examples that use LEDs, make sure the LED's jumper settings are closed.
