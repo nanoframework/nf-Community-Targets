@@ -103,17 +103,13 @@ jobs:
       if($env:System_PullRequest_PullRequestId -ne $null)
       {
         # this is a PR: always build depending on target tag
-        echo "##vso[task.setvariable variable=GO;isOutput=true]False"
-
         "**PR build**" | Write-Host
       }
       else
       {
-        # this has BUILD ALL build var set to true
         if($env:BUILD_ALL -like "True")
         {
-          echo "##vso[task.setvariable variable=GO;isOutput=true]True"
-
+          # this has BUILD ALL build var set to true
           "**Build ALL**" | Write-Host
         }
         elseif(
@@ -133,8 +129,6 @@ jobs:
         )
         {
             # there is a tag to build a valid target (or ALL), build images
-            echo "##vso[task.setvariable variable=GO;isOutput=true]True"
-
             "**Build target(s)**" | Write-Host
         }
         else
@@ -182,7 +176,7 @@ jobs:
 
 ##############################
 - job: Build_MBN_QUAIL
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] MBN_QUAIL'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ALL'), eq(variables['BUILD_ALL'], 'true'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] MBN_QUAIL'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
 
   dependsOn: 
   - Get_Commit_Message
@@ -219,7 +213,7 @@ jobs:
 
 ##############################
 - job: Build_GHI_FEZ_CERB40_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] GHI_FEZ_CERB40_NF'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ALL'), eq(variables['BUILD_ALL'], 'true'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] GHI_FEZ_CERB40_NF'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
 
   dependsOn: 
   - Get_Commit_Message
@@ -256,7 +250,7 @@ jobs:
 
 ##############################
 - job: Build_I2M_ELECTRON_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] I2M_ELECTRON_NF'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ALL'), eq(variables['BUILD_ALL'], 'true'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] I2M_ELECTRON_NF'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
 
   dependsOn: 
   - Get_Commit_Message
@@ -293,7 +287,7 @@ jobs:
 
 ##############################
 - job: Build_I2M_OXYGEN_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] I2M_OXYGEN_NF'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ALL'), eq(variables['BUILD_ALL'], 'true'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] I2M_OXYGEN_NF'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
 
   dependsOn: 
   - Get_Commit_Message
@@ -330,7 +324,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO64_F401RE_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ST_NUCLEO64_F401RE_NF'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ALL'), eq(variables['BUILD_ALL'], 'true'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ST_NUCLEO64_F401RE_NF'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
 
   dependsOn: 
   - Get_Commit_Message
@@ -367,7 +361,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO64_F411RE_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ST_NUCLEO64_F411RE_NF'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ALL'), eq(variables['BUILD_ALL'], 'true'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ST_NUCLEO64_F411RE_NF'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
 
   dependsOn: 
   - Get_Commit_Message
@@ -404,7 +398,7 @@ jobs:
 
 ##############################
 - job: Build_ST_STM32F411_DISCOVERY
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ST_STM32F411_DISCOVERY'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ALL'), eq(variables['BUILD_ALL'], 'true'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ST_STM32F411_DISCOVERY'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
 
   dependsOn: 
   - Get_Commit_Message
@@ -441,7 +435,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO144_F412ZG_NF
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F412ZG_NF'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ALL'), eq(variables['BUILD_ALL'], 'true'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F412ZG_NF'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
 
   dependsOn: 
   - Get_Commit_Message
@@ -478,7 +472,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO144_F746ZG
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F746ZG'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ALL'), eq(variables['BUILD_ALL'], 'true'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F746ZG'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
 
   dependsOn: 
   - Get_Commit_Message
@@ -515,7 +509,7 @@ jobs:
 
 ##############################
 - job: Build_ST_STM32F4_DISCOVERY
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ST_STM32F4_DISCOVERY'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ALL'), eq(variables['BUILD_ALL'], 'true'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ST_STM32F4_DISCOVERY'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
 
   dependsOn: 
   - Get_Commit_Message
@@ -552,7 +546,7 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO144_F439ZI
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F439ZI'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ALL'), eq(variables['BUILD_ALL'], 'true'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F439ZI'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
 
   dependsOn: 
   - Get_Commit_Message
