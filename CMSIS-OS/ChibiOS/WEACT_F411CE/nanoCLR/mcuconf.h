@@ -36,7 +36,7 @@
  #define STM32_CLOCK48_REQUIRED              TRUE
  #define STM32_SW                            STM32_SW_PLL
  #define STM32_PLLSRC                        STM32_PLLSRC_HSE
- #define STM32_PLLM_VALUE                    12
+ #define STM32_PLLM_VALUE                    25
  #define STM32_PLLN_VALUE                    192
  #define STM32_PLLP_VALUE                    2
  #define STM32_PLLQ_VALUE                    4
@@ -52,7 +52,7 @@
  #define STM32_MCO2PRE                       STM32_MCO2PRE_DIV5
  #define STM32_I2SSRC                        STM32_I2SSRC_CKIN
  #define STM32_PLLI2SN_VALUE                 192
- #define STM32_PLLI2SR_VALUE                 5
+ #define STM32_PLLI2SR_VALUE                 2
  #define STM32_PVD_ENABLE                    FALSE
  #define STM32_PLS                           STM32_PLS_LEV0
  #define STM32_BKPRAM_ENABLE                 FALSE

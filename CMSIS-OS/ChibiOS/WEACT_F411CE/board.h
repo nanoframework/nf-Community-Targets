@@ -45,14 +45,14 @@
 /*
  * Board oscillators-related settings.
  * NOTE: LSE is fitted and is of course 32768.
- * NOTE: HSE is fitted and set to a 12 MHz one.
+ * NOTE: HSE is fitted and set to a 25 MHz one.
  */
 #if !defined(STM32_LSECLK)
 #define STM32_LSECLK                32768U
 #endif
 
 #if !defined(STM32_HSECLK)
-#define STM32_HSECLK                12000000U
+#define STM32_HSECLK                25000000U
 #endif
 
 /*
