@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace nanoFramework.Targets.Community.I2M_OXYGEN_NF
+namespace nanoFramework.Targets.Community.WEACT_F411CE
 {
 	public static class Gpio
 	{

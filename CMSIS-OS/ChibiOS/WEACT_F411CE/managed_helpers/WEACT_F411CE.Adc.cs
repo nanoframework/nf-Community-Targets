@@ -3,10 +3,10 @@
 // See LICENSE file in the project root for full license information.
 //
 
-namespace nanoFramework.Targets.Community.I2M_OXYGEN_NF
+namespace nanoFramework.Targets.Community.WEACT_F411CE
 {
     /// <summary>
-    /// Enumeration of ADC channels available in the community board I2M_OXYGEN_NF
+    /// Enumeration of ADC channels available in the community board WEACT_F411CE
     /// </summary>
     public static class AdcChannels
     {

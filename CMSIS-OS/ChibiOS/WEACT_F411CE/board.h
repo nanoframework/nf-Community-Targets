@@ -15,7 +15,7 @@
 */
 
 /*
- * This is the a board made by IngenuityMicro based upon MCU from ST 
+ * This is the a board made by WeAct Studio based upon MCU from ST 
  * the STM32F411CEU6. The board is equipped with both LSE and HSE. 
  */
 
@@ -23,14 +23,14 @@
 #define BOARD_H
 
 /*
- * Setup for IngenuityMicro Oxygen board  based upon an STM32F411CEU6..
+ * Setup for WeAct F411CE board  based upon an STM32F411CEU6..
  */
 
 /*
  * Board identifier.
  */
-#define BOARD_I2M_OXYGEN_NF
-#define BOARD_NAME                  "IngenuityMicro Oxygen board based upon STM32F411CEU6 for nanoFramework"
+#define BOARD_WEACT_F411CE
+#define BOARD_NAME                  "WeAct MiniF4 board based upon STM32F411CEU6 for nanoFramework"
 
 /*
  * USB OTG Force

@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "I2M_OXYGEN_NF nanoBooter",
+            "name": "WEACT_F411CE nanoBooter",
             "type": "cppdbg",
             "request": "launch",
             "miDebuggerPath": "<absolute-path-to-the-toolchain-folder-mind-the-forward-slashes>/bin/arm-none-eabi-gdb.exe",
@@ -54,7 +54,7 @@
             "cwd": "${cwd}"
         },
         {
-            "name": "I2M_OXYGEN_NF nanoCLR",
+            "name": "WEACT_F411CE nanoCLR",
             "type": "cppdbg",
             "request": "launch",
             "miDebuggerPath": "<absolute-path-to-the-toolchain-folder-mind-the-forward-slashes>/bin/arm-none-eabi-gdb.exe",

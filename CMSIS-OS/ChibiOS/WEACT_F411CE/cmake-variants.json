@@ -22,8 +22,8 @@
     "linkage": {
       "default": "",
       "choices": {
-        "I2M_OXYGEN_NF" : {
-            "short" : "Oxygen",
+        "WEACT_F411CE" : {
+            "short" : "WEACT_F411CE",
             "settings" : {
               "BUILD_VERSION" : "1.2.63.1705",
               "TOOLCHAIN_PREFIX": "<absolute-path-to-the-toolchain-folder-mind-the-forward-slashes>",
@@ -38,7 +38,7 @@
               "RTOS_SOURCE_FOLDER" : "",
               "CHIBIOS_CONTRIB_REQUIRED" : "OFF",
               "CHIBIOS_CONTRIB_SOURCE" : "",
-              "TARGET_BOARD" : "I2M_OXYGEN_NF",
+              "TARGET_BOARD" : "WEACT_F411CE",
               "SWO_OUTPUT" : "OFF",
               "NF_BUILD_RTM" : "OFF",
               "NF_WP_TRACE_ERRORS" : "OFF",
