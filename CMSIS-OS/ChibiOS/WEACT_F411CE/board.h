@@ -263,6 +263,7 @@
  */
 #define LINE_ARD_A0                 PAL_LINE(GPIOA, 0U)
 #define LINE_ADC1_IN0               PAL_LINE(GPIOA, 0U)
+#define LINE_BUTTON                 PAL_LINE(GPIOA, 0U)
 #define LINE_ARD_A1                 PAL_LINE(GPIOA, 1U)
 #define LINE_ADC1_IN1               PAL_LINE(GPIOA, 1U)
 #define LINE_ARD_D1                 PAL_LINE(GPIOA, 2U)
@@ -299,7 +300,6 @@
 #define LINE_ARD_A4                 PAL_LINE(GPIOC, 1U)
 #define LINE_ADC1_IN11              PAL_LINE(GPIOC, 1U)
 #define LINE_ARD_D9                 PAL_LINE(GPIOC, 7U)
-#define LINE_BUTTON                 PAL_LINE(GPIOC, 13U)
 #define LINE_OSC32_IN               PAL_LINE(GPIOC, 14U)
 #define LINE_OSC32_OUT              PAL_LINE(GPIOC, 15U)
 
@@ -336,7 +336,7 @@
 /*
  * GPIOA setup:
  *
- * PA0  - ADC1_IN0                  (input pullup).
+ * PA0  - ADC1_IN0 BUTTON           (input pullup).
  * PA1  - ADC1_IN1                  (input pullup).
  * PA2  - USART2_TX                 (alternate 7).
  * PA3  - USART2_RX                 (alternate 7).
@@ -583,7 +583,7 @@
  * PC10 - PIN10                     (input pullup).
  * PC11 - PIN11                     (input pullup).
  * PC12 - PIN12                     (input pullup).
- * PC13 - BUTTON                    (input floating).
+ * PC13 - PIN13                     (input pullup).
  * PC14 - OSC32_IN                  (input floating).
  * PC15 - OSC32_OUT                 (input floating).
  */
@@ -648,7 +648,7 @@
                                      PIN_PUPDR_PULLUP(GPIOC_PIN10) |        \
                                      PIN_PUPDR_PULLUP(GPIOC_PIN11) |        \
                                      PIN_PUPDR_PULLUP(GPIOC_PIN12) |        \
-                                     PIN_PUPDR_FLOATING(GPIOC_PIN13) |     \
+                                     PIN_PUPDR_PULLUP(GPIOC_PIN13) |        \
                                      PIN_PUPDR_FLOATING(GPIOC_OSC32_IN) |   \
                                      PIN_PUPDR_FLOATING(GPIOC_OSC32_OUT))
 #define VAL_GPIOC_ODR               (PIN_ODR_HIGH(GPIOC_PIN0) |           \
