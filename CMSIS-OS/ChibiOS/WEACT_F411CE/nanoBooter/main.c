@@ -73,9 +73,9 @@ int main(void) {
 
   //  Normal main() thread
   while (true) {
-      palSetPad(GPIOA, GPIOA_USER_LED);
+      palSetPad(GPIOC, GPIOC_USER_LED);
       osDelay(500);      
-      palClearPad(GPIOA, GPIOA_USER_LED);
+      palClearPad(GPIOC, GPIOC_USER_LED);
       osDelay(500);
   }
 }
