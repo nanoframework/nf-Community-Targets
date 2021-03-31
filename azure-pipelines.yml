@@ -8,9 +8,6 @@ trigger:
     exclude: [ "doc", "*.md", ".gitignore", "README.md" ]
 
 pr:
-  branches:
-    include:
-    - main
   autoCancel: true
 
 # scheduled build
