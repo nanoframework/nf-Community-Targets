@@ -1,4 +1,4 @@
-<img src="https://github.com/nanoframework/nf-Community-Targets/blob/master/CMSIS-OS/ChibiOS/I2M_ELECTRON_NF/resources/IngenuityMicro_Logo.svg?sanitize=true">
+<img src="https://github.com/nanoframework/nf-Community-Targets/blob/master/ChibiOS/I2M_ELECTRON_NF/resources/IngenuityMicro_Logo.svg?sanitize=true">
 
 ## Electron community board ##
 

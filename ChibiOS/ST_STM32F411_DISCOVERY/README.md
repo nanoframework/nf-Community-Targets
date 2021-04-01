@@ -22,7 +22,7 @@ The STM32F411 Discovery board offers the following features:
 * USB OTG with micro-AB connector
 * Extension header for LQFP100 I/Os for a quick connection to the prototyping board and an easy probing
 
-![STM32F411E-DISC0](https://github.com/nanoframework/nf-Community-Targets/blob/master/CMSIS-OS/ChibiOS/ST_STM32F411_DISCOVERY/resources/STM32F411E-DISC0.jpg)
+![STM32F411E-DISC0](https://github.com/nanoframework/nf-Community-Targets/blob/master/ChibiOS/ST_STM32F411_DISCOVERY/resources/STM32F411E-DISC0.jpg)
 
 More info about the board can be found at the [product website](http://www.st.com/en/evaluation-tools/32f411ediscovery.html)
 
