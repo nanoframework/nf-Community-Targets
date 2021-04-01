@@ -7,12 +7,12 @@ steps:
   - checkout: templatesBuild
     fetchDepth: 1
 
-  # Copy CMSIS-OS target files to nf-interpreter folder
+  # Copy ChibiOS target files to nf-interpreter folder
   - task: CopyFiles@2
-    displayName: Copy CMSIS-OS target files
+    displayName: Copy ChibiOS target files
     inputs:
-      sourceFolder: $(Build.SourcesDirectory)\nf-Community-Targets\CMSIS-OS
-      targetFolder: $(Build.SourcesDirectory)\nf-interpreter\targets-community\CMSIS-OS
+      sourceFolder: $(Build.SourcesDirectory)\nf-Community-Targets\ChibiOS
+      targetFolder: $(Build.SourcesDirectory)\nf-interpreter\targets-community\ChibiOS
       cleanTargetFolder: false
       overWrite: true
 
