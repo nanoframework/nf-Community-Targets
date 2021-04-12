@@ -20,7 +20,7 @@
 - [ ] ST_NUCLEO144_F439ZI
 - [ ] TI_CC1352P1_LAUNCHXL_868
 - [ ] TI_CC1352P1_LAUNCHXL_915
-- [ ] ALL
+- [ ] BUILD ALL
 
 ## Motivation and Context
 <!--- Why is this change required? What problem does it solve? -->

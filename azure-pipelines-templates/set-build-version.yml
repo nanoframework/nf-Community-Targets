@@ -13,6 +13,8 @@ steps:
           $buildSimpleVersion = "1.6." + $version.ToString()
           $buildFullVersion = $buildSimpleVersion + ".0"
 
+          Write-Host "$("##vso[task.setvariable variable=TARGET_BUILD_COUNTER]")$version"
+
           Write-Host ">>$buildFullVersion<<"
          
           # need to hijack NBGV variables that are expected in the build CMake command and others that follow

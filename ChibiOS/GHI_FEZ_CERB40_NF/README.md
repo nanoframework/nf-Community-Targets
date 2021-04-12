@@ -1,4 +1,4 @@
-![GHI FEZ CERB40](https://github.com/nanoframework/nf-Community-Targets/blob/master/CMSIS-OS/ChibiOS/GHI_FEZ_CERB40_NF/resources/cerb40.jpg)
+![GHI FEZ CERB40](https://github.com/nanoframework/nf-Community-Targets/blob/master/ChibiOS/GHI_FEZ_CERB40_NF/resources/cerb40.jpg)
 
 -----
 
