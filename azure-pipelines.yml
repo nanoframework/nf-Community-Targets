@@ -3,7 +3,7 @@
 
 trigger:
   branches:
-    include: ["master", "develop*", "release-*", "refs/tags/*" ]
+    include: ["main", "master", "develop*", "release-*", "refs/tags/*" ]
   paths:
     exclude: [ "doc", "*.md", ".gitignore", "README.md" ]
 
