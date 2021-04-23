@@ -656,6 +656,51 @@ jobs:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
+# ESP32 targets
+- job: Build_ESP32_targets
+  condition: and( succeeded('Check_Code_Style'), ne( dependencies.Check_Build_Options.outputs['BuildOptions.SKIP_BUILD'], true ), or(eq(dependencies.Check_Build_Options.outputs['TargetsToBuild.BUILD_ALL'], true), eq(dependencies.Check_Build_Options.outputs['TargetsToBuild.BUILD_FREERTOS_ESP32'], true)) )
+
+  dependsOn:
+  - Check_Build_Options
+  - Check_Code_Style
+
+  pool:
+    vmImage: 'windows-2019'
+
+  # there is only a single ESP32 target, but this is already config as a matrix to make it easy to add new ones
+  strategy:
+    matrix:
+      ESP32_OLIMEX:
+        TargetBoard: ESP32_WROOM_32
+        BuildOptions: -DTARGET_SERIES=ESP32 -DRTOS=FREERTOS_ESP32 -DNF_FEATURE_DEBUGGER=ON -DTARGET_SERIAL_BAUDRATE=115200 -DTARGET_NAME=ESP32_PICO -DNF_FEATURE_RTC=ON -DNF_FEATURE_HAS_CONFIG_BLOCK=ON -DNF_FEATURE_HAS_SDCARD=ON -DAPI_System.Math=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_Windows.Devices.Adc=ON -DAPI_System.Net=ON -DAPI_Windows.Devices.Wifi=ON -DNF_SECURITY_MBEDTLS=ON -DAPI_Hardware.Esp32=ON -DSUPPORT_ANY_BASE_CONVERSION=ON -DAPI_nanoFramework.ResourceManager=ON -DAPI_nanoFramework.System.Collections=ON -DAPI_nanoFramework.System.Text=ON -DAPI_nanoFramework.Hardware.Esp32.Rmt=ON -DAPI_System.Device.Dac=ON -DESP32_ETHERNET_SUPPORT -DESP32_CONFIG_PIN_PHY_POWER=12 -DESP32_CONFIG_PHY_CLOCK_MODE=ETH_CLOCK_GPIO17_OUT
+        PackageName: ESP32_OLIMEX
+
+  variables:
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('ESP32_versioncounter', 0)]
+    ESP32_TOOLCHAIN_PATH: $(Agent.TempDirectory)\ESP32_Tools\xtensa-esp32-elf
+
+  steps:
+  - template: azure-pipelines-templates/build-preparations.yml
+  - template: azure-pipelines-templates/nb-gitversioning.yml
+  - template: azure-pipelines-templates/download-install-esp32-build-components.yml
+  - template: azure-pipelines-templates/download-install-ninja.yml
+  - template: azure-pipelines-templates/build-esp32.yml
+
+  - task: CopyFiles@1
+    condition: and( succeeded(), ne(variables['Build.Reason'], 'PullRequest') )
+    displayName: Copying bootloader from ESP32 libs
+    inputs:
+      sourceFolder: $(ESP32_LIBS_PATH)
+      Contents: |
+        bootloader.bin
+      TargetFolder: '$(Build.ArtifactStagingDirectory)\$(TargetPublishName)'
+      flattenFolders: true
+
+  - template: azure-pipelines-templates/pack-publish-artifacts.yml
+  - template: azure-pipelines-templates/publish-cloudsmith.yml
+
+
 ##################################
 # report build failure to Discord
 - job: Report_Build_Failure
@@ -672,7 +717,8 @@ jobs:
   - Build_ST_NUCLEO144_F439ZI
   - Build_TI_CC1352P1_LAUNCHXL_868
   - Build_TI_CC1352P1_LAUNCHXL_915
-  condition: or( failed('Build_GHI_FEZ_CERB40_NF'), failed('Build_I2M_ELECTRON_NF'), failed('Build_I2M_OXYGEN_NF'), failed('Build_ST_NUCLEO64_F401RE_NF'), failed('Build_ST_NUCLEO64_F411RE_NF'), failed('Build_ST_STM32F411_DISCOVERY'), failed('Build_ST_NUCLEO144_F412ZG_NF'), failed('Build_ST_NUCLEO144_F746ZG'), failed('Build_ST_STM32F4_DISCOVERY'), failed('Build_ST_NUCLEO144_F439ZI'), failed('Build_TI_CC1352P1_LAUNCHXL_868'), failed('Build_TI_CC1352P1_LAUNCHXL_915'))
+  - Build_ESP32_targets
+  condition: or( failed('Build_GHI_FEZ_CERB40_NF'), failed('Build_I2M_ELECTRON_NF'), failed('Build_I2M_OXYGEN_NF'), failed('Build_ST_NUCLEO64_F401RE_NF'), failed('Build_ST_NUCLEO64_F411RE_NF'), failed('Build_ST_STM32F411_DISCOVERY'), failed('Build_ST_NUCLEO144_F412ZG_NF'), failed('Build_ST_NUCLEO144_F746ZG'), failed('Build_ST_STM32F4_DISCOVERY'), failed('Build_ST_NUCLEO144_F439ZI'), failed('Build_TI_CC1352P1_LAUNCHXL_868'), failed('Build_TI_CC1352P1_LAUNCHXL_915'), failed('Build_ESP32_targets'))
 
   pool:
     vmImage: 'windows-2019'
