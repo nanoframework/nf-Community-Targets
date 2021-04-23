@@ -49,6 +49,8 @@ The above firmware builds include support for the class libraries and features m
     | ST Nucleo144 F439ZI     | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |                    | :heavy_check_mark: |                    |                    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |                    |                    |
     | TI CC1352P1 LAUNCHXL_868 | :heavy_check_mark: |                    |                    |                    |                    |                    |                    |                    |                    |                    |                    |                    |                    |                    |
     | TI CC1352P1 LAUNCHXL_915 | :heavy_check_mark: |                    |                    |                    |                    |                    |                    |                    |                    |                    |                    |                    |                    |                    |
+    | ESP32_OLIMEX_POE          | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |                    | :heavy_check_mark: |                    | :heavy_check_mark: Wifi + Ethernet | :heavy_check_mark: |                    |
+
 </details>
 
 ## Feedback and documentation
