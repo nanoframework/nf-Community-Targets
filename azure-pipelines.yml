@@ -196,6 +196,8 @@ jobs:
   steps:
   - checkout: self
     fetchDepth: 1
+  - checkout: templatesBuild
+    fetchDepth: 1
   
   - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
@@ -233,7 +235,9 @@ jobs:
   steps:
   - checkout: self
     fetchDepth: 1
-  
+  - checkout: templatesBuild
+    fetchDepth: 1
+
   - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
@@ -269,6 +273,8 @@ jobs:
 
   steps:
   - checkout: self
+    fetchDepth: 1
+  - checkout: templatesBuild
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
@@ -307,6 +313,8 @@ jobs:
   steps:
   - checkout: self
     fetchDepth: 1
+  - checkout: templatesBuild
+    fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
@@ -343,6 +351,8 @@ jobs:
 
   steps:
   - checkout: self
+    fetchDepth: 1
+  - checkout: templatesBuild
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
@@ -381,6 +391,8 @@ jobs:
   steps:
   - checkout: self
     fetchDepth: 1
+  - checkout: templatesBuild
+    fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
@@ -417,6 +429,8 @@ jobs:
 
   steps:
   - checkout: self
+    fetchDepth: 1
+  - checkout: templatesBuild
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
@@ -455,6 +469,8 @@ jobs:
   steps:
   - checkout: self
     fetchDepth: 1
+  - checkout: templatesBuild
+    fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
@@ -491,6 +507,8 @@ jobs:
 
   steps:
   - checkout: self
+    fetchDepth: 1
+  - checkout: templatesBuild
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
@@ -529,6 +547,8 @@ jobs:
   steps:
   - checkout: self
     fetchDepth: 1
+  - checkout: templatesBuild
+    fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
@@ -565,6 +585,8 @@ jobs:
 
   steps:
   - checkout: self
+    fetchDepth: 1
+  - checkout: templatesBuild
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
@@ -604,6 +626,8 @@ jobs:
   steps:
   - checkout: self
     fetchDepth: 1
+  - checkout: templatesBuild
+    fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
@@ -641,6 +665,8 @@ jobs:
 
   steps:
   - checkout: self
+    fetchDepth: 1
+  - checkout: templatesBuild
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
@@ -682,6 +708,11 @@ jobs:
     ESP32_TOOLCHAIN_PATH: $(Agent.TempDirectory)\ESP32_Tools\xtensa-esp32-elf
 
   steps:
+  - checkout: self
+    fetchDepth: 1
+  - checkout: templatesBuild
+    fetchDepth: 1
+
   - template: azure-pipelines-templates/build-preparations.yml
   - template: azure-pipelines-templates/nb-gitversioning.yml
   - template: azure-pipelines-templates/download-install-esp32-build-components.yml
