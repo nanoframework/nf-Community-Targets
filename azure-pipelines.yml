@@ -192,6 +192,7 @@ jobs:
     REVISION: $[counter('MBN_QUAIL_versioncounter', 0)]
     GccArm_Version:
     NeedsDFU: true
+    NeedsSRECORD: false
 
   steps:
   - checkout: self
@@ -231,6 +232,7 @@ jobs:
     REVISION: $[counter('GHI_FEZ_CERB40_NF_versioncounter', 0)]
     GccArm_Version:
     NeedsDFU: true
+    NeedsSRECORD: false
 
   steps:
   - checkout: self
@@ -270,6 +272,7 @@ jobs:
     REVISION: $[counter('I2M_ELECTRON_NF_versioncounter', 0)]
     GccArm_Version:
     NeedsDFU: true
+    NeedsSRECORD: false
 
   steps:
   - checkout: self
@@ -309,6 +312,7 @@ jobs:
     REVISION: $[counter('I2M_OXYGEN_NF_versioncounter', 0)]
     GccArm_Version:
     NeedsDFU: true
+    NeedsSRECORD: false
 
   steps:
   - checkout: self
@@ -348,6 +352,7 @@ jobs:
     REVISION: $[counter('ST_NUCLEO64_F401RE_NF_versioncounter', 0)]
     GccArm_Version:
     NeedsDFU: true
+    NeedsSRECORD: false
 
   steps:
   - checkout: self
@@ -387,6 +392,7 @@ jobs:
     REVISION: $[counter('ST_NUCLEO64_F411RE_NF_versioncounter', 0)]
     GccArm_Version:
     NeedsDFU: false
+    NeedsSRECORD: false
 
   steps:
   - checkout: self
@@ -426,6 +432,7 @@ jobs:
     REVISION: $[counter('ST_STM32F411_DISCOVERY_versioncounter', 0)]
     GccArm_Version:
     NeedsDFU: false
+    NeedsSRECORD: false
 
   steps:
   - checkout: self
@@ -465,6 +472,7 @@ jobs:
     REVISION: $[counter('ST_NUCLEO144_F412ZG_NF_versioncounter', 0)]
     GccArm_Version:
     NeedsDFU: false
+    NeedsSRECORD: false
 
   steps:
   - checkout: self
@@ -504,6 +512,7 @@ jobs:
     REVISION: $[counter('ST_NUCLEO144_F746ZG_versioncounter', 0)]
     GccArm_Version:
     NeedsDFU: true
+    NeedsSRECORD: false
 
   steps:
   - checkout: self
@@ -543,6 +552,7 @@ jobs:
     REVISION: $[counter('ST_STM32F4_DISCOVERY_versioncounter', 0)]
     GccArm_Version:
     NeedsDFU: false
+    NeedsSRECORD: false
 
   steps:
   - checkout: self
@@ -582,6 +592,7 @@ jobs:
     REVISION: $[counter('ST_NUCLEO144_F439ZI_versioncounter', 0)]
     GccArm_Version:
     NeedsDFU: false
+    NeedsSRECORD: false
 
   steps:
   - checkout: self
@@ -621,7 +632,6 @@ jobs:
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('TI_CC1352P1_LAUNCHXL_868_versioncounter', 0)]
     GccArm_Version:
-    NeedsDFU: false
 
   steps:
   - checkout: self
@@ -661,7 +671,6 @@ jobs:
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('TI_CC1352P1_LAUNCHXL_915_versioncounter', 0)]
     GccArm_Version:
-    NeedsDFU: false
 
   steps:
   - checkout: self
@@ -702,7 +711,6 @@ jobs:
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ESP32_OLIMEX_versioncounter', 0)]
     GccArm_Version:
-    NeedsDFU: false
 
   steps:
   - checkout: self
@@ -767,4 +775,3 @@ jobs:
       status: 'failure'
       webhookUrl: '$(DiscordWebhook)'
       message: ''
-
