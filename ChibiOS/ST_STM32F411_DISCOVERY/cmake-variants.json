@@ -79,8 +79,8 @@
           "API_Windows.Devices.Pwm": "ON",
           "API_Windows.Devices.SerialCommunication": "ON",
           "API_Windows.Devices.Spi": "ON",
+          "API_System.Device.Spi": "ON",
           "API_Windows.Devices.Wifi": "OFF",
-          "API_Windows.Networking.Sockets": "OFF",
           "API_Windows.Storage": "OFF"
         }
       }
