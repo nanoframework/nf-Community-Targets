@@ -113,6 +113,7 @@ jobs:
           ($COMMIT_MESSAGE -like "[x] GHI_FEZ_CERB40_NF") -Or
           ($COMMIT_MESSAGE -like "[x] I2M_ELECTRON_NF") -Or
           ($COMMIT_MESSAGE -like "[x] I2M_OXYGEN_NF") -Or
+          ($COMMIT_MESSAGE -like "[x] WEACT_F411CE") -Or
           ($COMMIT_MESSAGE -like "[x] ST_NUCLEO64_F401RE_NF") -Or
           ($COMMIT_MESSAGE -like "[x] ST_NUCLEO64_F411RE_NF") -Or
           ($COMMIT_MESSAGE -like "[x] ST_STM32F411_DISCOVERY") -Or
@@ -310,6 +311,46 @@ jobs:
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=CHIBIOS -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON -DAPI_System.Math=ON -DAPI_Hardware.Stm32=ON
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('I2M_OXYGEN_NF_versioncounter', 0)]
+    GccArm_Version:
+    NeedsDFU: true
+    NeedsSRECORD: false
+
+  steps:
+  - checkout: self
+    fetchDepth: 1
+  - checkout: templatesBuild
+    fetchDepth: 1
+
+  - template: azure-pipelines-templates/set-build-version.yml
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
+  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
+  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
+  - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
+    parameters:
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
+    parameters:
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
+
+##############################
+- job: Build_WEACT_F411CE
+  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] WEACT_F411CE'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] BUILD ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+
+  dependsOn: 
+  - Get_Commit_Message
+  - Check_Build_Options
+
+  pool:
+    vmImage: 'windows-2019'
+
+  variables:
+    TargetBoard: WEACT_F411CE
+    BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=CHIBIOS -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON -DAPI_System.Math=ON -DAPI_Hardware.Stm32=ON
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('WEACT_F411CE_versioncounter', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
