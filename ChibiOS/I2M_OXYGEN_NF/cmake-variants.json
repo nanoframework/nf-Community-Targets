@@ -1,84 +1,83 @@
 {
-    "buildType": {
-      "default": "debug",
-      "choices": {
-        "debug": {
-          "short": "Debug",
-          "long": "Emit debug information without performing optimizations",
-          "buildType": "Debug"
-        },
-        "minsize": {
-          "short": "MinSizeRel",
-          "long": "Optimize for smallest binary size",
-          "buildType": "MinSizeRel"
-        },
-        "reldeb": {
-          "short": "RelWithDebInfo",
-          "long": "Perform optimizations AND include debugging information",
-          "buildType": "RelWithDebInfo"
-        }
+  "buildType": {
+    "default": "debug",
+    "choices": {
+      "debug": {
+        "short": "Debug",
+        "long": "Emit debug information without performing optimizations",
+        "buildType": "Debug"
+      },
+      "minsize": {
+        "short": "MinSizeRel",
+        "long": "Optimize for smallest binary size",
+        "buildType": "MinSizeRel"
+      },
+      "reldeb": {
+        "short": "RelWithDebInfo",
+        "long": "Perform optimizations AND include debugging information",
+        "buildType": "RelWithDebInfo"
       }
-    },
-    "linkage": {
-      "default": "",
-      "choices": {
-        "I2M_OXYGEN_NF" : {
-            "short" : "Oxygen",
-            "settings" : {
-              "BUILD_VERSION" : "1.2.63.1705",
-              "TOOLCHAIN_PREFIX": "<absolute-path-to-the-toolchain-folder-mind-the-forward-slashes>",
-              "TOOL_HEX2DFU_PREFIX": "<absolute-path-to-hex2dfu-mind-the-forward-slashes>",
-              "ESP32_IDF_PATH" : "",
-              "ESP32_LIBS_PATH" : "",
-              "TARGET_SERIES" : "STM32F4xx",
-              "USE_RNG" : "OFF",
-              "DP_FLOATINGPOINT" : "OFF",
-              "SUPPORT_ANY_BASE_CONVERSION" : "OFF",
-              "RTOS" : "CHIBIOS",
-              "RTOS_SOURCE_FOLDER" : "",
-              "CHIBIOS_CONTRIB_REQUIRED" : "OFF",
-              "CHIBIOS_CONTRIB_SOURCE" : "",
-              "TARGET_BOARD" : "I2M_OXYGEN_NF",
-              "SWO_OUTPUT" : "OFF",
-              "NF_BUILD_RTM" : "OFF",
-              "NF_WP_TRACE_ERRORS" : "OFF",
-              "NF_WP_TRACE_HEADERS" : "OFF",
-              "NF_WP_TRACE_STATE" : "OFF",
-              "NF_WP_TRACE_NODATA" : "OFF",
-              "NF_WP_TRACE_ALL" : "OFF",
-              "NF_WP_IMPLEMENTS_CRC32" : "OFF",
-              "NF_FEATURE_DEBUGGER" : "ON",
-              "NF_FEATURE_RTC" : "ON",
-              "NF_FEATURE_USE_APPDOMAINS" : "OFF",
-              "NF_FEATURE_WATCHDOG" : "ON",
-              "NF_FEATURE_HAS_CONFIG_BLOCK" : "OFF",
-              "NF_FEATURE_HAS_SDCARD" : "OFF",
-              "NF_FEATURE_HAS_USB_MSD" : "OFF",
-              "NF_PLATFORM_NO_CLR_TRACE" : "OFF",
-              "NF_CLR_NO_IL_INLINE" : "OFF",
-              "NF_INTEROP_ASSEMBLIES" : [],
-              "NF_NETWORKING_SNTP" :  "OFF",
-              "NF_SECURITY_OPENSSL" : "OFF",
-              "NF_SECURITY_MBEDTLS" : "OFF",
-              "MBEDTLS_SOURCE" :  "",
-              "API_Hardware.Esp32" : "OFF",
-              "API_Hardware.Stm32" : "ON",
-              "API_nanoFramework.Devices.Can" : "OFF",
-              "API_nanoFramework.Devices.OneWire" : "OFF",
-              "API_System.Math" : "ON",
-              "API_System.Net" : "OFF",
-              "API_Windows.Devices.Adc" : "ON",
-              "API_Windows.Devices.Gpio" : "ON",
-              "API_Windows.Devices.I2c" : "ON",
-              "API_Windows.Devices.Pwm" : "ON",
-              "API_Windows.Devices.SerialCommunication" : "ON",
-              "API_Windows.Devices.Spi" : "ON",
-              "API_Windows.Devices.Wifi" : "OFF",
-              "API_Windows.Networking.Sockets" : "OFF",
-              "API_Windows.Storage" : "OFF"
-          }
+    }
+  },
+  "linkage": {
+    "default": "",
+    "choices": {
+      "I2M_OXYGEN_NF": {
+        "short": "Oxygen",
+        "settings": {
+          "BUILD_VERSION": "1.2.63.1705",
+          "TOOLCHAIN_PREFIX": "<absolute-path-to-the-toolchain-folder-mind-the-forward-slashes>",
+          "TOOL_HEX2DFU_PREFIX": "<absolute-path-to-hex2dfu-mind-the-forward-slashes>",
+          "ESP32_IDF_PATH": "",
+          "ESP32_LIBS_PATH": "",
+          "TARGET_SERIES": "STM32F4xx",
+          "USE_RNG": "OFF",
+          "DP_FLOATINGPOINT": "OFF",
+          "SUPPORT_ANY_BASE_CONVERSION": "OFF",
+          "RTOS": "CHIBIOS",
+          "RTOS_SOURCE_FOLDER": "",
+          "CHIBIOS_CONTRIB_REQUIRED": "OFF",
+          "CHIBIOS_CONTRIB_SOURCE": "",
+          "TARGET_BOARD": "I2M_OXYGEN_NF",
+          "SWO_OUTPUT": "OFF",
+          "NF_BUILD_RTM": "OFF",
+          "NF_WP_TRACE_ERRORS": "OFF",
+          "NF_WP_TRACE_HEADERS": "OFF",
+          "NF_WP_TRACE_STATE": "OFF",
+          "NF_WP_TRACE_NODATA": "OFF",
+          "NF_WP_TRACE_ALL": "OFF",
+          "NF_WP_IMPLEMENTS_CRC32": "OFF",
+          "NF_FEATURE_DEBUGGER": "ON",
+          "NF_FEATURE_RTC": "ON",
+          "NF_FEATURE_USE_APPDOMAINS": "OFF",
+          "NF_FEATURE_WATCHDOG": "ON",
+          "NF_FEATURE_HAS_CONFIG_BLOCK": "OFF",
+          "NF_FEATURE_HAS_SDCARD": "OFF",
+          "NF_FEATURE_HAS_USB_MSD": "OFF",
+          "NF_PLATFORM_NO_CLR_TRACE": "OFF",
+          "NF_CLR_NO_IL_INLINE": "OFF",
+          "NF_INTEROP_ASSEMBLIES": [],
+          "NF_NETWORKING_SNTP": "OFF",
+          "NF_SECURITY_OPENSSL": "OFF",
+          "NF_SECURITY_MBEDTLS": "OFF",
+          "MBEDTLS_SOURCE": "",
+          "API_Hardware.Esp32": "OFF",
+          "API_Hardware.Stm32": "ON",
+          "API_nanoFramework.Devices.Can": "OFF",
+          "API_nanoFramework.Devices.OneWire": "OFF",
+          "API_System.Math": "ON",
+          "API_System.Net": "OFF",
+          "API_Windows.Devices.Adc": "ON",
+          "API_Windows.Devices.Gpio": "ON",
+          "API_Windows.Devices.I2c": "ON",
+          "API_Windows.Devices.Pwm": "ON",
+          "API_Windows.Devices.SerialCommunication": "ON",
+          "API_Windows.Devices.Spi": "ON",
+          "API_System.Device.Spi": "ON",
+          "API_Windows.Devices.Wifi": "OFF",
+          "API_Windows.Storage": "OFF"
         }
       }
     }
   }
-  
+}

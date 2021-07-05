@@ -4,24 +4,28 @@
 steps:
   # compute build version
   - task: PowerShell@2
+    condition: succeeded()
+    displayName: Compute build version
     inputs:
       targetType: 'inline'
       script: |
-          $counter = $env:REVISION
-          $version = [int]$counter
+        $counter = $env:REVISION
+        $version = [int]$counter
 
-          $buildSimpleVersion = "1.6." + $version.ToString()
-          $buildFullVersion = $buildSimpleVersion + ".0"
+        $buildSimpleVersion = "1.6.5"
+        $buildFullVersion = $buildSimpleVersion + "." + $version.ToString()
 
-          Write-Host "$("##vso[task.setvariable variable=TARGET_BUILD_COUNTER]")$version"
+        Write-Host "$("##vso[task.setvariable variable=TARGET_BUILD_COUNTER]")$version"
 
-          Write-Host ">>$buildFullVersion<<"
-         
-          # need to hijack NBGV variables that are expected in the build CMake command and others that follow
-          Write-Host "$("##vso[task.setvariable variable=NBGV_AssemblyVersion]")$buildFullVersion"
-          Write-Host "$("##vso[task.setvariable variable=NBGV_Version]")$buildSimpleVersion"
-          Write-Host "$("##vso[task.setvariable variable=NBGV_VersionHeight]")0"
-          Write-Host "$("##vso[task.setvariable variable=NBGV_SimpleVersion]")$buildSimpleVersion"
+        Write-Host ">>$buildFullVersion<<"
+        
+        # need to hijack NBGV variables that are expected in the build CMake command and others that follow
+        Write-Host "$("##vso[task.setvariable variable=NBGV_AssemblyVersion]")$buildFullVersion"
+        Write-Host "$("##vso[task.setvariable variable=NBGV_Version]")$buildSimpleVersion"
 
-    condition: succeeded()
-    displayName: compute the build version
+        Write-Host "$("##vso[task.setvariable variable=NBGV_VersionMajor]")1"
+        Write-Host "$("##vso[task.setvariable variable=NBGV_VersionMinor]")6"
+        Write-Host "$("##vso[task.setvariable variable=NBGV_BuildNumber]")5"
+    
+        Write-Host "$("##vso[task.setvariable variable=NBGV_VersionHeight]")$version"
+        Write-Host "$("##vso[task.setvariable variable=NBGV_SimpleVersion]")$buildSimpleVersion"
