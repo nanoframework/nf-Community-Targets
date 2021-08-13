@@ -29,8 +29,6 @@
           "CMAKE_TOOLCHAIN_FILE": "CMake/toolchain.arm-none-eabi.cmake",
           "TOOLCHAIN_PREFIX": "<absolute-path-to-the-toolchain-folder-mind-the-forward-slashes>",
           "TOOL_HEX2DFU_PREFIX": "<absolute-path-to-hex2dfu-mind-the-forward-slashes>",
-          "ESP32_IDF_PATH": "",
-          "ESP32_LIBS_PATH": "",
           "TARGET_SERIES": "STM32F7xx",
           "USE_RNG": "ON",
           "DP_FLOATINGPOINT": "OFF",
