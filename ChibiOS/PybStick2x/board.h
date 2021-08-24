@@ -106,7 +106,7 @@
 #define GPIOB_PIN11                 11U
 #define GPIOB_PIN12                 12U
 #define GPIOB_PIN13                 13U
-#define GPIOB_FAKE_SD_DETECT                 14U
+#define GPIOB_FAKE_SD_DETECT        14U
 #define GPIOB_SD_CK                 15U
 
 #define GPIOC_PIN0                  0U
@@ -122,7 +122,7 @@
 #define GPIOC_PIN10                 10U
 #define GPIOC_PIN11                 11U
 #define GPIOC_PIN12                 12U
-#define GPIOC_PIN13                 13U
+#define GPIOC_BUTTON_USER           13U
 #define GPIOC_PIN14                 14U
 #define GPIOC_PIN15                 15U
 
@@ -290,6 +290,7 @@
 #define LINE_OSC_IN                 PAL_LINE(GPIOH, 0U)
 #define LINE_OSC_OUT                PAL_LINE(GPIOH, 1U)
 
+#define LINE_BUTTON_USER            PAL_LINE(GPIOC, 13U)
 
 /*
  * I/O ports initial setup, this configuration is established soon after reset
@@ -580,7 +581,7 @@
                                      PIN_MODE_INPUT(GPIOC_PIN10) |          \
                                      PIN_MODE_INPUT(GPIOC_PIN11) |          \
                                      PIN_MODE_INPUT(GPIOC_PIN12) |          \
-                                     PIN_MODE_INPUT(GPIOC_PIN13) |         \
+                                     PIN_MODE_INPUT(GPIOC_BUTTON_USER) |         \
                                      PIN_MODE_INPUT(GPIOC_PIN14) |          \
                                      PIN_MODE_INPUT(GPIOC_PIN15))
 #define VAL_GPIOC_OTYPER            (PIN_OTYPE_PUSHPULL(GPIOC_PIN0) |       \
@@ -596,7 +597,7 @@
                                      PIN_OTYPE_PUSHPULL(GPIOC_PIN10) |      \
                                      PIN_OTYPE_PUSHPULL(GPIOC_PIN11) |      \
                                      PIN_OTYPE_PUSHPULL(GPIOC_PIN12) |      \
-                                     PIN_OTYPE_PUSHPULL(GPIOC_PIN13) |     \
+                                     PIN_OTYPE_PUSHPULL(GPIOC_BUTTON_USER) |     \
                                      PIN_OTYPE_PUSHPULL(GPIOC_PIN14) |      \
                                      PIN_OTYPE_PUSHPULL(GPIOC_PIN15))
 #define VAL_GPIOC_OSPEEDR           (PIN_OSPEED_HIGH(GPIOC_PIN0) |          \
@@ -612,7 +613,7 @@
                                      PIN_OSPEED_HIGH(GPIOC_PIN10) |         \
                                      PIN_OSPEED_HIGH(GPIOC_PIN11) |         \
                                      PIN_OSPEED_HIGH(GPIOC_PIN12) |         \
-                                     PIN_OSPEED_HIGH(GPIOC_PIN13) |        \
+                                     PIN_OSPEED_HIGH(GPIOC_BUTTON_USER) |        \
                                      PIN_OSPEED_HIGH(GPIOC_PIN14) |         \
                                      PIN_OSPEED_HIGH(GPIOC_PIN15))
 #define VAL_GPIOC_PUPDR             (PIN_PUPDR_PULLUP(GPIOC_PIN0) |         \
@@ -628,7 +629,7 @@
                                      PIN_PUPDR_PULLUP(GPIOC_PIN10) |        \
                                      PIN_PUPDR_PULLUP(GPIOC_PIN11) |        \
                                      PIN_PUPDR_PULLUP(GPIOC_PIN12) |        \
-                                     PIN_PUPDR_PULLUP(GPIOC_PIN13) |     \
+                                     PIN_PUPDR_PULLUP(GPIOC_BUTTON_USER) |     \
                                      PIN_PUPDR_PULLUP(GPIOC_PIN14) |        \
                                      PIN_PUPDR_PULLUP(GPIOC_PIN15))
 #define VAL_GPIOC_ODR               (PIN_ODR_HIGH(GPIOC_PIN0) |             \
@@ -644,7 +645,7 @@
                                      PIN_ODR_HIGH(GPIOC_PIN10) |            \
                                      PIN_ODR_HIGH(GPIOC_PIN11) |            \
                                      PIN_ODR_HIGH(GPIOC_PIN12) |            \
-                                     PIN_ODR_HIGH(GPIOC_PIN13) |           \
+                                     PIN_ODR_HIGH(GPIOC_BUTTON_USER) |           \
                                      PIN_ODR_HIGH(GPIOC_PIN14) |            \
                                      PIN_ODR_HIGH(GPIOC_PIN15))
 #define VAL_GPIOC_AFRL              (PIN_AFIO_AF(GPIOC_PIN0, 0U) |          \
@@ -660,7 +661,7 @@
                                      PIN_AFIO_AF(GPIOC_PIN10, 0U) |         \
                                      PIN_AFIO_AF(GPIOC_PIN11, 0U) |         \
                                      PIN_AFIO_AF(GPIOC_PIN12, 0U) |         \
-                                     PIN_AFIO_AF(GPIOC_PIN13, 0U) |        \
+                                     PIN_AFIO_AF(GPIOC_BUTTON_USER, 0U) |        \
                                      PIN_AFIO_AF(GPIOC_PIN14, 0U) |         \
                                      PIN_AFIO_AF(GPIOC_PIN15, 0U))
 
