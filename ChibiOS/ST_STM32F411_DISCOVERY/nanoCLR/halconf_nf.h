@@ -16,11 +16,6 @@
 #define HAL_NF_USE_FSMC                FALSE
 #endif
 
-// enables STM32 Can driver
-#if !defined(HAL_NF_USE_STM32_CAN) 
-#define HAL_NF_USE_STM32_CAN           FALSE
-#endif
-
 //  STM32F411xx Does not support TRNG
 #if !defined(HAL_NF_USE_STM32_RNG)
 #define HAL_NF_USE_STM32_RNG           FALSE
