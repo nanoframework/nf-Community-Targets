@@ -20,8 +20,8 @@ steps:
   - task: CopyFiles@2
     displayName: Copy TI-SimpleLink target files
     inputs:
-      sourceFolder: $(Build.SourcesDirectory)\nf-Community-Targets\TI-SimpleLink
-      targetFolder: $(Build.SourcesDirectory)\nf-interpreter\targets-community\TI-SimpleLink
+      sourceFolder: $(Build.SourcesDirectory)\nf-Community-Targets\TI_SimpleLink
+      targetFolder: $(Build.SourcesDirectory)\nf-interpreter\targets-community\TI_SimpleLink
       cleanTargetFolder: false
       overWrite: true
 
