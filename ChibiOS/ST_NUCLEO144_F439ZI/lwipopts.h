@@ -40,8 +40,8 @@
  * Author: Adam Dunkels <adam@sics.se>
  *
  */
-#ifndef __LWIPOPT_H__
-#define __LWIPOPT_H__
+#ifndef LWIPOPT_H
+#define LWIPOPT_H
 
 
 #define _REENT_ONLY
@@ -2164,4 +2164,4 @@
 // this requires adding an extra field in ChibiOS thread_t (see comment on platform_sys_arch.c)
 //#define LWIP_NETCONN_FULLDUPLEX         1
 
-#endif /* __LWIPOPT_H__ */
+#endif // _LWIPOPT_H */
