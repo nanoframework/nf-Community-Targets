@@ -1,4 +1,6 @@
-## ST of the shelve board ##
+# ST Nucleo 64 F401RE NF
+
+![ST Nucleo 64_F401RE NF](https://www.st.com/bin/ecommerce/api/image.PF260000.en.feature-description-include-personalized-no-cpn-medium.jpg)
 
 The board used in this community contribution is the NUCLEO64_F401RE board from ST. The board can be purchased from various sources and should be about 20 euros. Further information on the Nucleo64 boards can be found in the user manual UM1724 on the ST side (www.st.com). The board used here is of revision c as can be found on the board's lower backside sticker. The board MB1136 C-02 is configured to use ST-LINK MCO as clock input for HSE so we have an HSE of 8 MHz. Plus X2 is mounted so we do have an LSE as well. This is reflected in the mcuconf.h in both nanoBooter and nanoCLR paths. If it is chosen to activate LSE as this is a for more accurate clock for RTC, the board.h file needs to be adjusted accordingly to use 32768 frequency for LSE.
 
@@ -20,28 +22,35 @@ For your convenience I've listed below the features and on what pins they can be
 Arduino header pins:
 ====================
 D0 = COM2 RX
+
 D1 = COM2 TX
 
 D2 - D9  can be used for an intermix of GPIO and PWM
 
 D14 = I2C1 SDA
+
 D15 = I2C1 SCL
 
 A0 - A5 for Analog signal, please be aware the MCU has only one 12-bit ADC.
 
-
 Connector CN7:
 ==============
 1 = SPI3 SCK
-2 = SPI3 MISO
-3 = SPI3 MOSI
 
+2 = SPI3 MISO
+
+3 = SPI3 MOSI
 
 Connector CN10:
 ===============
 26 = SPI2 MOSI
+
 28 = SPI2 MISO
+
 30 = SPI2 SCK
 
-
 **NOTE: This configuration was successfully tested on a NUCLEO64_F401RE board.**
+
+## Managed helpers
+
+Checkout the [C# managed helpers](https://github.com/nanoframework/nf-Community-Targets/tree/main/ChibiOS/ST_NUCLEO64_F401RE_NF/managed_helpers) available for this board.

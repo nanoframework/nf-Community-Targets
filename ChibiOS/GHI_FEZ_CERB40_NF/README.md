@@ -1,8 +1,10 @@
-![GHI FEZ CERB40](https://github.com/nanoframework/nf-Community-Targets/blob/master/ChibiOS/GHI_FEZ_CERB40_NF/resources/cerb40.jpg)
+# GHI FEZ CERBb40 NF
+
+![GHI FEZ CERB40](https://github.com/nanoframework/nf-Community-Targets/blob/main/ChibiOS/GHI_FEZ_CERB40_NF/resources/cerb40.jpg?raw=true)
 
 -----
 
-## Board introduction ##
+## Board introduction
 
 The board here used is a GHI Fez Cerb40 based upon an STM32F405RGT6 supporting a 1MB Flash and up to 192KB RAM in a LQFP64 package. On this board the LSE is soldered in case you have a board without the LSE please make sure you have it configured correctly in both the mcuconf.h files for nanoBooter as well as nanoCLR. 
 
@@ -54,3 +56,7 @@ The available pins have been set as can be read in the board.h file and it is th
 For more information on the board specifics you can have a look at the [GHI Electronics Cerb40 page](http://old.ghielectronics.com/catalog/product/353)
 
 **NOTE: this configuration was successfully tested in a GHI_FEZ_CERB40_NF board using the Serial over USB connection on USB port 1 that creates a virtual COM port.**
+
+## Managed helpers
+
+Checkout the [C# managed helpers](https://github.com/nanoframework/nf-Community-Targets/tree/main/ChibiOS/GHI_FEZ_CERB40_NF/managed_helpers) available for this board.

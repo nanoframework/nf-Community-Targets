@@ -2,6 +2,8 @@
 
 ![STM STM32F4DISCOVERY board](stm32f4_discovery.jpg)
 
+[Product page](http://www.st.com/en/evaluation-tools/stm32f4discovery.html)
+
 The board used in this community contribution is the STM32F4DISCOVERY board from STM. The board can be purchased from various sources and should be about 20 euros. Further information on this board and links for the user and programming manuals can be found at the product page in ST [website](https://www.st.com/en/evaluation-tools/stm32f4discovery.html).
 
 Some basic information abstracted from ST:
@@ -26,7 +28,7 @@ Some basic information abstracted from ST:
 - USB OTG FS with micro-AB connector
 - Extension header for all LQFP100 I/Os for quick connection to prototyping board and easy probing
 
-### Flashing and debugging
+## Flashing and debugging
 
 This board has one mini USB connector exposing the embedded ST-Link interface that is used for flashing the nanoFramework firmware and for performing debugging on the nanoCLR code.
 The second USB connector (a micro USB one) is used to connect the device with Visual Studio allowing to deploy and debug your C# managed applications.
@@ -47,6 +49,7 @@ The following ADC channels (and respective GPIO pins) are available to the manag
 ## I2C configurations
 
 I2C buses available:
+
 - I2C1
   - SCL pin: GPIOB_8
   - SDA pin: GPIOB_9
@@ -55,3 +58,11 @@ I2C buses available:
 
 The current build is set to add support for single-precision floating point.
 Meaning that `System.Math` API supports only the `float` overloads. The `double` ones will throw a `NotImplementedException`.
+
+## Firmware images (ready to deploy)
+
+[![Latest Version @ Cloudsmith](https://api-prd.cloudsmith.io/v1/badges/version/net-nanoframework/nanoframework-images-community-targets/raw/ST_STM32F4_DISCOVERY/latest/x/?render=true)](https://cloudsmith.io/~net-nanoframework/repos/nanoframework-images-community-targets/packages/detail/raw/ST_STM32F4_DISCOVERY/latest/)
+
+## Managed helpers
+
+Checkout the [C# managed helpers](https://github.com/nanoframework/nf-Community-Targets/tree/main/ChibiOS/ST_STM32F4_DISCOVERY/managed_helpers) available for this board.
