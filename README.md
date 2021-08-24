@@ -4,11 +4,11 @@
 
 -----
 
-### Welcome to the **nanoFramework** community targets repository!
+# Welcome to .NET **nanoFramework** community targets repository!
 
-This repository contains target boards for the **nanoFramework**, provided and maintained by community members.
+This repository contains target boards for .NET **nanoFramework**, provided and maintained by community members.
 
-The provided boards are **NOT** supported by the **nanoFramework** team and any issues must be communicated with the contributor that _owns_ it.
+The provided boards are **NOT** supported by the .NET **nanoFramework** team and any issues must be communicated with the contributor that _owns_ it.
 
 ## Available community boards
 
@@ -79,6 +79,6 @@ The community target contributions are licensed under the [MIT license](LICENSE.
 This project has adopted the code of conduct defined by the Contributor Covenant to clarify expected behavior in our community.
 For more information see the [.NET Foundation Code of Conduct](https://dotnetfoundation.org/code-of-conduct).
 
-### .NET Foundation
+## .NET Foundation
 
 This project is supported by the [.NET Foundation](https://dotnetfoundation.org).
