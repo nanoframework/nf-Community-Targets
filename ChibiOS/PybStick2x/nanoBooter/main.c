@@ -40,7 +40,7 @@ int main(void) {
   {
     // if the USER button (button A) is pressed, skip the check for a valid CLR image and remain in booter
         // the user button in this board has a pull-up resistor so the check has to be inverted
-        if (!palReadLine(LINE_BUTTON_USER))
+        if (palReadLine(LINE_BUTTON_USER))
         {
             // check for valid CLR image
             // we are checking for a valid image right after the configuration block
