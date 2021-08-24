@@ -787,7 +787,7 @@ jobs:
 
 ##############################
 - job: Build_PybStick2x
-  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] I2M_ELECTRON_NF'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] BUILD ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] PybStick2x'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] BUILD ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
 
   dependsOn: 
   - Get_Commit_Message
