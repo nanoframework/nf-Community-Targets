@@ -191,7 +191,7 @@ jobs:
     TargetBoard: MBN_QUAIL
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DSUPPORT_ANY_BASE_CONVERSION=ON -DNF_FEATURE_DEBUGGER=ON -DNF_FEATURE_RTC=ON -DNF_FEATURE_HAS_SDCARD=ON -DAPI_System.Math=ON -DAPI_Hardware.Stm32=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_nanoFramework.Devices.OneWire=ON -DAPI_Windows.Storage=ON -DAPI_nanoFramework.ResourceManager=ON -DAPI_nanoFramework.System.Collections=ON -DAPI_nanoFramework.System.Text=ON
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('MBN_QUAIL_versioncounter', 0)]
+    REVISION: $[counter('MBN_QUAIL_versioncounter_1_7_0', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -231,7 +231,7 @@ jobs:
     TargetBoard: GHI_FEZ_CERB40_NF
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('GHI_FEZ_CERB40_NF_versioncounter', 0)]
+    REVISION: $[counter('GHI_FEZ_CERB40_NF_versioncounter_1_7_0', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -271,7 +271,7 @@ jobs:
     TargetBoard: I2M_ELECTRON_NF
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('I2M_ELECTRON_NF_versioncounter', 0)]
+    REVISION: $[counter('I2M_ELECTRON_NF_versioncounter_1_7_0', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -311,7 +311,7 @@ jobs:
     TargetBoard: I2M_OXYGEN_NF
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON -DAPI_System.Math=ON -DAPI_Hardware.Stm32=ON
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('I2M_OXYGEN_NF_versioncounter', 0)]
+    REVISION: $[counter('I2M_OXYGEN_NF_versioncounter_1_7_0', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -351,7 +351,7 @@ jobs:
     TargetBoard: WEACT_F411CE
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON -DAPI_System.Math=ON -DAPI_Hardware.Stm32=ON
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('WEACT_F411CE_versioncounter', 0)]
+    REVISION: $[counter('WEACT_F411CE_versioncounter_1_7_0', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -391,7 +391,7 @@ jobs:
     TargetBoard: ST_NUCLEO64_F401RE_NF
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON -DAPI_nanoFramework.Devices.OneWire=ON
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO64_F401RE_NF_versioncounter', 0)]
+    REVISION: $[counter('ST_NUCLEO64_F401RE_NF_versioncounter_1_7_0', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -431,7 +431,7 @@ jobs:
     TargetBoard: ST_NUCLEO64_F411RE_NF
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON -DAPI_nanoFramework.System.Collections=ON -DAPI_nanoFramework.ResourceManager=ON -DAPI_nanoFramework.System.Text=ON -DAPI_System.Math=ON -DAPI_Hardware.Stm32=ON
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO64_F411RE_NF_versioncounter', 0)]
+    REVISION: $[counter('ST_NUCLEO64_F411RE_NF_versioncounter_1_7_0', 0)]
     GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
@@ -471,7 +471,7 @@ jobs:
     TargetBoard: ST_STM32F411_DISCOVERY
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON -DAPI_nanoFramework.System.Collections=ON -DAPI_nanoFramework.ResourceManager=ON -DAPI_nanoFramework.System.Text=ON
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_STM32F411_DISCOVERY_versioncounter', 0)]
+    REVISION: $[counter('ST_STM32F411_DISCOVERY_versioncounter_1_7_0', 0)]
     GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
@@ -511,7 +511,7 @@ jobs:
     TargetBoard: ST_NUCLEO144_F412ZG_NF
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=OFF -DAPI_Windows.Devices.Adc=ON
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO144_F412ZG_NF_versioncounter', 0)]
+    REVISION: $[counter('ST_NUCLEO144_F412ZG_NF_versioncounter_1_7_0', 0)]
     GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
@@ -551,7 +551,7 @@ jobs:
     TargetBoard: ST_NUCLEO144_F746ZG
     BuildOptions: -DTARGET_SERIES=STM32F7xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DNF_FEATURE_HAS_CONFIG_BLOCK=ON -DAPI_System.Math=ON -DAPI_Hardware.Stm32=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON -DAPI_System.Net=ON -DNF_SECURITY_MBEDTLS=ON -DAPI_nanoFramework.Devices.OneWire=ON -DAPI_nanoFramework.System.Collections=ON -DAPI_nanoFramework.ResourceManager=ON -DAPI_nanoFramework.System.Text=ON
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO144_F746ZG_versioncounter', 0)]
+    REVISION: $[counter('ST_NUCLEO144_F746ZG_versioncounter_1_7_0', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -591,7 +591,7 @@ jobs:
     TargetBoard: ST_STM32F4_DISCOVERY
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DSUPPORT_ANY_BASE_CONVERSION=ON -DNF_FEATURE_DEBUGGER=ON -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_System.Math=ON -DAPI_Hardware.Stm32=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON -DAPI_nanoFramework.Devices.OneWire=ON -DAPI_nanoFramework.Devices.Can=ON
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_STM32F4_DISCOVERY_versioncounter', 0)]
+    REVISION: $[counter('ST_STM32F4_DISCOVERY_versioncounter_1_7_0', 0)]
     GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
@@ -631,7 +631,7 @@ jobs:
     TargetBoard: ST_NUCLEO144_F439ZI
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DNF_FEATURE_HAS_CONFIG_BLOCK=ON -DAPI_System.Math=ON -DAPI_Hardware.Stm32=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON -DAPI_System.Net=ON -DNF_SECURITY_MBEDTLS=ON
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO144_F439ZI_versioncounter', 0)]
+    REVISION: $[counter('ST_NUCLEO144_F439ZI_versioncounter_1_7_0', 0)]
     GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
@@ -672,7 +672,7 @@ jobs:
     PackageName: TI_CC1352P1_LAUNCHXL_868
     BuildOptions: -DTARGET_SERIES=CC13x2_26x2 -DRTOS=TI_SimpleLink -DRADIO_FREQUENCY=868 -DSUPPORT_ANY_BASE_CONVERSION=OFF -DNF_FEATURE_DEBUGGER=ON -DNF_FEATURE_RTC=ON -DNF_FEATURE_WATCHDOG=OFF -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=OFF -DAPI_Windows.Devices.I2c=OFF -DAPI_Windows.Devices.Pwm=OFF -DAPI_Windows.Devices.SerialCommunication=OFF -DAPI_Windows.Devices.Adc=ON -DAPI_nanoFramework.TI.EasyLink=ON -DAPI_nanoFramework.Hardware.TI=ON
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('TI_CC1352P1_LAUNCHXL_868_versioncounter', 0)]
+    REVISION: $[counter('TI_CC1352P1_LAUNCHXL_868_versioncounter_1_7_0', 0)]
     GccArm_Version:
 
   steps:
@@ -711,7 +711,7 @@ jobs:
     PackageName: TI_CC1352P1_LAUNCHXL_915
     BuildOptions: -DTARGET_SERIES=CC13x2_26x2 -DRTOS=TI_SimpleLink -DRADIO_FREQUENCY=915 -DSUPPORT_ANY_BASE_CONVERSION=OFF -DNF_FEATURE_DEBUGGER=ON -DNF_FEATURE_RTC=ON -DNF_FEATURE_WATCHDOG=OFF -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=OFF -DAPI_Windows.Devices.I2c=OFF -DAPI_Windows.Devices.Pwm=OFF -DAPI_Windows.Devices.SerialCommunication=OFF -DAPI_Windows.Devices.Adc=ON -DAPI_nanoFramework.TI.EasyLink=ON -DAPI_nanoFramework.Hardware.TI=ON
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('TI_CC1352P1_LAUNCHXL_915_versioncounter', 0)]
+    REVISION: $[counter('TI_CC1352P1_LAUNCHXL_915_versioncounter_1_7_0', 0)]
     GccArm_Version:
 
   steps:
@@ -751,7 +751,7 @@ jobs:
     BuildOptions: -DTARGET_SERIES=ESP32 -DRTOS=FreeRTOS_ESP32 -DNF_FEATURE_DEBUGGER=ON -DTARGET_SERIAL_BAUDRATE=115200 -DTARGET_NAME=ESP32_OLIMEX -DNF_FEATURE_RTC=ON -DNF_FEATURE_HAS_CONFIG_BLOCK=ON -DNF_FEATURE_HAS_SDCARD=ON -DAPI_System.Math=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON -DAPI_System.Net=ON -DAPI_Windows.Devices.Wifi=ON -DNF_SECURITY_MBEDTLS=ON -DAPI_Hardware.Esp32=ON -DSUPPORT_ANY_BASE_CONVERSION=ON -DAPI_nanoFramework.ResourceManager=ON -DAPI_nanoFramework.System.Collections=ON -DAPI_nanoFramework.System.Text=ON -DAPI_nanoFramework.Hardware.Esp32.Rmt=ON -DAPI_System.Device.Dac=ON -DESP32_ETHERNET_SUPPORT=ON -DESP32_CONFIG_PIN_PHY_POWER=12 -DESP32_CONFIG_PHY_CLOCK_MODE=ETH_CLOCK_GPIO17_OUT
     ESP32_TOOLCHAIN_PATH: $(Agent.TempDirectory)\ESP32_Tools\xtensa-esp32-elf
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ESP32_OLIMEX_versioncounter', 0)]
+    REVISION: $[counter('ESP32_OLIMEX_versioncounter_1_7_0', 0)]
     GccArm_Version:
 
   steps:
@@ -800,7 +800,7 @@ jobs:
     TargetBoard: PybStick2x
     BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON -DAPI_nanoFramework.System.Text=ON -DAPI_Windows.Storage=ON -DAPI_System.IO.FileSystem=ON -DNF_FEATURE_HAS_SDCARD=ON
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('PybStick2x_versioncounter', 0)]
+    REVISION: $[counter('PybStick2x_versioncounter_1_7_0', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
