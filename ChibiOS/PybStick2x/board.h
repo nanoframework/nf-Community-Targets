@@ -99,7 +99,7 @@
 #define GPIOB_SPI1_MISO             4U
 #define GPIOB_SD_D3                	5U
 #define GPIOB_PIN6                	6U
-#define GPIOB_SD_D0                  7U
+#define GPIOB_SD_D0                 7U
 #define GPIOB_I2C1_SCL              8U
 #define GPIOB_I2C1_SDA              9U
 #define GPIOB_I2C2_SCL              10U
@@ -448,7 +448,7 @@
  * PB11 - PIN11                     (input pullup).
  * PB12 - PIN12                     (input pullup).
  * PB13 - PIN13                     (input pullup).
- * PB14 - PIN14                     (input pullup).
+ * PB14 - GPIOB_FAKE_SD_DETECT      (input pullup).
  * PB15 - SD_CK                     (alternate 12).
  */
 #define VAL_GPIOB_MODER             (PIN_MODE_OUTPUT(GPIOB_LED_YELLOW) |           \
