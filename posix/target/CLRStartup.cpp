@@ -590,12 +590,10 @@ struct Settings : CLR_RT_ParseOptions
 #endif //#if defined(_WIN32)
 };
 
-static Settings s_ClrSettings;
-
 //--//
 
 #if defined(_WIN32) || defined(__linux__) || defined(__nuttx__)
-HRESULT ClrLoadPE(const char *szPeFilePath)
+HRESULT ClrLoadPE(Settings *s_ClrSettings, const char *szPeFilePath)
 {
     CLR_Debug::Printf("Let's load %s\n", szPeFilePath);
     CLR_RT_StringVector vec;
@@ -604,10 +602,10 @@ HRESULT ClrLoadPE(const char *szPeFilePath)
 
     vec.push_back(szPeFilePath);
 
-    return s_ClrSettings.ProcessOptions(vec);
+    return s_ClrSettings->ProcessOptions(vec);
 }
 
-HRESULT ClrLoadDAT(const char *szDatFilePath)
+HRESULT ClrLoadDAT(Settings *s_ClrSettings, const char *szDatFilePath)
 {
     CLR_RT_StringVector vec;
 
@@ -615,14 +613,14 @@ HRESULT ClrLoadDAT(const char *szDatFilePath)
 
     vec.push_back(szDatFilePath);
 
-    return s_ClrSettings.ProcessOptions(vec);
+    return s_ClrSettings->ProcessOptions(vec);
 }
 #endif
 
 void ClrStartup(CLR_SETTINGS params)
 {
     NATIVE_PROFILE_CLR_STARTUP();
-    // Settings settings;
+    static Settings s_ClrSettings;
     ASSERT(sizeof(CLR_RT_HeapBlock_Raw) == sizeof(CLR_RT_HeapBlock));
     bool softReboot;
 
