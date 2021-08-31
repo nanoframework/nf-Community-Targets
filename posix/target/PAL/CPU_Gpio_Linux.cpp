@@ -1,6 +1,8 @@
 
 #include <CPU_Gpio.h>
 
+#if defined(__linux__) && defined(__gpio)
+
 bool CPU_GPIO_Initialize()
 {
     // for now supporting only bank 0
@@ -189,3 +191,5 @@ bool CPU_GPIO_DriveModeSupported(GPIO_PIN pinNumber, GpioPinDriveMode driveMode)
     // TODO
     return true;
 }
+
+#endif

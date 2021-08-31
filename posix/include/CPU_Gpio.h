@@ -12,12 +12,13 @@
 
 #if defined(BOARD_PI_PICO)
 // 5 gpios seted as gpin in Nuttx
+#define __gpio
 #define GPIO_MAX_PIN        30
 #define TOTAL_GPIO_PORTS    5
 #endif
 
-#if defined(BOARD_PI_ZERO)
-
+#if defined(BOARD_PI_ZERO) || defined(BOARD_WSL)
+#define __gpio
 #include <gpiod.h>
 
 struct gpiod_chip *_chip;
@@ -30,11 +31,14 @@ static gpiod_line* pinLineStored[GPIO_MAX_PIN];
 static GpioPinValue pinLineValue[GPIO_MAX_PIN];
 #endif
 
-#if defined(__nuttx__)
+#if defined(__nuttx__) && defined(__gpio)
 static int ioctrlFdReference[GPIO_MAX_PIN];
 static GpioPinValue pinLineValue[GPIO_MAX_PIN];
 #endif
 
+
+#if defined(__gpio)
 static GpioPinDriveMode pinDirStored[GPIO_MAX_PIN];
+#endif
 
 #endif  //_CPU_GPIO_H_

@@ -9,7 +9,7 @@
 #include <nuttx/ioexpander/gpio.h>
 #endif
 
-#if defined(__nuttx__)
+#if defined(__nuttx__) && defined(__gpio)
 
 static int openGpioCharDev(GPIO_PIN Pin)
 {
