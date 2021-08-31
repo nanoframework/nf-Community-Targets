@@ -48,9 +48,11 @@ int main(int argc, char *argv[])
         // check for the directory for assemblies to use
         path = std::string(argv[1]);
     } else {
-#if defined(__nuttx__)
+#if defined(__nuttx__) && !defined(CONFIG_EXAMPLES_NF_ROMFS)
         // simple ignore and use default sdcard
         path = std::string("/mnt/sd0/");
+#elif defined(__nuttx__) && defined(CONFIG_EXAMPLES_NF_ROMFS)
+        path = std::string("/nf/");
 #else
         // simple ignore and use current dir
         path = std::string("./");
