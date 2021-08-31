@@ -48,8 +48,13 @@ int main(int argc, char *argv[])
         // check for the directory for assemblies to use
         path = std::string(argv[1]);
     } else {
+#if defined(__nuttx__)
+        // simple ignore and use default sdcard
+        path = std::string("/mnt/sd0/");
+#else
         // simple ignore and use current dir
         path = std::string("./");
+#endif
     }
 
 #if defined(DEBUG)
