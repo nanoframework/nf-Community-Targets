@@ -1,6 +1,7 @@
 
 #include "utils.h"
 
+#if defined(__linux__)
 /* Paste this on the file you want to debug. */
 void print_trace(void) {
     char **strings;
@@ -14,3 +15,4 @@ void print_trace(void) {
     puts("");
     free(strings);
 }
+#endif

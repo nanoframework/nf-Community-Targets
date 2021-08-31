@@ -1,3 +1,7 @@
+#if defined(__nuttx__)
+#include <nuttx/config.h>
+#endif
+
 #include "include/stdafx.h"
 #include <nanoCLR_Application.h>
 #include <iostream>
@@ -27,6 +31,11 @@ bool Target_GetReleaseInfo(NFReleaseInfo &releaseInfo)
     return true; // alternatively, return false if you didn't initialize the releaseInfo structure.
 }
 
+#if defined(__nuttx__)
+extern "C"
+{
+#endif
+
 int main(int argc, char *argv[])
 {
     int i = 0;
@@ -45,7 +54,7 @@ int main(int argc, char *argv[])
 
 #if defined(DEBUG)
     printf(".NET nanoFramework nanoCLR Nuttx v%s", VERSION_STRING);
-    std::cout << "\nCopyright (c) 2021 .NET Foundation and Contributors\n";
+    printf("\nCopyright (c) 2021 .NET Foundation and Contributors\n");
     printf("\nCLR_RT_HeapBlock:  %d\r\n\n", sizeof(CLR_RT_HeapBlock));
     printf("\nCLR_RT_HeapBlock:  %d\r\n\n", sizeof(CLR_RT_HeapBlock_Raw));
 #endif
@@ -99,3 +108,7 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+
+#if defined(__nuttx__)
+}
+#endif

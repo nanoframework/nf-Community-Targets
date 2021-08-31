@@ -165,7 +165,9 @@ struct Settings : CLR_RT_ParseOptions
 #if !defined(BUILD_RTM)
         if (FAILED(hr))
         {
+#if defined(__linux__)
             print_trace();
+#endif
             CLR_Debug::Printf("Error: %08x\r\n", hr);
 
             if (hr == CLR_E_TYPE_UNAVAILABLE)

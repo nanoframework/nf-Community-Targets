@@ -63,7 +63,7 @@ bool Events_Uninitialize()
     return TRUE;
 }
 
-void Events_Set(UINT32 Events)
+void Events_Set(uint32_t Events)
 {
     {
         std::unique_lock<std::mutex> scopeLock(EventsMutex);
@@ -72,7 +72,7 @@ void Events_Set(UINT32 Events)
     EventsConditionVar.notify_all();
 }
 
-uint32_t Events_Get(UINT32 EventsOfInterest)
+uint32_t Events_Get(uint32_t EventsOfInterest)
 {
     std::unique_lock<std::mutex> scopeLock(EventsMutex);
     auto retVal = SystemEvents & EventsOfInterest;
@@ -80,7 +80,7 @@ uint32_t Events_Get(UINT32 EventsOfInterest)
     return retVal;
 }
 
-void Events_Clear(UINT32 Events)
+void Events_Clear(uint32_t Events)
 {
     {
         std::unique_lock<std::mutex> scopeLock(EventsMutex);
