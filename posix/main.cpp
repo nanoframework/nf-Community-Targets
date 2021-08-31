@@ -75,8 +75,7 @@ int main(int argc, char *argv[])
 
     if(!CPU_GPIO_Initialize())
     {
-        printf("Error trying to initialize GPIO\n");
-        exit(-69);
+        printf("WARNING! not possible initialize GPIO subsystem (permissions?)\n");
     }
 
     nanoHAL_Initialize();
