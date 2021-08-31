@@ -10,6 +10,34 @@
 
 #include "include/stdafx.h"
 
+#if defined(BOARD_WSL)
+
+#define NF_POSIX_GPIO
+// multi bank, each have 36
+#define GPIO_MAX_PIN        36
+#define TOTAL_GPIO_PORTS    36
+
+#endif // BOARD_WSL
+
+#if defined(BOARD_PI_ZERO)
+
+#define NF_POSIX_GPIO
+// 1 bank
+#define GPIO_MAX_PIN        27
+#define TOTAL_GPIO_PORTS    27
+
+#endif // BOARD_PI_ZERO
+
+#if defined(BOARD_JH7100)
+
+#define NF_POSIX_GPIO
+// TODO: 1 bank?
+#define GPIO_MAX_PIN        48
+#define TOTAL_GPIO_PORTS    48
+
+#endif // BOARD_JH7100
+
+
 #if defined(BOARD_PI_PICO)
 // 5 gpios seted as gpin in Nuttx
 #define __gpio
