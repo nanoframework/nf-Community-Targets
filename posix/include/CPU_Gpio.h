@@ -30,6 +30,11 @@ static gpiod_line* pinLineStored[GPIO_MAX_PIN];
 static GpioPinValue pinLineValue[GPIO_MAX_PIN];
 #endif
 
+#if defined(__nuttx__)
+static int ioctrlFdReference[GPIO_MAX_PIN];
+static GpioPinValue pinLineValue[GPIO_MAX_PIN];
+#endif
+
 static GpioPinDriveMode pinDirStored[GPIO_MAX_PIN];
 
 #endif  //_CPU_GPIO_H_
