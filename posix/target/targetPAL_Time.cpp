@@ -6,22 +6,20 @@
 #include "include/stdafx.h"
 #include "TimerManager.h"
 
-static std::unique_ptr<TimerManager> pCompletionsTimer;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 void TimerCallback()
 {
     GLOBAL_LOCK();
     HAL_COMPLETION::DequeueAndExec();
-
-    delete pCompletionsTimer.release();
 }
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 void Time_SetCompare(uint64_t CompareValue)
 {
+    static std::unique_ptr<TimerManager> pCompletionsTimer;
+
     // convert to milliseconds for OS timer
     auto compareMs = CompareValue / (CPU_TicksPerSecond() * (uint64_t)1000);
     ASSERT(compareMs < UINT32_MAX);

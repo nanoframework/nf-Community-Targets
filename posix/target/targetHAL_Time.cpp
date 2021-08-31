@@ -20,12 +20,13 @@ void HAL_Time_Sleep_MicroSeconds_InterruptEnabled(unsigned int uSec)
 uint64_t HAL_Time_CurrentSysTicks()
 {
     // TODO: port to linux
-    static struct timespec now;
-    clock_gettime(CLOCK_MONOTONIC, &now);
+    struct timespec ts;
+    uint64_t tick = 0u;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
 
-    return now.tv_sec*1000000000LL + now.tv_nsec;
-
-    //return (clock() / CLOCKS_PER_SEC);
+    // each 100 nanoseconds one tick
+    tick = ((ts.tv_sec * (uint64_t)1000000000) + ts.tv_nsec) / (uint64_t)100;
+    return tick;
 }
 
 // Converts CMSIS sysTicks to .NET ticks (100 nanoseconds)
