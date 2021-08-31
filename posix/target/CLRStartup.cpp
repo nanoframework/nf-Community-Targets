@@ -620,7 +620,7 @@ HRESULT ClrLoadDAT(Settings *s_ClrSettings, const char *szDatFilePath)
 void ClrStartup(CLR_SETTINGS params)
 {
     NATIVE_PROFILE_CLR_STARTUP();
-    static Settings s_ClrSettings;
+    Settings s_ClrSettings;
     ASSERT(sizeof(CLR_RT_HeapBlock_Raw) == sizeof(CLR_RT_HeapBlock));
     bool softReboot;
 
