@@ -57,7 +57,7 @@ void HAL_Windows_Debug_Print(char *szText)
         str.erase(pos);
     }
 
-    std::cout << (std::string)str + "\n" << std::flush;
+    printf("%s\n", str.c_str());
 }
 
 // HAL_Configuration_Windows g_HAL_Configuration_Windows;
