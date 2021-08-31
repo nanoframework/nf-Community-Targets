@@ -10,4 +10,26 @@
 
 #include "include/stdafx.h"
 
+#if defined(BOARD_PI_PICO)
+// 5 gpios seted as gpin in Nuttx
+#define GPIO_MAX_PIN        30
+#define TOTAL_GPIO_PORTS    5
+#endif
+
+#if defined(BOARD_PI_ZERO)
+
+#include <gpiod.h>
+
+struct gpiod_chip *_chip;
+
+// 9 usable gpios
+#define GPIO_MAX_PIN        40
+#define TOTAL_GPIO_PORTS    9
+
+static gpiod_line* pinLineStored[GPIO_MAX_PIN];
+static GpioPinValue pinLineValue[GPIO_MAX_PIN];
+#endif
+
+static GpioPinDriveMode pinDirStored[GPIO_MAX_PIN];
+
 #endif  //_CPU_GPIO_H_

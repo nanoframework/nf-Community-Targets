@@ -59,7 +59,12 @@ int main(int argc, char *argv[])
     }
     closedir(d);
 
-    // initialize nanoHAL
+    if(!CPU_GPIO_Initialize())
+    {
+        printf("Error trying to initialize GPIO\n");
+        exit(-69);
+    }
+
     nanoHAL_Initialize();
 
     CLR_SETTINGS clrSettings;
