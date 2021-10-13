@@ -53,7 +53,7 @@ UART_CONFIG_PINS__(2, GPIOA, GPIOA, 2, 3, 7)
 #if defined(__GNUC__)
 __attribute__((aligned(32)))
 #endif
-uint8_t Uart2_TxBuffer[__UART2_TX_SIZE];
+uint8_t Uart2_TxBuffer__[UART2_TX_SIZE];
 #if defined(__GNUC__)
 __attribute__((aligned(32)))
 #endif

@@ -71,7 +71,7 @@ UART_UNINIT(2)
 // RX pin: is GPIOD_9
 // GPIO alternate pin function is 7 (see "Table 12. STM32F427xx and STM32F429xx alternate function mapping" in
 // STM32F427xx and STM32F429xx datasheet)
-UART_CONFIG_PINS__(3, GPIOD, GPIOD, 8, 9, 7)
+UART_CONFIG_PINS(3, GPIOD, GPIOD, 8, 9, 7)
 
 // buffers
 // buffers that are R/W by DMA are recommended to be aligned with 32 bytes cache page size boundary
