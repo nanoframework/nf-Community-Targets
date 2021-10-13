@@ -26,7 +26,7 @@ __attribute__((aligned(32)))
 uint8_t Uart1_RxBuffer[UART1_RX_SIZE];
 
 // initialization for UART1
-UART_INIT(1, UART1_TX_SIZE, UART1_RX_SIZE)
+UART_INIT(1, UART1_RX_SIZE)
 
 // un-initialization for UART1
 UART_UNINIT(1)
@@ -51,7 +51,7 @@ __attribute__((aligned(32)))
 uint8_t Uart6_RxBuffer[UART6_RX_SIZE];
 
 // initialization for UART6
-UART_INIT(6, UART6_TX_SIZE, UART6_RX_SIZE)
+UART_INIT(6, UART6_RX_SIZE)
 
 // un-initialization for UART6
 UART_UNINIT(6)

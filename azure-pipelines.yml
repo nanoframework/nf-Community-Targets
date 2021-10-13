@@ -509,7 +509,7 @@ jobs:
 
   variables:
     TargetBoard: ST_NUCLEO144_F412ZG_NF
-    BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_Windows.Devices.Adc=ON
+    BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_NUCLEO144_F412ZG_NF_versioncounter_1_7_0', 0)]
     GccArm_Version:
