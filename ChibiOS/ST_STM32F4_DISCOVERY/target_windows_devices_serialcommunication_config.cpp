@@ -66,4 +66,3 @@ UART_INIT__(3, UART3_TX_SIZE, UART3_RX_SIZE)
 
 // un-initialization for UART3
 UART_UNINIT__(3)
-

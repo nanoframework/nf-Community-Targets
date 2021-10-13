@@ -9,10 +9,10 @@
 ///////////
 
 // enable USART2
-#define NF_SERIAL_COMM_STM32_UART_USE_USART2    TRUE
+#define NF_SERIAL_COMM_STM32_UART_USE_USART2 TRUE
 
 // buffers size
 // tx buffer size: 256 bytes
-#define UART2_TX_SIZE  256
+#define UART2_TX_SIZE 256
 // rx buffer size: 256 bytes
-#define UART2_RX_SIZE  256
+#define UART2_RX_SIZE 256
