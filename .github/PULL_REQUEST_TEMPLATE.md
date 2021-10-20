@@ -22,6 +22,9 @@
 - [ ] TI_CC1352P1_LAUNCHXL_868
 - [ ] TI_CC1352P1_LAUNCHXL_915
 - [ ] ESP32_OLIMEX
+- [ ] M5Stack
+- [ ] M5StickC
+- [ ] M5StickCPlus
 - [ ] PybStick2x
 - [ ] BUILD ALL
 
