@@ -828,6 +828,8 @@ jobs:
     fetchDepth: 1
   - checkout: templatesBuild
     fetchDepth: 1
+  - checkout: esp32_idf
+    fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
