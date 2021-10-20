@@ -31,6 +31,11 @@ resources:
       name: nanoframework/nf-interpreter
       ref: refs/heads/develop
       endpoint: nanoframework
+    - repository: esp32_idf
+      type: github
+      name: espressif/esp-idf
+      endpoint: nanoframework
+      ref: refs/tags/v4.3.1
 
 variables:
   GNU_GCC_TOOLCHAIN_PATH: $(Agent.TempDirectory)\GNU_Tools_ARM_Embedded
@@ -764,13 +769,15 @@ jobs:
     fetchDepth: 1
   - checkout: templatesBuild
     fetchDepth: 1
+  - checkout: esp32_idf
+    fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
     parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'  
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-esp32-build-components.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/build-esp32.yml@templatesBuild
@@ -778,7 +785,7 @@ jobs:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
 
   - task: CopyFiles@1
-    condition: and( succeeded(), ne(variables['Build.Reason'], 'PullRequest') )
+    condition: succeeded()
     displayName: Copying bootloader
     inputs:
       sourceFolder: '$(Build.SourcesDirectory)\nf-interpreter\build\bootloader'
@@ -789,7 +796,7 @@ jobs:
 
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: '$(Build.SourcesDirectory)\nf-interpreter\build'
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
