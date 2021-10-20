@@ -31,6 +31,11 @@ resources:
       name: nanoframework/nf-interpreter
       ref: refs/heads/develop
       endpoint: nanoframework
+    - repository: esp32_idf
+      type: github
+      name: espressif/esp-idf
+      endpoint: nanoframework
+      ref: refs/tags/v4.3.1
 
 variables:
   GNU_GCC_TOOLCHAIN_PATH: $(Agent.TempDirectory)\GNU_Tools_ARM_Embedded
@@ -764,6 +769,8 @@ jobs:
     fetchDepth: 1
   - checkout: templatesBuild
     fetchDepth: 1
+  - checkout: esp32_idf
+    fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
@@ -820,6 +827,8 @@ jobs:
   - checkout: self
     fetchDepth: 1
   - checkout: templatesBuild
+    fetchDepth: 1
+  - checkout: esp32_idf
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
