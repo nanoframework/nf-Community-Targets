@@ -22,8 +22,8 @@
 - [ ] TI_CC1352P1_LAUNCHXL_868
 - [ ] TI_CC1352P1_LAUNCHXL_915
 - [ ] ESP32_OLIMEX
-- [ ] PybStick2x
 - [ ] M5Stack
+- [ ] PybStick2x
 - [ ] BUILD ALL
 
 ## Motivation and Context
