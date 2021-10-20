@@ -770,35 +770,6 @@ jobs:
     fetchDepth: 1
   - checkout: templatesBuild
     fetchDepth: 1
-  - checkout: esp32_idf
-    fetchDepth: 1
-
-  - template: azure-pipelines-templates/set-build-version.yml
-  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'  
-  - template: azure-pipelines-templates/download-install-esp32-build-components.yml@templatesBuild
-  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
-  - template: azure-pipelines-templates/build-esp32.yml@templatesBuild
-    parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
-  - task: CopyFiles@1
-    condition: and( succeeded(), ne(variables['Build.Reason'], 'PullRequest') )
-    displayName: Copying bootloader
-    inputs:
-      sourceFolder: '$(Build.SourcesDirectory)\nf-interpreter\build\bootloader'
-      Contents: |
-        bootloader.bin
-      TargetFolder: '$(Build.ArtifactStagingDirectory)\$(TargetPublishName)'
-      flattenFolders: true
-
-  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
-    parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
 - job: Build_M5Stack
