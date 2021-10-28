@@ -25,6 +25,7 @@
 - [ ] M5Stack
 - [ ] M5StickC
 - [ ] M5StickCPlus
+- [ ] LilygoTWatch2020
 - [ ] PybStick2x
 - [ ] BUILD ALL
 
