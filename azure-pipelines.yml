@@ -974,7 +974,7 @@ jobs:
     ToolchainFile: toolchain.xtensa-esp32-elf.cmake
     SDK_config: sdkconfig.default.esp32 
     IDF_Target: esp32
-    TargetName: M5Stack
+    TargetName: LilygoTWatch2020
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('M5Stack_versioncounter_1_0_0', 0)]
     GccArm_Version:
