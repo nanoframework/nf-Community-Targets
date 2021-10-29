@@ -62,6 +62,7 @@
           "API_System.Math": "ON",
           "API_System.Net": "OFF",
           "API_Windows.Devices.Adc": "ON",
+          "API_System.Device.Adc": "ON",
           "API_Windows.Devices.Gpio": "ON",
           "API_Windows.Devices.I2c": "ON",
           "API_Windows.Devices.Pwm": "ON",
