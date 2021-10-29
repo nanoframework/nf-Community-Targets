@@ -3,18 +3,18 @@
 // See LICENSE file in the project root for full license information.
 //
 
-#include <win_dev_adc_native_target.h>
+#include <sys_dev_adc_native_target.h>
 
+const NF_PAL_ADC_PORT_PIN_CHANNEL AdcPortPinConfig[] = {
 
-const NF_PAL_ADC_PORT_PIN_CHANNEL__ AdcPortPinConfig__[] = {
-    
     // ADC1
-    {1, GPIOA, 0, ADC_CHANNEL_IN0},
-    {1, GPIOA, 1, ADC_CHANNEL_IN1},
-    {1, GPIOA, 4, ADC_CHANNEL_IN4},
-    {1, GPIOB, 0, ADC_CHANNEL_IN8},
     {1, GPIOC, 1, ADC_CHANNEL_IN11},
-    {1, GPIOC, 0, ADC_CHANNEL_IN10},
+    {1, GPIOC, 2, ADC_CHANNEL_IN12},
+
+    // ADC2
+    {2, GPIOA, 6, ADC_CHANNEL_IN6},
+    {2, GPIOA, 7, ADC_CHANNEL_IN7},
+    {2, GPIOB, 0, ADC_CHANNEL_IN8},
 
     // these are the internal sources, available only at ADC1
     {1, NULL, 0, ADC_CHANNEL_SENSOR},
@@ -22,4 +22,4 @@ const NF_PAL_ADC_PORT_PIN_CHANNEL__ AdcPortPinConfig__[] = {
     {1, NULL, 0, ADC_CHANNEL_VBAT},
 };
 
-const int AdcChannelCount__ = ARRAYSIZE(AdcPortPinConfig__);
+const int AdcChannelCount = ARRAYSIZE(AdcPortPinConfig);
