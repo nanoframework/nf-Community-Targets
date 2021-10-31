@@ -513,8 +513,8 @@ jobs:
   condition: >-
     or(
     eq(variables['BUILD_ALL'], 'true'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'],
-    '[x] ST_NUCLEO64_F411RE_NF'), contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO64_F411RE_NF'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
     eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
