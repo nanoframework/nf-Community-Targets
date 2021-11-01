@@ -1305,7 +1305,7 @@ jobs:
       -DAPI_System.Device.Dac=ON
 
     ToolchainFile: toolchain.xtensa-esp32-elf.cmake
-    SDK_config: sdkconfig.default_ble_rev3.esp32 
+    SDK_config: sdkconfig.default_rev3.esp32 
     IDF_Target: esp32
     TargetName: M5Core2
     # creates a counter and assigns it to the revision variable
