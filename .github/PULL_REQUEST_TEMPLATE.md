@@ -25,6 +25,7 @@
 - [ ] M5Stack
 - [ ] M5StickC
 - [ ] M5StickCPlus
+- [ ] M5Core2
 - [ ] PybStick2x
 - [ ] BUILD ALL
 
