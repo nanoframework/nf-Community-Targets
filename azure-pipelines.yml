@@ -98,6 +98,9 @@ jobs:
           ($COMMIT_MESSAGE -like "[x] TI_CC1352P1_LAUNCHXL_915") -Or
           ($COMMIT_MESSAGE -like "[x] ESP32_OLIMEX") -Or
           ($COMMIT_MESSAGE -like "[x] M5Stack") -Or
+          ($COMMIT_MESSAGE -like "[x] M5StickC") -Or
+          ($COMMIT_MESSAGE -like "[x] M5StickCPlus") -Or
+          ($COMMIT_MESSAGE -like "[x] M5Core2") -Or
           ($COMMIT_MESSAGE -like "[x] PybStick2x") -Or
           ($COMMIT_MESSAGE -like "[x] BUILD ALL")
         )
@@ -1325,6 +1328,96 @@ jobs:
     TargetName: M5Stack
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('M5Stack_versioncounter_1_0_0', 0)]
+    GccArm_Version:
+    IDF_PATH: 'D:/a/1/s/esp-idf'
+    PIP_CACHE_DIR: $(Pipeline.Workspace)/.pip
+
+  steps:
+  - checkout: self
+    fetchDepth: 1
+  - checkout: templatesBuild
+    fetchDepth: 1
+  - checkout: esp32_idf
+    fetchDepth: 1
+
+  - template: azure-pipelines-templates/set-build-version.yml
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
+  - template: azure-pipelines-templates/download-install-esp32-build-components.yml@templatesBuild
+  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
+  - template: azure-pipelines-templates/build-esp32.yml@templatesBuild
+    parameters:
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+
+  - task: CopyFiles@1
+    condition: succeeded()
+    displayName: Copying bootloader
+    inputs:
+      sourceFolder: '$(Build.SourcesDirectory)\nf-interpreter\build\bootloader'
+      Contents: |
+        bootloader.bin
+      TargetFolder: '$(Build.ArtifactStagingDirectory)\$(TargetPublishName)'
+      flattenFolders: true
+
+  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
+    parameters:
+      buildDirectory: '$(Build.SourcesDirectory)\nf-interpreter\build'
+  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
+
+##############################
+- job: Build_M5Core2
+  condition: or( contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] M5Core2'), contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'), eq(variables['BUILD_ALL'], 'true'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+
+  dependsOn: 
+  - Get_Commit_Message
+  - Check_Build_Options
+
+  pool:
+    vmImage: 'windows-2019'
+
+  variables:
+    TargetBoard: ESP32
+    PackageName: M5Core2
+    BuildOptions: >-
+      -DTARGET_SERIES=ESP32
+      -DRTOS=ESP32
+      -DNF_FEATURE_DEBUGGER=ON
+      -DNF_FEATURE_RTC=ON
+      -DNF_FEATURE_HAS_CONFIG_BLOCK=ON
+      -DNF_SECURITY_MBEDTLS=ON
+      -DSUPPORT_ANY_BASE_CONVERSION=ON
+      -DNF_FEATURE_HAS_SDCARD=ON
+      -DAPI_System.IO.FileSystem=ON
+      -DAPI_System.Math=ON
+      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
+      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
+      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
+      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
+      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
+      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Net=ON
+      -DAPI_Windows.Devices.Wifi=ON
+      -DAPI_Hardware.Esp32=ON
+      -DAPI_nanoFramework.ResourceManager=ON
+      -DAPI_nanoFramework.System.Collections=ON
+      -DAPI_nanoFramework.System.Text=ON
+      -DAPI_nanoFramework.Hardware.Esp32.Rmt=ON
+      -DAPI_nanoFramework.Graphics=ON
+      -DGRAPHICS_DISPLAY="ILI9342_320x240_SPI.cpp"
+      -DTOUCHPANEL_DEVICE="XPT2046.cpp"
+      -DGRAPHICS_DISPLAY_INTERFACE="Spi_To_Display.cpp"
+      -DTOUCHPANEL_INTERFACE="Spi_To_TouchPanel.cpp"
+      -DAPI_System.Device.Dac=ON
+
+    ToolchainFile: toolchain.xtensa-esp32-elf.cmake
+    SDK_config: sdkconfig.default_rev3.esp32 
+    IDF_Target: esp32
+    TargetName: M5Core2
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('M5Core2_versioncounter_1_0_0', 0)]
     GccArm_Version:
     IDF_PATH: 'D:/a/1/s/esp-idf'
     PIP_CACHE_DIR: $(Pipeline.Workspace)/.pip
