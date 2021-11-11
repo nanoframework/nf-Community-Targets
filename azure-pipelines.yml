@@ -43,6 +43,24 @@ variables:
 jobs:
 
 ##############################
+- job: Check_Code_Style
+  condition: ne( dependencies.Check_Build_Options.outputs['BuildOptions.SKIP_BUILD'], true )
+
+  dependsOn:
+  - Check_Build_Options
+
+  pool:
+    vmImage: 'windows-2019'
+
+  steps:
+  - checkout: self
+    fetchDepth: 1
+
+  - template: azure-pipelines-templates/download-install-llvm.yml@templatesBuild
+  - template: azure-pipelines-templates/check-code-style.yml@templatesBuild
+
+
+##############################
 - job: Get_Commit_Message
   pool:
     vmImage: 'windows-2019'
