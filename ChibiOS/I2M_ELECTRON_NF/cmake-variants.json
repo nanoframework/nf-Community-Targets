@@ -70,6 +70,7 @@
           "API_System.Device.Adc": "ON",
           "API_System.Devices.Dac": "OFF",
           "API_Windows.Devices.Gpio": "ON",
+          "API_System.Device.Gpio": "ON",
           "API_Windows.Devices.I2c": "ON",
           "API_Windows.Devices.Pwm": "ON",
           "API_System.Device.Pwm": "ON",
