@@ -31,6 +31,11 @@ resources:
       name: nanoframework/nf-interpreter
       ref: refs/heads/develop
       endpoint: nanoframework
+    - repository: esp32_idf
+      type: github
+      name: espressif/esp-idf
+      endpoint: nanoframework
+      ref: refs/tags/v4.3.1
 
 variables:
   GNU_GCC_TOOLCHAIN_PATH: $(Agent.TempDirectory)\GNU_Tools_ARM_Embedded
@@ -63,40 +68,8 @@ jobs:
   steps:
   - checkout: self
     fetchDepth: 1
-
-    # get commit message
-  - powershell: |
-
-      # PR build, get PR message
-
-      # need to get PR number from branch as the Azure Pipeline var can't be trusted
-      if($env:Build_SourceBranch -match '(?<=(pull\/))\w*(?=(\/))')
-      {
-        $prNumber = $matches[0]
-
-        $prUrl = "https://api.github.com/repos/$env:Build_Repository_Name/pulls/$prNumber"
-        # PR build, get PR message
-
-        $commit = Invoke-RestMethod -Uri $prUrl -ContentType "application/json" -Method GET
-
-        $commitMessage = $commit.body
-      }
-      else
-      {
-          # not a PR, get subject and commit message for commit
-          $commitMessage = git log --format='%B' -1
-      }
-
-      # need to flatten message by removing new lines
-      $commitMessage = $commitMessage.Replace("`r`n", " ")
-
-      "Commit message is: '$commitMessage'" | Write-Host
-
-      # set variable to foward to jobs
-      echo "##vso[task.setvariable variable=COMMIT_MESSAGE;isOutput=true]$commitMessage"
-
-    name: GetCommit
-    displayName: Grab commit message
+  
+  - template: azure-pipelines-templates/get-commit-details.yml@templates
 
 ##############################
 - job: Check_Build_Options
@@ -121,51 +94,32 @@ jobs:
       }
       else
       {
+        # build NOT from PR
+        Write-Host "Build for commit ID: $env:Build_SourceVersion"
+
+        # default build flag to FALSE, so other options are checked for what to build
+        echo "##vso[task.setvariable variable=GO;isOutput=true]false"
+        
         if($env:BUILD_ALL -like "True")
         {
           # this has BUILD ALL build var set to true
           "**Build ALL**" | Write-Host
         }
-        elseif(
-          ($COMMIT_MESSAGE -like "[x] MBN_QUAIL") -Or
-          ($COMMIT_MESSAGE -like "[x] GHI_FEZ_CERB40_NF") -Or
-          ($COMMIT_MESSAGE -like "[x] I2M_ELECTRON_NF") -Or
-          ($COMMIT_MESSAGE -like "[x] I2M_OXYGEN_NF") -Or
-          ($COMMIT_MESSAGE -like "[x] WEACT_F411CE") -Or
-          ($COMMIT_MESSAGE -like "[x] ST_NUCLEO64_F401RE_NF") -Or
-          ($COMMIT_MESSAGE -like "[x] ST_NUCLEO64_F411RE_NF") -Or
-          ($COMMIT_MESSAGE -like "[x] ST_STM32F411_DISCOVERY") -Or
-          ($COMMIT_MESSAGE -like "[x] ST_NUCLEO144_F412ZG_NF") -Or
-          ($COMMIT_MESSAGE -like "[x] ST_NUCLEO144_F746ZG") -Or
-          ($COMMIT_MESSAGE -like "[x] ST_STM32F4_DISCOVERY") -Or
-          ($COMMIT_MESSAGE -like "[x] ST_NUCLEO144_F439ZI") -Or
-          ($COMMIT_MESSAGE -like "[x] TI_CC1352P1_LAUNCHXL_868") -Or
-          ($COMMIT_MESSAGE -like "[x] TI_CC1352P1_LAUNCHXL_915") -Or
-          ($COMMIT_MESSAGE -like "[x] ESP32_OLIMEX") -Or
-          ($COMMIT_MESSAGE -like "[x] PybStick2x") -Or
-          ($COMMIT_MESSAGE -like "[x] BUILD ALL")
-        )
-        {
-            # there is a tag to build a valid target (or ALL), build images
-            echo "##vso[task.setvariable variable=GO;isOutput=true]false"
-
-            "**Build target(s)**" | Write-Host
-        }
         else
         {
           if($env:Build_Reason -eq "Schedule")
           {
-            # scheduled daily build: get commit date 
+            # scheduled daily build: get commit date
             # clone nf-interpreter
             git clone https://github.com/nanoframework/nf-interpreter.git -b develop nf-interpreter --depth 1 -q
             cd "nf-interpreter" > $null
 
-            $commitDate = git show -s --format=%cd --date=short
-            $commitDate = [DateTime]$commitDate
+            $interpreterLastCommitDate = git show -s --format=%cd --date=short
+            $interpreterLastCommitDate = [DateTime]$interpreterLastCommitDate
 
-            if($commitDate -eq [System.DateTime]::UtcNow.Date)
+            if($interpreterLastCommitDate -eq [System.DateTime]::UtcNow.Date)
             {
-              # last commit from nf-interpreter is from today, build images
+              # last commit from nf-interpreter is from today, build ALL images
               echo "##vso[task.setvariable variable=GO;isOutput=true]true"  
 
               "**Update upstream: Build ALL**" | Write-Host
@@ -180,6 +134,35 @@ jobs:
 
               echo "##vso[task.setvariable variable=GO;isOutput=true]false"
             }
+          }
+          elseif($env:Build_Reason -eq "IndividualCI")
+          {
+              "**build for a push (commit)**" | Write-Host
+
+              # need to wrap this in a try/catch because PR doesn't always exist
+              try
+              {
+                  # get PR associated with commit
+                  $prUrl = "https://api.github.com/repos/$env:Build_Repository_Name/commits/$env:Build_SourceVersion/pulls"
+
+                  $commit = Invoke-RestMethod -Uri $prUrl -ContentType "application/json" -Headers @{Accept = "application/vnd.github.groot-preview+json"; Authorization = "$auth"}  -Method GET
+
+                  if($commit -ne $null)
+                  {
+                    # get subject and commit message for commit
+                    $commitMessageFromPR = git log --format='%B' -1
+
+                    # need to flatten message by removing new lines
+                    $commitMessageFromPR = $commitMessageFromPR.Replace("`r`n", " ").Replace("`r", " ").Replace("`n", " ")
+
+                    "Flattened commit message from PR is: '$commitMessageFromPR'" | Write-Host
+
+                    # set variable to forward to jobs
+                    echo "##vso[task.setvariable variable=COMMIT_MESSAGE_FROMPR;isOutput=true]$commitMessageFromPR"
+                  }
+              }
+              catch
+              {}
           }
           else
           {
@@ -196,7 +179,17 @@ jobs:
 
 ##############################
 - job: Build_MBN_QUAIL
-  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] MBN_QUAIL'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] BUILD ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: >-
+    or( 
+    eq(variables['BUILD_ALL'], 'true'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] MBN_QUAIL'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] MBN_QUAIL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+    eq(variables['BUILD_ALL'], 'true'),
+    eq(variables['BUILD_MBN_QUAIL'], 'true'),
+    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
 
   dependsOn: 
   - Get_Commit_Message
@@ -207,7 +200,26 @@ jobs:
 
   variables:
     TargetBoard: MBN_QUAIL
-    BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DSUPPORT_ANY_BASE_CONVERSION=ON -DNF_FEATURE_DEBUGGER=ON -DNF_FEATURE_RTC=ON -DNF_FEATURE_HAS_SDCARD=ON -DAPI_System.Math=ON -DAPI_Hardware.Stm32=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_nanoFramework.Devices.OneWire=ON -DAPI_Windows.Storage=ON -DAPI_nanoFramework.ResourceManager=ON -DAPI_nanoFramework.System.Collections=ON -DAPI_nanoFramework.System.Text=ON
+    BuildOptions: >-
+      -DTARGET_SERIES=STM32F4xx
+      -DRTOS=ChibiOS
+      -DSUPPORT_ANY_BASE_CONVERSION=ON
+      -DNF_FEATURE_DEBUGGER=ON
+      -DNF_FEATURE_RTC=ON
+      -DNF_FEATURE_HAS_SDCARD=ON
+      -DAPI_System.Math=ON
+      -DAPI_Hardware.Stm32=ON
+      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
+      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
+      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
+      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
+      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
+      -DAPI_nanoFramework.Devices.OneWire=ON
+      -DAPI_Windows.Storage=ON
+      -DAPI_nanoFramework.ResourceManager=ON
+      -DAPI_nanoFramework.System.Collections=ON
+      -DAPI_nanoFramework.System.Text=ON
+
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('MBN_QUAIL_versioncounter_1_7_0', 0)]
     GccArm_Version:
@@ -236,7 +248,17 @@ jobs:
 
 ##############################
 - job: Build_GHI_FEZ_CERB40_NF
-  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] GHI_FEZ_CERB40_NF'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] BUILD ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: >-
+    or(
+    eq(variables['BUILD_ALL'], 'true'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] GHI_FEZ_CERB40_NF'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] GHI_FEZ_CERB40_NF'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+    eq(variables['BUILD_ALL'], 'true'),
+    eq(variables['BUILD_GHI_FEZ_CERB40_NF'], 'true'),
+    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
 
   dependsOn: 
   - Get_Commit_Message
@@ -247,7 +269,17 @@ jobs:
 
   variables:
     TargetBoard: GHI_FEZ_CERB40_NF
-    BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON
+    BuildOptions: >-
+      -DTARGET_SERIES=STM32F4xx
+      -DRTOS=ChibiOS
+      -DNF_FEATURE_DEBUGGER=ON
+      -DNF_FEATURE_RTC=ON
+      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
+      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
+      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
+      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
+      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
+      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('GHI_FEZ_CERB40_NF_versioncounter_1_7_0', 0)]
     GccArm_Version:
@@ -276,7 +308,17 @@ jobs:
 
 ##############################
 - job: Build_I2M_ELECTRON_NF
-  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] I2M_ELECTRON_NF'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] BUILD ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: >-
+    or(
+    eq(variables['BUILD_ALL'], 'true'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] I2M_ELECTRON_NF'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] I2M_ELECTRON_NF'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+    eq(variables['BUILD_ALL'], 'true'),
+    eq(variables['BUILD_I2M_ELECTRON_NF'], 'true'),
+    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
 
   dependsOn: 
   - Get_Commit_Message
@@ -287,7 +329,19 @@ jobs:
 
   variables:
     TargetBoard: I2M_ELECTRON_NF
-    BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON
+    BuildOptions: >-
+      -DTARGET_SERIES=STM32F4xx
+      -DRTOS=ChibiOS
+      -DNF_FEATURE_DEBUGGER=ON
+      -DUSE_RNG=OFF
+      -DNF_FEATURE_RTC=ON
+      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
+      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
+      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
+      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
+      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
+      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('I2M_ELECTRON_NF_versioncounter_1_7_0', 0)]
     GccArm_Version:
@@ -316,7 +370,17 @@ jobs:
 
 ##############################
 - job: Build_I2M_OXYGEN_NF
-  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] I2M_OXYGEN_NF'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] BUILD ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: >-
+    or(
+    eq(variables['BUILD_ALL'], 'true'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] I2M_OXYGEN_NF'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] I2M_OXYGEN_NF'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+    eq(variables['BUILD_ALL'], 'true'),
+    eq(variables['BUILD_I2M_OXYGEN_NF'], 'true'),
+    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
 
   dependsOn: 
   - Get_Commit_Message
@@ -327,7 +391,20 @@ jobs:
 
   variables:
     TargetBoard: I2M_OXYGEN_NF
-    BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON -DAPI_System.Math=ON -DAPI_Hardware.Stm32=ON
+    BuildOptions: >-
+      -DTARGET_SERIES=STM32F4xx
+      -DRTOS=ChibiOS
+      -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF
+      -DNF_FEATURE_RTC=ON
+      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
+      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
+      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
+      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
+      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
+      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Math=ON
+      -DAPI_Hardware.Stm32=ON
+
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('I2M_OXYGEN_NF_versioncounter_1_7_0', 0)]
     GccArm_Version:
@@ -356,7 +433,17 @@ jobs:
 
 ##############################
 - job: Build_WEACT_F411CE
-  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] WEACT_F411CE'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] BUILD ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: >-
+    or(
+    eq(variables['BUILD_ALL'], 'true'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] WEACT_F411CE'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] WEACT_F411CE'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+    eq(variables['BUILD_ALL'], 'true'),
+    eq(variables['BUILD_WEACT_F411CE'], 'true'),
+    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
 
   dependsOn: 
   - Get_Commit_Message
@@ -367,7 +454,21 @@ jobs:
 
   variables:
     TargetBoard: WEACT_F411CE
-    BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON -DAPI_System.Math=ON -DAPI_Hardware.Stm32=ON
+    BuildOptions: >-
+      -DTARGET_SERIES=STM32F4xx
+      -DRTOS=ChibiOS
+      -DNF_FEATURE_DEBUGGER=ON
+      -DUSE_RNG=OFF
+      -DNF_FEATURE_RTC=ON
+      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
+      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
+      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
+      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
+      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
+      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Math=ON
+      -DAPI_Hardware.Stm32=ON
+
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('WEACT_F411CE_versioncounter_1_7_0', 0)]
     GccArm_Version:
@@ -396,7 +497,17 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO64_F401RE_NF
-  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ST_NUCLEO64_F401RE_NF'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] BUILD ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: >-
+    or(
+    eq(variables['BUILD_ALL'], 'true'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO64_F401RE_NF'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO64_F401RE_NF'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+    eq(variables['BUILD_ALL'], 'true'),
+    eq(variables['BUILD_ST_NUCLEO64_F401RE_NF'], 'true'),
+    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
 
   dependsOn: 
   - Get_Commit_Message
@@ -407,7 +518,21 @@ jobs:
 
   variables:
     TargetBoard: ST_NUCLEO64_F401RE_NF
-    BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON -DAPI_nanoFramework.Devices.OneWire=ON
+    BuildOptions: >-
+      -DTARGET_SERIES=STM32F4xx
+      -DRTOS=ChibiOS
+      -DNF_FEATURE_DEBUGGER=ON
+      -DUSE_RNG=OFF
+      -DSWO_OUTPUT=ON
+      -DNF_FEATURE_RTC=ON
+      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
+      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
+      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
+      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
+      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
+      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_nanoFramework.Devices.OneWire=ON
+
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_NUCLEO64_F401RE_NF_versioncounter_1_7_0', 0)]
     GccArm_Version:
@@ -436,7 +561,17 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO64_F411RE_NF
-  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ST_NUCLEO64_F411RE_NF'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] BUILD ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: >-
+    or(
+    eq(variables['BUILD_ALL'], 'true'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO64_F411RE_NF'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO64_F411RE_NF'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+    eq(variables['BUILD_ALL'], 'true'),
+    eq(variables['BUILD_ST_NUCLEO64_F411RE_NF'], 'true'),
+    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
 
   dependsOn: 
   - Get_Commit_Message
@@ -447,7 +582,25 @@ jobs:
 
   variables:
     TargetBoard: ST_NUCLEO64_F411RE_NF
-    BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON -DAPI_nanoFramework.System.Collections=ON -DAPI_nanoFramework.ResourceManager=ON -DAPI_nanoFramework.System.Text=ON -DAPI_System.Math=ON -DAPI_Hardware.Stm32=ON
+    BuildOptions: >-
+      -DTARGET_SERIES=STM32F4xx
+      -DRTOS=ChibiOS
+      -DNF_FEATURE_DEBUGGER=ON
+      -DUSE_RNG=OFF
+      -DSWO_OUTPUT=ON
+      -DNF_FEATURE_RTC=ON
+      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
+      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
+      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
+      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
+      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
+      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_nanoFramework.System.Collections=ON
+      -DAPI_nanoFramework.ResourceManager=ON
+      -DAPI_nanoFramework.System.Text=ON
+      -DAPI_System.Math=ON
+      -DAPI_Hardware.Stm32=ON
+
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_NUCLEO64_F411RE_NF_versioncounter_1_7_0', 0)]
     GccArm_Version:
@@ -476,7 +629,17 @@ jobs:
 
 ##############################
 - job: Build_ST_STM32F411_DISCOVERY
-  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ST_STM32F411_DISCOVERY'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] BUILD ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: >-
+    or(
+    eq(variables['BUILD_ALL'], 'true'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_STM32F411_DISCOVERY'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_STM32F411_DISCOVERY'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+    eq(variables['BUILD_ALL'], 'true'),
+    eq(variables['BUILD_ST_STM32F411_DISCOVERY'], 'true'),
+    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
 
   dependsOn: 
   - Get_Commit_Message
@@ -487,7 +650,23 @@ jobs:
 
   variables:
     TargetBoard: ST_STM32F411_DISCOVERY
-    BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON -DAPI_nanoFramework.System.Collections=ON -DAPI_nanoFramework.ResourceManager=ON -DAPI_nanoFramework.System.Text=ON
+    BuildOptions: >-
+      -DTARGET_SERIES=STM32F4xx
+      -DRTOS=ChibiOS
+      -DNF_FEATURE_DEBUGGER=ON
+      -DUSE_RNG=OFF
+      -DSWO_OUTPUT=ON
+      -DNF_FEATURE_RTC=ON
+      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
+      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
+      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
+      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
+      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
+      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_nanoFramework.System.Collections=ON
+      -DAPI_nanoFramework.ResourceManager=ON
+      -DAPI_nanoFramework.System.Text=ON
+
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_STM32F411_DISCOVERY_versioncounter_1_7_0', 0)]
     GccArm_Version:
@@ -516,7 +695,17 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO144_F412ZG_NF
-  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F412ZG_NF'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] BUILD ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: >-
+    or(
+    eq(variables['BUILD_ALL'], 'true'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F412ZG_NF'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F412ZG_NF'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+    eq(variables['BUILD_ALL'], 'true'),
+    eq(variables['BUILD_ST_NUCLEO144_F412ZG_NF'], 'true'),
+    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
 
   dependsOn: 
   - Get_Commit_Message
@@ -527,7 +716,19 @@ jobs:
 
   variables:
     TargetBoard: ST_NUCLEO144_F412ZG_NF
-    BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=OFF -DAPI_Windows.Devices.Adc=ON
+    BuildOptions: >-
+      -DTARGET_SERIES=STM32F4xx
+      -DRTOS=ChibiOS
+      -DNF_FEATURE_DEBUGGER=ON
+      -DSWO_OUTPUT=ON
+      -DNF_FEATURE_RTC=ON
+      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
+      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
+      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
+      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
+      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
+      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_NUCLEO144_F412ZG_NF_versioncounter_1_7_0', 0)]
     GccArm_Version:
@@ -556,7 +757,17 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO144_F746ZG
-  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F746ZG'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] BUILD ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: >-
+    or(
+    eq(variables['BUILD_ALL'], 'true'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F746ZG'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F746ZG'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+    eq(variables['BUILD_ALL'], 'true'),
+    eq(variables['BUILD_ST_NUCLEO144_F746ZG'], 'true'),
+    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
 
   dependsOn: 
   - Get_Commit_Message
@@ -567,7 +778,28 @@ jobs:
 
   variables:
     TargetBoard: ST_NUCLEO144_F746ZG
-    BuildOptions: -DTARGET_SERIES=STM32F7xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DNF_FEATURE_HAS_CONFIG_BLOCK=ON -DAPI_System.Math=ON -DAPI_Hardware.Stm32=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON -DAPI_System.Net=ON -DNF_SECURITY_MBEDTLS=ON -DAPI_nanoFramework.Devices.OneWire=ON -DAPI_nanoFramework.System.Collections=ON -DAPI_nanoFramework.ResourceManager=ON -DAPI_nanoFramework.System.Text=ON
+    BuildOptions: >-
+      -DTARGET_SERIES=STM32F7xx
+      -DRTOS=ChibiOS
+      -DNF_FEATURE_DEBUGGER=ON
+      -DSWO_OUTPUT=ON
+      -DNF_FEATURE_RTC=ON
+      -DNF_FEATURE_HAS_CONFIG_BLOCK=ON
+      -DAPI_System.Math=ON
+      -DAPI_Hardware.Stm32=ON
+      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
+      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
+      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
+      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
+      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
+      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Net=ON
+      -DNF_SECURITY_MBEDTLS=ON
+      -DAPI_nanoFramework.Devices.OneWire=ON
+      -DAPI_nanoFramework.System.Collections=ON
+      -DAPI_nanoFramework.ResourceManager=ON
+      -DAPI_nanoFramework.System.Text=ON
+
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_NUCLEO144_F746ZG_versioncounter_1_7_0', 0)]
     GccArm_Version:
@@ -596,7 +828,17 @@ jobs:
 
 ##############################
 - job: Build_ST_STM32F4_DISCOVERY
-  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ST_STM32F4_DISCOVERY'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] BUILD ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: >-
+    or(
+    eq(variables['BUILD_ALL'], 'true'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_STM32F4_DISCOVERY'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_STM32F4_DISCOVERY'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+    eq(variables['BUILD_ALL'], 'true'),
+    eq(variables['BUILD_ST_STM32F4_DISCOVERY'], 'true'),
+    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
 
   dependsOn: 
   - Get_Commit_Message
@@ -607,7 +849,24 @@ jobs:
 
   variables:
     TargetBoard: ST_STM32F4_DISCOVERY
-    BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DSUPPORT_ANY_BASE_CONVERSION=ON -DNF_FEATURE_DEBUGGER=ON -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DAPI_System.Math=ON -DAPI_Hardware.Stm32=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON -DAPI_nanoFramework.Devices.OneWire=ON -DAPI_nanoFramework.Devices.Can=ON
+    BuildOptions: >-
+      -DTARGET_SERIES=STM32F4xx
+      -DRTOS=ChibiOS
+      -DSUPPORT_ANY_BASE_CONVERSION=ON
+      -DNF_FEATURE_DEBUGGER=ON
+      -DSWO_OUTPUT=ON
+      -DNF_FEATURE_RTC=ON
+      -DAPI_System.Math=ON
+      -DAPI_Hardware.Stm32=ON
+      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
+      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
+      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
+      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
+      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
+      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_nanoFramework.Devices.OneWire=ON
+      -DAPI_nanoFramework.Devices.Can=ON
+
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_STM32F4_DISCOVERY_versioncounter_1_7_0', 0)]
     GccArm_Version:
@@ -636,7 +895,17 @@ jobs:
 
 ##############################
 - job: Build_ST_NUCLEO144_F439ZI
-  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F439ZI'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] BUILD ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: >-
+    or(
+    eq(variables['BUILD_ALL'], 'true'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F439ZI'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F439ZI'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+    eq(variables['BUILD_ALL'], 'true'),
+    eq(variables['BUILD_ST_NUCLEO144_F439ZI'], 'true'),
+    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
 
   dependsOn: 
   - Get_Commit_Message
@@ -647,7 +916,24 @@ jobs:
 
   variables:
     TargetBoard: ST_NUCLEO144_F439ZI
-    BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DSWO_OUTPUT=ON -DNF_FEATURE_RTC=ON -DNF_FEATURE_HAS_CONFIG_BLOCK=ON -DAPI_System.Math=ON -DAPI_Hardware.Stm32=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON -DAPI_System.Net=ON -DNF_SECURITY_MBEDTLS=ON
+    BuildOptions: >-
+      -DTARGET_SERIES=STM32F4xx
+      -DRTOS=ChibiOS
+      -DNF_FEATURE_DEBUGGER=ON
+      -DSWO_OUTPUT=ON
+      -DNF_FEATURE_RTC=ON
+      -DNF_FEATURE_HAS_CONFIG_BLOCK=ON
+      -DAPI_System.Math=ON
+      -DAPI_Hardware.Stm32=ON
+      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
+      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
+      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
+      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
+      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
+      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Net=ON
+      -DNF_SECURITY_MBEDTLS=ON
+
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_NUCLEO144_F439ZI_versioncounter_1_7_0', 0)]
     GccArm_Version:
@@ -676,7 +962,16 @@ jobs:
 
 ##############################
 - job: Build_TI_CC1352P1_LAUNCHXL_868
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] TI_CC1352P1_LAUNCHXL_868'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] BUILD ALL'), eq(variables['BUILD_ALL'], 'true'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: >-
+    or(
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] TI_CC1352P1_LAUNCHXL_868'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] TI_CC1352P1_LAUNCHXL_868'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+    eq(variables['BUILD_ALL'], 'true'),
+    eq(variables['BUILD_TI_CC1352P1_LAUNCHXL_868'], 'true'),
+    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
 
   dependsOn: 
   - Get_Commit_Message
@@ -688,7 +983,23 @@ jobs:
   variables:
     TargetBoard: TI_CC1352P1_LAUNCHXL
     PackageName: TI_CC1352P1_LAUNCHXL_868
-    BuildOptions: -DTARGET_SERIES=CC13x2_26x2 -DRTOS=TI_SimpleLink -DRADIO_FREQUENCY=868 -DSUPPORT_ANY_BASE_CONVERSION=OFF -DNF_FEATURE_DEBUGGER=ON -DNF_FEATURE_RTC=ON -DNF_FEATURE_WATCHDOG=OFF -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=OFF -DAPI_Windows.Devices.I2c=OFF -DAPI_Windows.Devices.Pwm=OFF -DAPI_Windows.Devices.SerialCommunication=OFF -DAPI_Windows.Devices.Adc=ON -DAPI_nanoFramework.TI.EasyLink=ON -DAPI_nanoFramework.Hardware.TI=ON
+    BuildOptions: >-
+      -DTARGET_SERIES=CC13x2_26x2
+      -DRTOS=TI_SimpleLink
+      -DRADIO_FREQUENCY=868
+      -DSUPPORT_ANY_BASE_CONVERSION=OFF
+      -DNF_FEATURE_DEBUGGER=ON
+      -DNF_FEATURE_RTC=ON
+      -DNF_FEATURE_WATCHDOG=OFF
+      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
+      -DAPI_Windows.Devices.Spi=OFF
+      -DAPI_Windows.Devices.I2c=OFF
+      -DAPI_Windows.Devices.Pwm=OFF
+      -DAPI_Windows.Devices.SerialCommunication=OFF
+      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_nanoFramework.TI.EasyLink=ON
+      -DAPI_nanoFramework.Hardware.TI=ON
+
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('TI_CC1352P1_LAUNCHXL_868_versioncounter_1_7_0', 0)]
     GccArm_Version:
@@ -715,7 +1026,16 @@ jobs:
 
 ##############################
 - job: Build_TI_CC1352P1_LAUNCHXL_915
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] TI_CC1352P1_LAUNCHXL_915'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] BUILD ALL'), eq(variables['BUILD_ALL'], 'true'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: >-
+    or(
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] TI_CC1352P1_LAUNCHXL_915'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] TI_CC1352P1_LAUNCHXL_915'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),  
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_TI_CC1352P1_LAUNCHXL_915'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+      )
 
   dependsOn: 
   - Get_Commit_Message
@@ -727,7 +1047,23 @@ jobs:
   variables:
     TargetBoard: TI_CC1352P1_LAUNCHXL
     PackageName: TI_CC1352P1_LAUNCHXL_915
-    BuildOptions: -DTARGET_SERIES=CC13x2_26x2 -DRTOS=TI_SimpleLink -DRADIO_FREQUENCY=915 -DSUPPORT_ANY_BASE_CONVERSION=OFF -DNF_FEATURE_DEBUGGER=ON -DNF_FEATURE_RTC=ON -DNF_FEATURE_WATCHDOG=OFF -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=OFF -DAPI_Windows.Devices.I2c=OFF -DAPI_Windows.Devices.Pwm=OFF -DAPI_Windows.Devices.SerialCommunication=OFF -DAPI_Windows.Devices.Adc=ON -DAPI_nanoFramework.TI.EasyLink=ON -DAPI_nanoFramework.Hardware.TI=ON
+    BuildOptions: >-
+      -DTARGET_SERIES=CC13x2_26x2
+      -DRTOS=TI_SimpleLink
+      -DRADIO_FREQUENCY=915
+      -DSUPPORT_ANY_BASE_CONVERSION=OFF
+      -DNF_FEATURE_DEBUGGER=ON
+      -DNF_FEATURE_RTC=ON
+      -DNF_FEATURE_WATCHDOG=OFF
+      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
+      -DAPI_Windows.Devices.Spi=OFF
+      -DAPI_Windows.Devices.I2c=OFF
+      -DAPI_Windows.Devices.Pwm=OFF
+      -DAPI_Windows.Devices.SerialCommunication=OFF
+      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_nanoFramework.TI.EasyLink=ON
+      -DAPI_nanoFramework.Hardware.TI=ON
+
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('TI_CC1352P1_LAUNCHXL_915_versioncounter_1_7_0', 0)]
     GccArm_Version:
@@ -754,7 +1090,16 @@ jobs:
 
 ##############################
 - job: Build_ESP32_OLIMEX
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] ESP32_OLIMEX'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] BUILD ALL'), eq(variables['BUILD_ALL'], 'true'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: >-
+    or(
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ESP32_OLIMEX'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ESP32_OLIMEX'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+    eq(variables['BUILD_ALL'], 'true'),
+    eq(variables['BUILD_ESP32_OLIMEX'], 'true'),
+    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
 
   dependsOn: 
   - Get_Commit_Message
@@ -766,7 +1111,35 @@ jobs:
   variables:
     TargetBoard: ESP32
     PackageName: ESP32_OLIMEX
-    BuildOptions: -DTARGET_SERIES=ESP32 -DRTOS=ESP32 -DNF_FEATURE_DEBUGGER=ON -DNF_FEATURE_RTC=ON -DNF_FEATURE_HAS_CONFIG_BLOCK=ON -DNF_SECURITY_MBEDTLS=ON -DSUPPORT_ANY_BASE_CONVERSION=ON -DNF_FEATURE_HAS_SDCARD=ON -DAPI_System.IO.FileSystem=ON -DAPI_System.Math=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON -DAPI_System.Net=ON -DAPI_Windows.Devices.Wifi=ON -DAPI_Hardware.Esp32=ON -DAPI_nanoFramework.ResourceManager=ON -DAPI_nanoFramework.System.Collections=ON -DAPI_nanoFramework.System.Text=ON -DAPI_nanoFramework.Hardware.Esp32.Rmt=ON -DAPI_System.Device.Dac=ON -DESP32_ETHERNET_SUPPORT=ON -DETH_PHY_RST_GPIO=12 -DETH_RMII_CLK_OUT_GPIO=17
+    BuildOptions: >-
+      -DTARGET_SERIES=ESP32
+      -DRTOS=ESP32
+      -DNF_FEATURE_DEBUGGER=ON
+      -DNF_FEATURE_RTC=ON
+      -DNF_FEATURE_HAS_CONFIG_BLOCK=ON
+      -DNF_SECURITY_MBEDTLS=ON
+      -DSUPPORT_ANY_BASE_CONVERSION=ON
+      -DNF_FEATURE_HAS_SDCARD=ON
+      -DAPI_System.IO.FileSystem=ON
+      -DAPI_System.Math=ON
+      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
+      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
+      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
+      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
+      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
+      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Net=ON
+      -DAPI_Windows.Devices.Wifi=ON
+      -DAPI_Hardware.Esp32=ON
+      -DAPI_nanoFramework.ResourceManager=ON
+      -DAPI_nanoFramework.System.Collections=ON
+      -DAPI_nanoFramework.System.Text=ON
+      -DAPI_nanoFramework.Hardware.Esp32.Rmt=ON
+      -DAPI_System.Device.Dac=ON
+      -DESP32_ETHERNET_SUPPORT=ON
+      -DETH_PHY_RST_GPIO=12
+      -DETH_RMII_CLK_OUT_GPIO=17
+
     ToolchainFile: toolchain.xtensa-esp32-elf.cmake
     SDK_config: 
     IDF_Target: esp32
@@ -781,6 +1154,81 @@ jobs:
   - checkout: self
     fetchDepth: 1
   - checkout: templatesBuild
+    fetchDepth: 1
+  - checkout: esp32_idf
+    fetchDepth: 1
+
+##############################
+- job: Build_M5StickC
+  condition: >-
+    or(
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] M5StickC'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] M5StickC'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+    eq(variables['BUILD_ALL'], 'true'),
+    eq(variables['BUILD_M5StickC'], 'true'),
+    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
+
+  dependsOn: 
+  - Get_Commit_Message
+  - Check_Build_Options
+
+  pool:
+    vmImage: 'windows-2019'
+
+  variables:
+    TargetBoard: ESP32
+    PackageName: M5StickC
+    BuildOptions: >-
+      -DTARGET_SERIES=ESP32
+      -DRTOS=ESP32
+      -DNF_FEATURE_DEBUGGER=ON
+      -DTARGET_SERIAL_BAUDRATE=115200
+      -DNF_FEATURE_RTC=ON
+      -DNF_FEATURE_HAS_CONFIG_BLOCK=ON
+      -DNF_SECURITY_MBEDTLS=ON
+      -DSUPPORT_ANY_BASE_CONVERSION=ON
+      -DNF_FEATURE_HAS_SDCARD=ON
+      -DAPI_System.IO.FileSystem=ON
+      -DAPI_System.Math=ON
+      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
+      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
+      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
+      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
+      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
+      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Net=ON
+      -DAPI_Windows.Devices.Wifi=ON
+      -DAPI_Hardware.Esp32=ON
+      -DAPI_nanoFramework.ResourceManager=ON
+      -DAPI_nanoFramework.System.Collections=ON
+      -DAPI_nanoFramework.System.Text=ON
+      -DAPI_nanoFramework.Hardware.Esp32.Rmt=ON
+      -DAPI_nanoFramework.Graphics=ON
+      -DGRAPHICS_DISPLAY="ST7735S_SPI.cpp"
+      -DTOUCHPANEL_DEVICE="XPT2046.cpp"
+      -DGRAPHICS_DISPLAY_INTERFACE="Spi_To_Display.cpp"
+      -DTOUCHPANEL_INTERFACE="Spi_To_TouchPanel.cpp"
+      -DAPI_System.Device.Dac=ON
+
+    ToolchainFile: toolchain.xtensa-esp32-elf.cmake
+    SDK_config: sdkconfig.default_pico 
+    IDF_Target: esp32
+    TargetName: M5StickC
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('M5StickC_versioncounter_1_0_0', 0)]
+    GccArm_Version:
+    IDF_PATH: 'D:/a/1/s/esp-idf'
+    PIP_CACHE_DIR: $(Pipeline.Workspace)/.pip
+
+  steps:
+  - checkout: self
+    fetchDepth: 1
+  - checkout: templatesBuild
+    fetchDepth: 1
+  - checkout: esp32_idf
     fetchDepth: 1
 
   - template: azure-pipelines-templates/set-build-version.yml
@@ -811,8 +1259,314 @@ jobs:
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
+- job: Build_M5StickCPlus
+  condition: >-
+    or(
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] M5StickCPlus'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] M5StickCPlus'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+    eq(variables['BUILD_ALL'], 'true'),
+    eq(variables['BUILD_M5StickCPlus'], 'true'),
+    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
+
+  dependsOn: 
+  - Get_Commit_Message
+  - Check_Build_Options
+
+  pool:
+    vmImage: 'windows-2019'
+
+  variables:
+    TargetBoard: ESP32
+    PackageName: M5StickCPlus
+    BuildOptions: >-
+      -DTARGET_SERIES=ESP32
+      -DRTOS=ESP32
+      -DNF_FEATURE_DEBUGGER=ON
+      -DTARGET_SERIAL_BAUDRATE=115200
+      -DNF_FEATURE_RTC=ON
+      -DNF_FEATURE_HAS_CONFIG_BLOCK=ON
+      -DNF_SECURITY_MBEDTLS=ON
+      -DSUPPORT_ANY_BASE_CONVERSION=ON
+      -DNF_FEATURE_HAS_SDCARD=ON
+      -DAPI_System.IO.FileSystem=ON
+      -DAPI_System.Math=ON
+      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
+      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
+      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
+      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
+      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
+      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Net=ON
+      -DAPI_Windows.Devices.Wifi=ON
+      -DAPI_Hardware.Esp32=ON
+      -DAPI_nanoFramework.ResourceManager=ON
+      -DAPI_nanoFramework.System.Collections=ON
+      -DAPI_nanoFramework.System.Text=ON
+      -DAPI_nanoFramework.Hardware.Esp32.Rmt=ON
+      -DAPI_nanoFramework.Graphics=ON
+      -DGRAPHICS_DISPLAY="ST7789V_240x320_SPI.cpp"
+      -DTOUCHPANEL_DEVICE="XPT2046.cpp"
+      -DGRAPHICS_DISPLAY_INTERFACE="Spi_To_Display.cpp"
+      -DTOUCHPANEL_INTERFACE="Spi_To_TouchPanel.cpp"
+      -DAPI_System.Device.Dac=ON
+
+    ToolchainFile: toolchain.xtensa-esp32-elf.cmake
+    SDK_config: sdkconfig.default_pico 
+    IDF_Target: esp32
+    TargetName: M5StickCPlus
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('M5StickCPlus_versioncounter_1_0_0', 0)]
+    GccArm_Version:
+    IDF_PATH: 'D:/a/1/s/esp-idf'
+    PIP_CACHE_DIR: $(Pipeline.Workspace)/.pip
+
+  steps:
+  - checkout: self
+    fetchDepth: 1
+  - checkout: templatesBuild
+    fetchDepth: 1
+  - checkout: esp32_idf
+    fetchDepth: 1
+
+  - template: azure-pipelines-templates/set-build-version.yml
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
+  - template: azure-pipelines-templates/download-install-esp32-build-components.yml@templatesBuild
+  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
+  - template: azure-pipelines-templates/build-esp32.yml@templatesBuild
+    parameters:
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+
+  - task: CopyFiles@1
+    condition: succeeded()
+    displayName: Copying bootloader
+    inputs:
+      sourceFolder: '$(Build.SourcesDirectory)\nf-interpreter\build\bootloader'
+      Contents: |
+        bootloader.bin
+      TargetFolder: '$(Build.ArtifactStagingDirectory)\$(TargetPublishName)'
+      flattenFolders: true
+
+  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
+    parameters:
+      buildDirectory: '$(Build.SourcesDirectory)\nf-interpreter\build'
+  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
+
+##############################
+- job: Build_M5Stack
+  condition: >-
+    or(
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] M5Stack'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] M5Stack'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+    eq(variables['BUILD_ALL'], 'true'),
+    eq(variables['BUILD_M5Stack'], 'true'),
+    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
+
+  dependsOn: 
+  - Get_Commit_Message
+  - Check_Build_Options
+
+  pool:
+    vmImage: 'windows-2019'
+
+  variables:
+    TargetBoard: ESP32
+    PackageName: M5Stack
+    BuildOptions: >-
+      -DTARGET_SERIES=ESP32
+      -DRTOS=ESP32
+      -DNF_FEATURE_DEBUGGER=ON
+      -DNF_FEATURE_RTC=ON
+      -DNF_FEATURE_HAS_CONFIG_BLOCK=ON
+      -DNF_SECURITY_MBEDTLS=ON
+      -DSUPPORT_ANY_BASE_CONVERSION=ON
+      -DNF_FEATURE_HAS_SDCARD=ON
+      -DAPI_System.IO.FileSystem=ON
+      -DAPI_System.Math=ON
+      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
+      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
+      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
+      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
+      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
+      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Net=ON
+      -DAPI_Windows.Devices.Wifi=ON
+      -DAPI_Hardware.Esp32=ON
+      -DAPI_nanoFramework.ResourceManager=ON
+      -DAPI_nanoFramework.System.Collections=ON
+      -DAPI_nanoFramework.System.Text=ON
+      -DAPI_nanoFramework.Hardware.Esp32.Rmt=ON
+      -DAPI_nanoFramework.Graphics=ON
+      -DGRAPHICS_DISPLAY="ILI9342_320x240_SPI.cpp"
+      -DTOUCHPANEL_DEVICE="XPT2046.cpp"
+      -DGRAPHICS_DISPLAY_INTERFACE="Spi_To_Display.cpp"
+      -DTOUCHPANEL_INTERFACE="Spi_To_TouchPanel.cpp"
+      -DAPI_System.Device.Dac=ON
+
+    ToolchainFile: toolchain.xtensa-esp32-elf.cmake
+    SDK_config: sdkconfig.default_nopsram.esp32 
+    IDF_Target: esp32
+    TargetName: M5Stack
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('M5Stack_versioncounter_1_0_0', 0)]
+    GccArm_Version:
+    IDF_PATH: 'D:/a/1/s/esp-idf'
+    PIP_CACHE_DIR: $(Pipeline.Workspace)/.pip
+
+  steps:
+  - checkout: self
+    fetchDepth: 1
+  - checkout: templatesBuild
+    fetchDepth: 1
+  - checkout: esp32_idf
+    fetchDepth: 1
+
+  - template: azure-pipelines-templates/set-build-version.yml
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
+  - template: azure-pipelines-templates/download-install-esp32-build-components.yml@templatesBuild
+  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
+  - template: azure-pipelines-templates/build-esp32.yml@templatesBuild
+    parameters:
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+
+  - task: CopyFiles@1
+    condition: succeeded()
+    displayName: Copying bootloader
+    inputs:
+      sourceFolder: '$(Build.SourcesDirectory)\nf-interpreter\build\bootloader'
+      Contents: |
+        bootloader.bin
+      TargetFolder: '$(Build.ArtifactStagingDirectory)\$(TargetPublishName)'
+      flattenFolders: true
+
+  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
+    parameters:
+      buildDirectory: '$(Build.SourcesDirectory)\nf-interpreter\build'
+  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
+
+##############################
+- job: Build_M5Core2
+  condition: >-
+    or(
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] M5Core2'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] M5Core2'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+    eq(variables['BUILD_ALL'], 'true'),
+    eq(variables['BUILD_M5Core2'], 'true'),
+    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
+
+  dependsOn: 
+  - Get_Commit_Message
+  - Check_Build_Options
+
+  pool:
+    vmImage: 'windows-2019'
+
+  variables:
+    TargetBoard: ESP32
+    PackageName: M5Core2
+    BuildOptions: >-
+      -DTARGET_SERIES=ESP32
+      -DRTOS=ESP32
+      -DNF_FEATURE_DEBUGGER=ON
+      -DNF_FEATURE_RTC=ON
+      -DNF_FEATURE_HAS_CONFIG_BLOCK=ON
+      -DNF_SECURITY_MBEDTLS=ON
+      -DSUPPORT_ANY_BASE_CONVERSION=ON
+      -DNF_FEATURE_HAS_SDCARD=ON
+      -DAPI_System.IO.FileSystem=ON
+      -DAPI_System.Math=ON
+      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
+      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
+      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
+      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
+      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
+      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Net=ON
+      -DAPI_Windows.Devices.Wifi=ON
+      -DAPI_Hardware.Esp32=ON
+      -DAPI_nanoFramework.ResourceManager=ON
+      -DAPI_nanoFramework.System.Collections=ON
+      -DAPI_nanoFramework.System.Text=ON
+      -DAPI_nanoFramework.Hardware.Esp32.Rmt=ON
+      -DAPI_nanoFramework.Graphics=ON
+      -DGRAPHICS_DISPLAY="ILI9342_320x240_SPI.cpp"
+      -DTOUCHPANEL_DEVICE="XPT2046.cpp"
+      -DGRAPHICS_DISPLAY_INTERFACE="Spi_To_Display.cpp"
+      -DTOUCHPANEL_INTERFACE="Spi_To_TouchPanel.cpp"
+      -DAPI_System.Device.Dac=ON
+
+    ToolchainFile: toolchain.xtensa-esp32-elf.cmake
+    SDK_config: sdkconfig.default_rev3.esp32 
+    IDF_Target: esp32
+    TargetName: M5Core2
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('M5Core2_versioncounter_1_0_0', 0)]
+    GccArm_Version:
+    IDF_PATH: 'D:/a/1/s/esp-idf'
+    PIP_CACHE_DIR: $(Pipeline.Workspace)/.pip
+
+  steps:
+  - checkout: self
+    fetchDepth: 1
+  - checkout: templatesBuild
+    fetchDepth: 1
+  - checkout: esp32_idf
+    fetchDepth: 1
+
+  - template: azure-pipelines-templates/set-build-version.yml
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
+  - template: azure-pipelines-templates/download-install-esp32-build-components.yml@templatesBuild
+  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
+  - template: azure-pipelines-templates/build-esp32.yml@templatesBuild
+    parameters:
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+
+  - task: CopyFiles@1
+    condition: succeeded()
+    displayName: Copying bootloader
+    inputs:
+      sourceFolder: '$(Build.SourcesDirectory)\nf-interpreter\build\bootloader'
+      Contents: |
+        bootloader.bin
+      TargetFolder: '$(Build.ArtifactStagingDirectory)\$(TargetPublishName)'
+      flattenFolders: true
+
+  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
+    parameters:
+      buildDirectory: '$(Build.SourcesDirectory)\nf-interpreter\build'
+  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
+
+##############################
 - job: Build_PybStick2x
-  condition: or( eq(variables['BUILD_ALL'], 'true'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] PybStick2x'), contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] BUILD ALL'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: >-
+    or(
+    eq(variables['BUILD_ALL'], 'true'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] PybStick2x'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] PybStick2x'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
 
   dependsOn: 
   - Get_Commit_Message
@@ -823,7 +1577,23 @@ jobs:
 
   variables:
     TargetBoard: PybStick2x
-    BuildOptions: -DTARGET_SERIES=STM32F4xx -DRTOS=ChibiOS -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF -DNF_FEATURE_RTC=ON -DAPI_Windows.Devices.Gpio=ON -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON -DAPI_Windows.Devices.I2c=ON -DAPI_Windows.Devices.Pwm=ON -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON -DAPI_Windows.Devices.Adc=ON -DAPI_nanoFramework.System.Text=ON -DAPI_Windows.Storage=ON -DAPI_System.IO.FileSystem=ON -DNF_FEATURE_HAS_SDCARD=ON
+    BuildOptions: >-
+      -DTARGET_SERIES=STM32F4xx
+      -DRTOS=ChibiOS
+      -DNF_FEATURE_DEBUGGER=ON
+      -DUSE_RNG=OFF
+      -DNF_FEATURE_RTC=ON
+      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
+      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
+      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
+      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
+      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
+      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_nanoFramework.System.Text=ON
+      -DAPI_Windows.Storage=ON
+      -DAPI_System.IO.FileSystem=ON
+      -DNF_FEATURE_HAS_SDCARD=ON
+
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('PybStick2x_versioncounter_1_7_0', 0)]
     GccArm_Version:
@@ -853,6 +1623,7 @@ jobs:
 ##################################
 # report build failure to Discord
 - job: Report_Build_Failure
+
   dependsOn:
   - Build_GHI_FEZ_CERB40_NF
   - Build_I2M_ELECTRON_NF
@@ -868,7 +1639,24 @@ jobs:
   - Build_TI_CC1352P1_LAUNCHXL_915
   - Build_ESP32_OLIMEX
   - Build_PybStick2x
-  condition: or( failed('Build_GHI_FEZ_CERB40_NF'), failed('Build_I2M_ELECTRON_NF'), failed('Build_I2M_OXYGEN_NF'), failed('Build_ST_NUCLEO64_F401RE_NF'), failed('Build_ST_NUCLEO64_F411RE_NF'), failed('Build_ST_STM32F411_DISCOVERY'), failed('Build_ST_NUCLEO144_F412ZG_NF'), failed('Build_ST_NUCLEO144_F746ZG'), failed('Build_ST_STM32F4_DISCOVERY'), failed('Build_ST_NUCLEO144_F439ZI'), failed('Build_TI_CC1352P1_LAUNCHXL_868'), failed('Build_TI_CC1352P1_LAUNCHXL_915'), failed('Build_ESP32_OLIMEX'), failed('Build_PybStick2x'))
+
+  condition: >-
+    or(
+    failed('Build_GHI_FEZ_CERB40_NF'),
+    failed('Build_I2M_ELECTRON_NF'),
+    failed('Build_I2M_OXYGEN_NF'),
+    failed('Build_ST_NUCLEO64_F401RE_NF'),
+    failed('Build_ST_NUCLEO64_F411RE_NF'),
+    failed('Build_ST_STM32F411_DISCOVERY'),
+    failed('Build_ST_NUCLEO144_F412ZG_NF'),
+    failed('Build_ST_NUCLEO144_F746ZG'),
+    failed('Build_ST_STM32F4_DISCOVERY'),
+    failed('Build_ST_NUCLEO144_F439ZI'),
+    failed('Build_TI_CC1352P1_LAUNCHXL_868'),
+    failed('Build_TI_CC1352P1_LAUNCHXL_915'),
+    failed('Build_ESP32_OLIMEX'),
+    failed('Build_PybStick2x')
+    )
 
   pool:
     vmImage: 'windows-2019'

@@ -8,7 +8,7 @@
 ///////////
 
 // enable USART2
-#define NF_SERIAL_COMM_STM32_UART_USE_USART2    TRUE
+#define NF_SERIAL_COMM_STM32_UART_USE_USART2 TRUE
 
 // buffers size
 // tx buffer size: 256 bytes
@@ -22,7 +22,7 @@
 ///////////
 
 // enable USART3
-#define NF_SERIAL_COMM_STM32_UART_USE_USART3    TRUE
+#define NF_SERIAL_COMM_STM32_UART_USE_USART3 TRUE
 
 // buffers size
 // tx buffer size: 256 bytes
