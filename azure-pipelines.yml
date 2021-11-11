@@ -1369,7 +1369,13 @@ jobs:
 
 ##############################
 - job: Build_M5Core2
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] M5Core2'), contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'), eq(variables['BUILD_ALL'], 'true'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: >-
+    or( 
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] M5Core2'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    eq(variables['BUILD_ALL'], 'true'),
+    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
 
   dependsOn: 
   - Get_Commit_Message
