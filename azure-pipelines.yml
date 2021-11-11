@@ -76,55 +76,32 @@ jobs:
       }
       else
       {
+        # build NOT from PR
+        Write-Host "Build for commit ID: $env:Build_SourceVersion"
+
+        # default build flag to FALSE, so other options are checked for what to build
+        echo "##vso[task.setvariable variable=GO;isOutput=true]false"
+        
         if($env:BUILD_ALL -like "True")
         {
           # this has BUILD ALL build var set to true
           "**Build ALL**" | Write-Host
         }
-        elseif(
-          ($COMMIT_MESSAGE -like "[x] MBN_QUAIL") -Or
-          ($COMMIT_MESSAGE -like "[x] GHI_FEZ_CERB40_NF") -Or
-          ($COMMIT_MESSAGE -like "[x] I2M_ELECTRON_NF") -Or
-          ($COMMIT_MESSAGE -like "[x] I2M_OXYGEN_NF") -Or
-          ($COMMIT_MESSAGE -like "[x] WEACT_F411CE") -Or
-          ($COMMIT_MESSAGE -like "[x] ST_NUCLEO64_F401RE_NF") -Or
-          ($COMMIT_MESSAGE -like "[x] ST_NUCLEO64_F411RE_NF") -Or
-          ($COMMIT_MESSAGE -like "[x] ST_STM32F411_DISCOVERY") -Or
-          ($COMMIT_MESSAGE -like "[x] ST_NUCLEO144_F412ZG_NF") -Or
-          ($COMMIT_MESSAGE -like "[x] ST_NUCLEO144_F746ZG") -Or
-          ($COMMIT_MESSAGE -like "[x] ST_STM32F4_DISCOVERY") -Or
-          ($COMMIT_MESSAGE -like "[x] ST_NUCLEO144_F439ZI") -Or
-          ($COMMIT_MESSAGE -like "[x] TI_CC1352P1_LAUNCHXL_868") -Or
-          ($COMMIT_MESSAGE -like "[x] TI_CC1352P1_LAUNCHXL_915") -Or
-          ($COMMIT_MESSAGE -like "[x] ESP32_OLIMEX") -Or
-          ($COMMIT_MESSAGE -like "[x] M5Stack") -Or
-          ($COMMIT_MESSAGE -like "[x] M5StickC") -Or
-          ($COMMIT_MESSAGE -like "[x] M5StickCPlus") -Or
-          ($COMMIT_MESSAGE -like "[x] M5Core2") -Or
-          ($COMMIT_MESSAGE -like "[x] PybStick2x") -Or
-          ($COMMIT_MESSAGE -like "[x] BUILD ALL")
-        )
-        {
-            # there is a tag to build a valid target (or ALL), build images
-            echo "##vso[task.setvariable variable=GO;isOutput=true]false"
-
-            "**Build target(s)**" | Write-Host
-        }
         else
         {
           if($env:Build_Reason -eq "Schedule")
           {
-            # scheduled daily build: get commit date 
+            # scheduled daily build: get commit date
             # clone nf-interpreter
             git clone https://github.com/nanoframework/nf-interpreter.git -b develop nf-interpreter --depth 1 -q
             cd "nf-interpreter" > $null
 
-            $commitDate = git show -s --format=%cd --date=short
-            $commitDate = [DateTime]$commitDate
+            $interpreterLastCommitDate = git show -s --format=%cd --date=short
+            $interpreterLastCommitDate = [DateTime]$interpreterLastCommitDate
 
-            if($commitDate -eq [System.DateTime]::UtcNow.Date)
+            if($interpreterLastCommitDate -eq [System.DateTime]::UtcNow.Date)
             {
-              # last commit from nf-interpreter is from today, build images
+              # last commit from nf-interpreter is from today, build ALL images
               echo "##vso[task.setvariable variable=GO;isOutput=true]true"  
 
               "**Update upstream: Build ALL**" | Write-Host
@@ -139,6 +116,35 @@ jobs:
 
               echo "##vso[task.setvariable variable=GO;isOutput=true]false"
             }
+          }
+          elseif($env:Build_Reason -eq "IndividualCI")
+          {
+              "**build for a push (commit)**" | Write-Host
+
+              # need to wrap this in a try/catch because PR doesn't always exist
+              try
+              {
+                  # get PR associated with commit
+                  $prUrl = "https://api.github.com/repos/$env:Build_Repository_Name/commits/$env:Build_SourceVersion/pulls"
+
+                  $commit = Invoke-RestMethod -Uri $prUrl -ContentType "application/json" -Headers @{Accept = "application/vnd.github.groot-preview+json"; Authorization = "$auth"}  -Method GET
+
+                  if($commit -ne $null)
+                  {
+                    # get subject and commit message for commit
+                    $commitMessageFromPR = git log --format='%B' -1
+
+                    # need to flatten message by removing new lines
+                    $commitMessageFromPR = $commitMessageFromPR.Replace("`r`n", " ").Replace("`r", " ").Replace("`n", " ")
+
+                    "Flattened commit message from PR is: '$commitMessageFromPR'" | Write-Host
+
+                    # set variable to forward to jobs
+                    echo "##vso[task.setvariable variable=COMMIT_MESSAGE_FROMPR;isOutput=true]$commitMessageFromPR"
+                  }
+              }
+              catch
+              {}
           }
           else
           {
@@ -160,6 +166,8 @@ jobs:
     eq(variables['BUILD_ALL'], 'true'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] MBN_QUAIL'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] MBN_QUAIL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
     eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
@@ -225,6 +233,8 @@ jobs:
     eq(variables['BUILD_ALL'], 'true'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] GHI_FEZ_CERB40_NF'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] GHI_FEZ_CERB40_NF'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
     eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
@@ -281,6 +291,8 @@ jobs:
     eq(variables['BUILD_ALL'], 'true'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] I2M_ELECTRON_NF'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] I2M_ELECTRON_NF'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
     eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
@@ -339,6 +351,8 @@ jobs:
     eq(variables['BUILD_ALL'], 'true'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] I2M_OXYGEN_NF'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] I2M_OXYGEN_NF'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
     eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
@@ -398,6 +412,8 @@ jobs:
     eq(variables['BUILD_ALL'], 'true'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] WEACT_F411CE'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] WEACT_F411CE'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
     eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
@@ -458,6 +474,8 @@ jobs:
     eq(variables['BUILD_ALL'], 'true'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO64_F401RE_NF'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO64_F401RE_NF'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
     eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
@@ -518,6 +536,8 @@ jobs:
     eq(variables['BUILD_ALL'], 'true'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO64_F411RE_NF'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO64_F411RE_NF'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
     eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
@@ -582,6 +602,8 @@ jobs:
     eq(variables['BUILD_ALL'], 'true'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_STM32F411_DISCOVERY'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_STM32F411_DISCOVERY'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
     eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
@@ -644,6 +666,8 @@ jobs:
     eq(variables['BUILD_ALL'], 'true'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F412ZG_NF'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F412ZG_NF'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
     eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
@@ -702,6 +726,8 @@ jobs:
     eq(variables['BUILD_ALL'], 'true'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F746ZG'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F746ZG'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
     eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
@@ -769,6 +795,8 @@ jobs:
     eq(variables['BUILD_ALL'], 'true'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_STM32F4_DISCOVERY'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_STM32F4_DISCOVERY'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
     eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
@@ -832,6 +860,8 @@ jobs:
     eq(variables['BUILD_ALL'], 'true'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F439ZI'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F439ZI'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
     eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
@@ -894,6 +924,8 @@ jobs:
     or(
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] TI_CC1352P1_LAUNCHXL_868'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] TI_CC1352P1_LAUNCHXL_868'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
     eq(variables['BUILD_ALL'], 'true'),
     eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
@@ -955,6 +987,8 @@ jobs:
     or(
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] TI_CC1352P1_LAUNCHXL_915'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] TI_CC1352P1_LAUNCHXL_915'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),  
       eq(variables['BUILD_ALL'], 'true'),
       eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
       )
@@ -1016,6 +1050,8 @@ jobs:
     or(
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ESP32_OLIMEX'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ESP32_OLIMEX'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
     eq(variables['BUILD_ALL'], 'true'),
     eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
@@ -1083,6 +1119,8 @@ jobs:
     or(
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] M5StickC'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] M5StickC'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
     eq(variables['BUILD_ALL'], 'true'),
     eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
@@ -1180,6 +1218,8 @@ jobs:
     or(
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] M5StickCPlus'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] M5StickCPlus'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
     eq(variables['BUILD_ALL'], 'true'),
     eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
@@ -1277,6 +1317,8 @@ jobs:
     or(
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] M5Stack'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] M5Stack'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
     eq(variables['BUILD_ALL'], 'true'),
     eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
@@ -1369,7 +1411,15 @@ jobs:
 
 ##############################
 - job: Build_M5Core2
-  condition: or( contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] M5Core2'), contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'), eq(variables['BUILD_ALL'], 'true'), eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True') )
+  condition: >-
+    or(
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] M5Core2'),
+    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] M5Core2'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+    eq(variables['BUILD_ALL'], 'true'),
+    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
 
   dependsOn: 
   - Get_Commit_Message
@@ -1464,6 +1514,8 @@ jobs:
     eq(variables['BUILD_ALL'], 'true'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] PybStick2x'),
     contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] PybStick2x'),
+    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
     eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
@@ -1523,6 +1575,7 @@ jobs:
 ##################################
 # report build failure to Discord
 - job: Report_Build_Failure
+
   dependsOn:
   - Build_GHI_FEZ_CERB40_NF
   - Build_I2M_ELECTRON_NF
@@ -1538,6 +1591,7 @@ jobs:
   - Build_TI_CC1352P1_LAUNCHXL_915
   - Build_ESP32_OLIMEX
   - Build_PybStick2x
+
   condition: >-
     or(
     failed('Build_GHI_FEZ_CERB40_NF'),
