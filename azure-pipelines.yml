@@ -181,14 +181,14 @@ jobs:
 - job: Build_MBN_QUAIL
   condition: >-
     or( 
-    eq(variables['BUILD_ALL'], 'true'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] MBN_QUAIL'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] MBN_QUAIL'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-    eq(variables['BUILD_ALL'], 'true'),
-    eq(variables['BUILD_MBN_QUAIL'], 'true'),
-    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+      eq(variables['BUILD_ALL'], 'true'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] MBN_QUAIL'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] MBN_QUAIL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_MBN_QUAIL'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
   dependsOn: 
@@ -200,6 +200,8 @@ jobs:
 
   variables:
     TargetBoard: MBN_QUAIL
+    TargetPlatform: 'stm32'
+    TargetSeries: 'stm32f4xx'
     BuildOptions: >-
       -DTARGET_SERIES=STM32F4xx
       -DRTOS=ChibiOS
@@ -250,14 +252,14 @@ jobs:
 - job: Build_GHI_FEZ_CERB40_NF
   condition: >-
     or(
-    eq(variables['BUILD_ALL'], 'true'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] GHI_FEZ_CERB40_NF'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] GHI_FEZ_CERB40_NF'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-    eq(variables['BUILD_ALL'], 'true'),
-    eq(variables['BUILD_GHI_FEZ_CERB40_NF'], 'true'),
-    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+      eq(variables['BUILD_ALL'], 'true'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] GHI_FEZ_CERB40_NF'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] GHI_FEZ_CERB40_NF'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_GHI_FEZ_CERB40_NF'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
   dependsOn: 
@@ -269,6 +271,8 @@ jobs:
 
   variables:
     TargetBoard: GHI_FEZ_CERB40_NF
+    TargetPlatform: 'stm32'
+    TargetSeries: 'stm32f4xx'
     BuildOptions: >-
       -DTARGET_SERIES=STM32F4xx
       -DRTOS=ChibiOS
@@ -310,14 +314,14 @@ jobs:
 - job: Build_I2M_ELECTRON_NF
   condition: >-
     or(
-    eq(variables['BUILD_ALL'], 'true'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] I2M_ELECTRON_NF'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] I2M_ELECTRON_NF'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-    eq(variables['BUILD_ALL'], 'true'),
-    eq(variables['BUILD_I2M_ELECTRON_NF'], 'true'),
-    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+      eq(variables['BUILD_ALL'], 'true'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] I2M_ELECTRON_NF'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] I2M_ELECTRON_NF'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_I2M_ELECTRON_NF'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
   dependsOn: 
@@ -329,6 +333,8 @@ jobs:
 
   variables:
     TargetBoard: I2M_ELECTRON_NF
+    TargetPlatform: 'stm32'
+    TargetSeries: 'stm32f4xx'
     BuildOptions: >-
       -DTARGET_SERIES=STM32F4xx
       -DRTOS=ChibiOS
@@ -372,14 +378,14 @@ jobs:
 - job: Build_I2M_OXYGEN_NF
   condition: >-
     or(
-    eq(variables['BUILD_ALL'], 'true'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] I2M_OXYGEN_NF'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] I2M_OXYGEN_NF'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-    eq(variables['BUILD_ALL'], 'true'),
-    eq(variables['BUILD_I2M_OXYGEN_NF'], 'true'),
-    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+      eq(variables['BUILD_ALL'], 'true'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] I2M_OXYGEN_NF'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] I2M_OXYGEN_NF'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_I2M_OXYGEN_NF'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
   dependsOn: 
@@ -391,6 +397,8 @@ jobs:
 
   variables:
     TargetBoard: I2M_OXYGEN_NF
+    TargetPlatform: 'stm32'
+    TargetSeries: 'stm32f4xx'
     BuildOptions: >-
       -DTARGET_SERIES=STM32F4xx
       -DRTOS=ChibiOS
@@ -435,14 +443,14 @@ jobs:
 - job: Build_WEACT_F411CE
   condition: >-
     or(
-    eq(variables['BUILD_ALL'], 'true'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] WEACT_F411CE'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] WEACT_F411CE'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-    eq(variables['BUILD_ALL'], 'true'),
-    eq(variables['BUILD_WEACT_F411CE'], 'true'),
-    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+      eq(variables['BUILD_ALL'], 'true'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] WEACT_F411CE'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] WEACT_F411CE'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_WEACT_F411CE'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
   dependsOn: 
@@ -454,6 +462,8 @@ jobs:
 
   variables:
     TargetBoard: WEACT_F411CE
+    TargetPlatform: 'stm32'
+    TargetSeries: 'stm32f4xx'
     BuildOptions: >-
       -DTARGET_SERIES=STM32F4xx
       -DRTOS=ChibiOS
@@ -499,14 +509,14 @@ jobs:
 - job: Build_ST_NUCLEO64_F401RE_NF
   condition: >-
     or(
-    eq(variables['BUILD_ALL'], 'true'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO64_F401RE_NF'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO64_F401RE_NF'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-    eq(variables['BUILD_ALL'], 'true'),
-    eq(variables['BUILD_ST_NUCLEO64_F401RE_NF'], 'true'),
-    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+      eq(variables['BUILD_ALL'], 'true'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO64_F401RE_NF'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO64_F401RE_NF'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_ST_NUCLEO64_F401RE_NF'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
   dependsOn: 
@@ -518,6 +528,8 @@ jobs:
 
   variables:
     TargetBoard: ST_NUCLEO64_F401RE_NF
+    TargetPlatform: 'stm32'
+    TargetSeries: 'stm32f4xx'
     BuildOptions: >-
       -DTARGET_SERIES=STM32F4xx
       -DRTOS=ChibiOS
@@ -563,14 +575,14 @@ jobs:
 - job: Build_ST_NUCLEO64_F411RE_NF
   condition: >-
     or(
-    eq(variables['BUILD_ALL'], 'true'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO64_F411RE_NF'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO64_F411RE_NF'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-    eq(variables['BUILD_ALL'], 'true'),
-    eq(variables['BUILD_ST_NUCLEO64_F411RE_NF'], 'true'),
-    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+      eq(variables['BUILD_ALL'], 'true'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO64_F411RE_NF'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO64_F411RE_NF'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_ST_NUCLEO64_F411RE_NF'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
   dependsOn: 
@@ -582,6 +594,8 @@ jobs:
 
   variables:
     TargetBoard: ST_NUCLEO64_F411RE_NF
+    TargetPlatform: 'stm32'
+    TargetSeries: 'stm32f4xx'
     BuildOptions: >-
       -DTARGET_SERIES=STM32F4xx
       -DRTOS=ChibiOS
@@ -631,14 +645,14 @@ jobs:
 - job: Build_ST_STM32F411_DISCOVERY
   condition: >-
     or(
-    eq(variables['BUILD_ALL'], 'true'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_STM32F411_DISCOVERY'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_STM32F411_DISCOVERY'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-    eq(variables['BUILD_ALL'], 'true'),
-    eq(variables['BUILD_ST_STM32F411_DISCOVERY'], 'true'),
-    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+      eq(variables['BUILD_ALL'], 'true'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_STM32F411_DISCOVERY'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_STM32F411_DISCOVERY'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_ST_STM32F411_DISCOVERY'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
   dependsOn: 
@@ -650,6 +664,8 @@ jobs:
 
   variables:
     TargetBoard: ST_STM32F411_DISCOVERY
+    TargetPlatform: 'stm32'
+    TargetSeries: 'stm32f4xx'
     BuildOptions: >-
       -DTARGET_SERIES=STM32F4xx
       -DRTOS=ChibiOS
@@ -697,14 +713,14 @@ jobs:
 - job: Build_ST_NUCLEO144_F412ZG_NF
   condition: >-
     or(
-    eq(variables['BUILD_ALL'], 'true'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F412ZG_NF'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F412ZG_NF'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-    eq(variables['BUILD_ALL'], 'true'),
-    eq(variables['BUILD_ST_NUCLEO144_F412ZG_NF'], 'true'),
-    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+      eq(variables['BUILD_ALL'], 'true'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F412ZG_NF'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F412ZG_NF'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_ST_NUCLEO144_F412ZG_NF'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
   dependsOn: 
@@ -716,6 +732,8 @@ jobs:
 
   variables:
     TargetBoard: ST_NUCLEO144_F412ZG_NF
+    TargetPlatform: 'stm32'
+    TargetSeries: 'stm32f4xx'
     BuildOptions: >-
       -DTARGET_SERIES=STM32F4xx
       -DRTOS=ChibiOS
@@ -759,14 +777,14 @@ jobs:
 - job: Build_ST_NUCLEO144_F746ZG
   condition: >-
     or(
-    eq(variables['BUILD_ALL'], 'true'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F746ZG'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F746ZG'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-    eq(variables['BUILD_ALL'], 'true'),
-    eq(variables['BUILD_ST_NUCLEO144_F746ZG'], 'true'),
-    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+      eq(variables['BUILD_ALL'], 'true'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F746ZG'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F746ZG'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_ST_NUCLEO144_F746ZG'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
   dependsOn: 
@@ -778,6 +796,8 @@ jobs:
 
   variables:
     TargetBoard: ST_NUCLEO144_F746ZG
+    TargetPlatform: 'stm32'
+    TargetSeries: 'stm32f7xx'
     BuildOptions: >-
       -DTARGET_SERIES=STM32F7xx
       -DRTOS=ChibiOS
@@ -830,14 +850,14 @@ jobs:
 - job: Build_ST_STM32F4_DISCOVERY
   condition: >-
     or(
-    eq(variables['BUILD_ALL'], 'true'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_STM32F4_DISCOVERY'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_STM32F4_DISCOVERY'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-    eq(variables['BUILD_ALL'], 'true'),
-    eq(variables['BUILD_ST_STM32F4_DISCOVERY'], 'true'),
-    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+      eq(variables['BUILD_ALL'], 'true'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_STM32F4_DISCOVERY'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_STM32F4_DISCOVERY'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_ST_STM32F4_DISCOVERY'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
   dependsOn: 
@@ -849,6 +869,8 @@ jobs:
 
   variables:
     TargetBoard: ST_STM32F4_DISCOVERY
+    TargetPlatform: 'stm32'
+    TargetSeries: 'stm32f4xx'
     BuildOptions: >-
       -DTARGET_SERIES=STM32F4xx
       -DRTOS=ChibiOS
@@ -897,14 +919,14 @@ jobs:
 - job: Build_ST_NUCLEO144_F439ZI
   condition: >-
     or(
-    eq(variables['BUILD_ALL'], 'true'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F439ZI'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F439ZI'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-    eq(variables['BUILD_ALL'], 'true'),
-    eq(variables['BUILD_ST_NUCLEO144_F439ZI'], 'true'),
-    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+      eq(variables['BUILD_ALL'], 'true'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F439ZI'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F439ZI'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_ST_NUCLEO144_F439ZI'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
   dependsOn: 
@@ -916,6 +938,8 @@ jobs:
 
   variables:
     TargetBoard: ST_NUCLEO144_F439ZI
+    TargetPlatform: 'stm32'
+    TargetSeries: 'stm32f4xx'
     BuildOptions: >-
       -DTARGET_SERIES=STM32F4xx
       -DRTOS=ChibiOS
@@ -964,13 +988,13 @@ jobs:
 - job: Build_TI_CC1352P1_LAUNCHXL_868
   condition: >-
     or(
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] TI_CC1352P1_LAUNCHXL_868'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] TI_CC1352P1_LAUNCHXL_868'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-    eq(variables['BUILD_ALL'], 'true'),
-    eq(variables['BUILD_TI_CC1352P1_LAUNCHXL_868'], 'true'),
-    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] TI_CC1352P1_LAUNCHXL_868'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] TI_CC1352P1_LAUNCHXL_868'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_TI_CC1352P1_LAUNCHXL_868'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
   dependsOn: 
@@ -983,6 +1007,8 @@ jobs:
   variables:
     TargetBoard: TI_CC1352P1_LAUNCHXL
     PackageName: TI_CC1352P1_LAUNCHXL_868
+    TargetPlatform: 'ti_simplelink'
+    TargetSeries: 'cc13x2_26x2'
     BuildOptions: >-
       -DTARGET_SERIES=CC13x2_26x2
       -DRTOS=TI_SimpleLink
@@ -1047,6 +1073,8 @@ jobs:
   variables:
     TargetBoard: TI_CC1352P1_LAUNCHXL
     PackageName: TI_CC1352P1_LAUNCHXL_915
+    TargetPlatform: 'ti_simplelink'
+    TargetSeries: 'cc13x2_26x2'
     BuildOptions: >-
       -DTARGET_SERIES=CC13x2_26x2
       -DRTOS=TI_SimpleLink
@@ -1092,13 +1120,13 @@ jobs:
 - job: Build_ESP32_OLIMEX
   condition: >-
     or(
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ESP32_OLIMEX'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ESP32_OLIMEX'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-    eq(variables['BUILD_ALL'], 'true'),
-    eq(variables['BUILD_ESP32_OLIMEX'], 'true'),
-    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ESP32_OLIMEX'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ESP32_OLIMEX'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_ESP32_OLIMEX'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
   dependsOn: 
@@ -1111,6 +1139,8 @@ jobs:
   variables:
     TargetBoard: ESP32
     PackageName: ESP32_OLIMEX
+    TargetPlatform: 'esp32'
+    TargetSeries: 'esp32'
     BuildOptions: >-
       -DTARGET_SERIES=ESP32
       -DRTOS=ESP32
@@ -1162,13 +1192,13 @@ jobs:
 - job: Build_M5StickC
   condition: >-
     or(
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] M5StickC'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] M5StickC'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-    eq(variables['BUILD_ALL'], 'true'),
-    eq(variables['BUILD_M5StickC'], 'true'),
-    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] M5StickC'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] M5StickC'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_M5StickC'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
   dependsOn: 
@@ -1181,6 +1211,8 @@ jobs:
   variables:
     TargetBoard: ESP32
     PackageName: M5StickC
+    TargetPlatform: 'esp32'
+    TargetSeries: 'esp32'
     BuildOptions: >-
       -DTARGET_SERIES=ESP32
       -DRTOS=ESP32
@@ -1262,13 +1294,13 @@ jobs:
 - job: Build_M5StickCPlus
   condition: >-
     or(
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] M5StickCPlus'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] M5StickCPlus'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-    eq(variables['BUILD_ALL'], 'true'),
-    eq(variables['BUILD_M5StickCPlus'], 'true'),
-    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] M5StickCPlus'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] M5StickCPlus'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_M5StickCPlus'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
   dependsOn: 
@@ -1281,6 +1313,8 @@ jobs:
   variables:
     TargetBoard: ESP32
     PackageName: M5StickCPlus
+    TargetPlatform: 'esp32'
+    TargetSeries: 'esp32'
     BuildOptions: >-
       -DTARGET_SERIES=ESP32
       -DRTOS=ESP32
@@ -1362,13 +1396,13 @@ jobs:
 - job: Build_M5Stack
   condition: >-
     or(
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] M5Stack'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] M5Stack'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-    eq(variables['BUILD_ALL'], 'true'),
-    eq(variables['BUILD_M5Stack'], 'true'),
-    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] M5Stack'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] M5Stack'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_M5Stack'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
   dependsOn: 
@@ -1381,6 +1415,8 @@ jobs:
   variables:
     TargetBoard: ESP32
     PackageName: M5Stack
+    TargetPlatform: 'esp32'
+    TargetSeries: 'esp32'
     BuildOptions: >-
       -DTARGET_SERIES=ESP32
       -DRTOS=ESP32
@@ -1461,13 +1497,13 @@ jobs:
 - job: Build_M5Core2
   condition: >-
     or(
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] M5Core2'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] M5Core2'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-    eq(variables['BUILD_ALL'], 'true'),
-    eq(variables['BUILD_M5Core2'], 'true'),
-    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] M5Core2'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] M5Core2'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_M5Core2'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
   dependsOn: 
@@ -1480,6 +1516,8 @@ jobs:
   variables:
     TargetBoard: ESP32
     PackageName: M5Core2
+    TargetPlatform: 'esp32'
+    TargetSeries: 'esp32'
     BuildOptions: >-
       -DTARGET_SERIES=ESP32
       -DRTOS=ESP32
@@ -1560,12 +1598,12 @@ jobs:
 - job: Build_PybStick2x
   condition: >-
     or(
-    eq(variables['BUILD_ALL'], 'true'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] PybStick2x'),
-    contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] PybStick2x'),
-    contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-    eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+      eq(variables['BUILD_ALL'], 'true'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] PybStick2x'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] PybStick2x'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
   dependsOn: 
@@ -1577,6 +1615,8 @@ jobs:
 
   variables:
     TargetBoard: PybStick2x
+    TargetPlatform: 'stm32'
+    TargetSeries: 'stm32f4xx'
     BuildOptions: >-
       -DTARGET_SERIES=STM32F4xx
       -DRTOS=ChibiOS
