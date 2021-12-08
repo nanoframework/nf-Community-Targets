@@ -537,3 +537,4 @@
 #endif /* HALCONF_H */
 
 /** @} */
+// clang-format on

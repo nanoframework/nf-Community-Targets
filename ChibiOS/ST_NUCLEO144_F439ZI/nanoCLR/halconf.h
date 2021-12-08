@@ -1,3 +1,4 @@
+// clang-format off
 //
 // Copyright (c) .NET Foundation and Contributors
 // Portions Copyright (c) 2006..2015 Giovanni Di Sirio.  All rights reserved.
@@ -565,3 +566,4 @@
 #endif /* HALCONF_H */
 
 /** @} */
+// clang-format on
