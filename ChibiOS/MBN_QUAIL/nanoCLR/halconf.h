@@ -426,14 +426,14 @@
  *          default configuration.
  */
 #if !defined(SIO_DEFAULT_BITRATE) || defined(__DOXYGEN__)
-#define SIO_DEFAULT_BITRATE                 38400
+#define SIO_DEFAULT_BITRATE 38400
 #endif
 
 /**
  * @brief   Support for thread synchronization API.
  */
 #if !defined(SIO_USE_SYNCHRONIZATION) || defined(__DOXYGEN__)
-#define SIO_USE_SYNCHRONIZATION             TRUE
+#define SIO_USE_SYNCHRONIZATION TRUE
 #endif
 
 /*===========================================================================*/
@@ -475,7 +475,7 @@
  * @brief   Inserts an assertion on function errors before returning.
  */
 #if !defined(SPI_USE_ASSERT_ON_ERROR) || defined(__DOXYGEN__)
-#define SPI_USE_ASSERT_ON_ERROR             TRUE
+#define SPI_USE_ASSERT_ON_ERROR TRUE
 #endif
 
 /**
