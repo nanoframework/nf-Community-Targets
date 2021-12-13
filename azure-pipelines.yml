@@ -252,7 +252,6 @@ jobs:
 - job: Build_BrainPad2
   condition: >-
     or( 
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BrainPad2'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BrainPad2'),
@@ -326,7 +325,6 @@ jobs:
 - job: Build_GHI_FEZ_CERB40_NF
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] GHI_FEZ_CERB40_NF'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] GHI_FEZ_CERB40_NF'),
@@ -388,7 +386,6 @@ jobs:
 - job: Build_I2M_ELECTRON_NF
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] I2M_ELECTRON_NF'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] I2M_ELECTRON_NF'),
@@ -452,7 +449,6 @@ jobs:
 - job: Build_I2M_OXYGEN_NF
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] I2M_OXYGEN_NF'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] I2M_OXYGEN_NF'),
@@ -517,7 +513,6 @@ jobs:
 - job: Build_WEACT_F411CE
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] WEACT_F411CE'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] WEACT_F411CE'),
@@ -583,7 +578,6 @@ jobs:
 - job: Build_ST_NUCLEO64_F401RE_NF
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO64_F401RE_NF'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO64_F401RE_NF'),
@@ -649,7 +643,6 @@ jobs:
 - job: Build_ST_NUCLEO64_F411RE_NF
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO64_F411RE_NF'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO64_F411RE_NF'),
@@ -719,7 +712,6 @@ jobs:
 - job: Build_ST_STM32F411_DISCOVERY
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_STM32F411_DISCOVERY'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_STM32F411_DISCOVERY'),
@@ -787,7 +779,6 @@ jobs:
 - job: Build_ST_NUCLEO144_F412ZG_NF
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F412ZG_NF'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F412ZG_NF'),
@@ -851,7 +842,6 @@ jobs:
 - job: Build_ST_NUCLEO144_F746ZG
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F746ZG'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F746ZG'),
@@ -924,7 +914,6 @@ jobs:
 - job: Build_ST_STM32F4_DISCOVERY
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_STM32F4_DISCOVERY'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_STM32F4_DISCOVERY'),
@@ -993,7 +982,6 @@ jobs:
 - job: Build_ST_NUCLEO144_F439ZI
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F439ZI'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F439ZI'),
@@ -1194,11 +1182,12 @@ jobs:
 - job: Build_PybStick2x
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] PybStick2x'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] PybStick2x'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['PybStick2x'], 'true'),
       eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
@@ -1260,7 +1249,6 @@ jobs:
 - job: Build_NETDUINO3_WIFI
   condition: >-
     or( 
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] NETDUINO3_WIFI'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] NETDUINO3_WIFI'),
@@ -1332,6 +1320,7 @@ jobs:
 - job: Report_Build_Failure
 
   dependsOn:
+  - Build_BrainPad2
   - Build_GHI_FEZ_CERB40_NF
   - Build_I2M_ELECTRON_NF
   - Build_I2M_OXYGEN_NF
@@ -1351,6 +1340,7 @@ jobs:
 
   condition: >-
     or(
+      failed('Build_BrainPad2'),
       failed('Build_GHI_FEZ_CERB40_NF'),
       failed('Build_I2M_ELECTRON_NF'),
       failed('Build_I2M_OXYGEN_NF'),
