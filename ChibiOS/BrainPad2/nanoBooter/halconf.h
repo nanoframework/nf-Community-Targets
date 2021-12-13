@@ -4,6 +4,8 @@
 // See LICENSE file in the project root for full license information.
 //
 
+// clang-format off
+
 /**
  * @file    templates/halconf.h
  * @brief   HAL configuration header.
@@ -537,4 +539,5 @@
 #endif /* HALCONF_H */
 
 /** @} */
+
 // clang-format on
