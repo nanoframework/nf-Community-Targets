@@ -4,6 +4,8 @@
 // See LICENSE file in the project root for full license information.
 //
 
+// clang-format off
+
 #ifndef MCUCONF_H
 #define MCUCONF_H
 
@@ -360,3 +362,5 @@
 #include "mcuconf_nf.h"
 
 #endif /* MCUCONF_H */
+
+// clang-format on
