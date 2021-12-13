@@ -251,7 +251,6 @@ jobs:
 - job: Build_BrainPad2
   condition: >-
     or( 
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BrainPad2'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BrainPad2'),
@@ -1321,6 +1320,7 @@ jobs:
 - job: Report_Build_Failure
 
   dependsOn:
+  - Build_BrainPad2
   - Build_GHI_FEZ_CERB40_NF
   - Build_I2M_ELECTRON_NF
   - Build_I2M_OXYGEN_NF
@@ -1340,6 +1340,7 @@ jobs:
 
   condition: >-
     or(
+      failed('Build_BrainPad2'),
       failed('Build_GHI_FEZ_CERB40_NF'),
       failed('Build_I2M_ELECTRON_NF'),
       failed('Build_I2M_OXYGEN_NF'),
