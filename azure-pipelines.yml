@@ -290,7 +290,7 @@ jobs:
       -DAPI_Windows.Devices.Dac=OFF
       -DAPI_nanoFramework.Devices.OneWire=OFF
       -DAPI_nanoFramework.Devices.Can=OFF
-      -DAPI_Windows.Storage=ON
+      -DAPI_Windows.Storage=OFF
       -DAPI_nanoFramework.ResourceManager=ON
       -DAPI_nanoFramework.System.Collections=ON
       -DAPI_nanoFramework.System.Text=ON
