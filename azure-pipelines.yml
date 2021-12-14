@@ -398,7 +398,8 @@ jobs:
     BuildOptions: >-
       -DTARGET_SERIES=STM32F4xx
       -DRTOS=ChibiOS
-      -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF
+      -DNF_FEATURE_DEBUGGER=ON
+      -DUSE_RNG=OFF
       -DNF_FEATURE_RTC=ON
       -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
       -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
