@@ -14,6 +14,8 @@
     limitations under the License.
 */
 
+// clang-format off
+
 /*
  * This is the a board made by IngenuityMicro based upon MCU from ST 
  * the STM32F401RE. The board is equipped with both LSE and HSE. 
@@ -1603,3 +1605,5 @@ extern "C" {
 #endif /* _FROM_ASM_ */
 
 #endif /* BOARD_H */
+
+// clang-format on
