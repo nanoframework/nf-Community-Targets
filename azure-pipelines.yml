@@ -181,7 +181,6 @@ jobs:
 - job: Build_MBN_QUAIL
   condition: >-
     or( 
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] MBN_QUAIL'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] MBN_QUAIL'),
@@ -249,10 +248,83 @@ jobs:
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
+- job: Build_BrainPad2
+  condition: >-
+    or( 
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BrainPad2'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BrainPad2'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_BrainPad2'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
+
+  dependsOn: 
+  - Get_Commit_Message
+  - Check_Build_Options
+
+  pool:
+    vmImage: 'windows-2019'
+
+  variables:
+    TargetBoard: BrainPad2
+    TargetPlatform: 'stm32'
+    TargetSeries: 'stm32f4xx'
+    BuildOptions: >-
+      -DTARGET_SERIES=STM32F4xx
+      -DRTOS=ChibiOS
+      -DSUPPORT_ANY_BASE_CONVERSION=OFF
+      -DNF_FEATURE_DEBUGGER=ON
+      -DUSE_RNG=OFF
+      -DNF_FEATURE_RTC=ON
+      -DNF_FEATURE_HAS_SDCARD=OFF
+      -DSWO_OUTPUT=OFF
+      -DAPI_System.Math=ON
+      -DAPI_Hardware.Stm32=ON
+      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
+      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
+      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
+      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
+      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
+      -DAPI_Windows.Devices.Dac=OFF
+      -DAPI_nanoFramework.Devices.OneWire=OFF
+      -DAPI_nanoFramework.Devices.Can=OFF
+      -DAPI_Windows.Storage=OFF
+      -DAPI_nanoFramework.ResourceManager=ON
+      -DAPI_nanoFramework.System.Collections=ON
+      -DAPI_nanoFramework.System.Text=ON
+
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('BrainPad2_versioncounter_1_7_2', 0)]
+    GccArm_Version:
+    NeedsDFU: true
+    NeedsSRECORD: false
+
+  steps:
+  - checkout: self
+    fetchDepth: 1
+  - checkout: templatesBuild
+    fetchDepth: 1
+  
+  - template: azure-pipelines-templates/set-build-version.yml
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
+  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
+  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
+  - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
+    parameters:
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
+    parameters:
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
+
+##############################
 - job: Build_GHI_FEZ_CERB40_NF
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] GHI_FEZ_CERB40_NF'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] GHI_FEZ_CERB40_NF'),
@@ -314,7 +386,6 @@ jobs:
 - job: Build_I2M_ELECTRON_NF
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] I2M_ELECTRON_NF'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] I2M_ELECTRON_NF'),
@@ -378,7 +449,6 @@ jobs:
 - job: Build_I2M_OXYGEN_NF
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] I2M_OXYGEN_NF'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] I2M_OXYGEN_NF'),
@@ -402,7 +472,8 @@ jobs:
     BuildOptions: >-
       -DTARGET_SERIES=STM32F4xx
       -DRTOS=ChibiOS
-      -DNF_FEATURE_DEBUGGER=ON -DUSE_RNG=OFF
+      -DNF_FEATURE_DEBUGGER=ON
+      -DUSE_RNG=OFF
       -DNF_FEATURE_RTC=ON
       -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
       -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
@@ -443,7 +514,6 @@ jobs:
 - job: Build_WEACT_F411CE
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] WEACT_F411CE'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] WEACT_F411CE'),
@@ -509,7 +579,6 @@ jobs:
 - job: Build_ST_NUCLEO64_F401RE_NF
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO64_F401RE_NF'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO64_F401RE_NF'),
@@ -575,7 +644,6 @@ jobs:
 - job: Build_ST_NUCLEO64_F411RE_NF
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO64_F411RE_NF'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO64_F411RE_NF'),
@@ -645,7 +713,6 @@ jobs:
 - job: Build_ST_STM32F411_DISCOVERY
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_STM32F411_DISCOVERY'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_STM32F411_DISCOVERY'),
@@ -713,7 +780,6 @@ jobs:
 - job: Build_ST_NUCLEO144_F412ZG_NF
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F412ZG_NF'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F412ZG_NF'),
@@ -777,7 +843,6 @@ jobs:
 - job: Build_ST_NUCLEO144_F746ZG
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F746ZG'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F746ZG'),
@@ -850,7 +915,6 @@ jobs:
 - job: Build_ST_STM32F4_DISCOVERY
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_STM32F4_DISCOVERY'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_STM32F4_DISCOVERY'),
@@ -919,7 +983,6 @@ jobs:
 - job: Build_ST_NUCLEO144_F439ZI
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F439ZI'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F439ZI'),
@@ -1120,11 +1183,12 @@ jobs:
 - job: Build_PybStick2x
   condition: >-
     or(
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] PybStick2x'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] PybStick2x'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_PybStick2x'], 'true'),
       eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
@@ -1186,7 +1250,6 @@ jobs:
 - job: Build_NETDUINO3_WIFI
   condition: >-
     or( 
-      eq(variables['BUILD_ALL'], 'true'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] NETDUINO3_WIFI'),
       contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] NETDUINO3_WIFI'),
@@ -1258,6 +1321,7 @@ jobs:
 - job: Report_Build_Failure
 
   dependsOn:
+  - Build_BrainPad2
   - Build_GHI_FEZ_CERB40_NF
   - Build_I2M_ELECTRON_NF
   - Build_I2M_OXYGEN_NF
@@ -1277,6 +1341,7 @@ jobs:
 
   condition: >-
     or(
+      failed('Build_BrainPad2'),
       failed('Build_GHI_FEZ_CERB40_NF'),
       failed('Build_I2M_ELECTRON_NF'),
       failed('Build_I2M_OXYGEN_NF'),

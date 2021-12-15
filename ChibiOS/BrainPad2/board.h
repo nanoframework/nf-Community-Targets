@@ -14,15 +14,7 @@
     limitations under the License.
 */
 
-/*
- * This is the a board made by IngenuityMicro based upon MCU from ST 
- * the STM32F411CEU6. The board is equipped with both LSE and HSE. 
- * Details can be found on 
- * 
- *      http://www.ingenuitymicro.com/products/electron/
- * 
- * for various firmware, board layout and schematic.
- */
+// clang-format off
 
 #ifndef BOARD_H
 #define BOARD_H
@@ -35,7 +27,7 @@
  * Board identifier.
  */
 #define BOARD_BRAINPAD2
-#define BOARD_NAME                  "GHI BOARD_BRAINPAD2"
+#define BOARD_NAME                  "GHI_BOARD_BRAINPAD2"
 
 /*
  * USB OTG Force
@@ -71,7 +63,7 @@
 /*
  * MCU type as defined in the ST header.
  */
-#define STM32F411xE
+#define STM32F401xE
 
 /*
  * IO pins assignments.
@@ -1603,3 +1595,5 @@ extern "C" {
 #endif /* _FROM_ASM_ */
 
 #endif /* BOARD_H */
+
+// clang-format on

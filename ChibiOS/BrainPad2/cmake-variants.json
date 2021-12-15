@@ -39,6 +39,7 @@
           "STM32_CUBE_PACKAGE_SOURCE": "",
           "MBEDTLS_SOURCE": "",
           "SUPPORT_ANY_BASE_CONVERSION": "OFF",
+          "USE_RNG": "OFF",
           "NF_FEATURE_DEBUGGER": "ON",
           "NF_FEATURE_RTC": "ON",
           "NF_FEATURE_HAS_SDCARD": "OFF",
