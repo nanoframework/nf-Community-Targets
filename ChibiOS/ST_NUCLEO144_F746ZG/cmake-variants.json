@@ -58,7 +58,7 @@
           "NF_FEATURE_USE_APPDOMAINS": "OFF",
           "NF_FEATURE_WATCHDOG": "ON",
           "NF_FEATURE_HAS_CONFIG_BLOCK": "ON",
-          "NF_FEATURE_HAS_SDCARD": "ON",
+          "NF_FEATURE_HAS_SDCARD": "OFF",
           "NF_FEATURE_HAS_USB_MSD": "OFF",
           "NF_FEATURE_USE_SPIFFS": "OFF",
           "NF_PLATFORM_NO_CLR_TRACE": "OFF",
