@@ -16,16 +16,6 @@
 
 // clang-format off
 
-/*
- * This is the a board made by IngenuityMicro based upon MCU from ST 
- * the STM32F401RE. The board is equipped with both LSE and HSE. 
- * Details can be found on 
- * 
- *      http://www.ingenuitymicro.com/products/electron/
- * 
- * for various firmware, board layout and schematic.
- */
-
 #ifndef BOARD_H
 #define BOARD_H
 
