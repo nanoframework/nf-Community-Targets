@@ -14,7 +14,7 @@ steps:
 
         $VersionMajor = "1"
         $VersionMinor = "7"
-        $BuildNumber = "0"
+        $BuildNumber = "4"
         
         $buildSimpleVersion = $VersionMajor + "." + $VersionMinor + "." + $BuildNumber
         $buildFullVersion = $buildSimpleVersion + "." + $version.ToString()
