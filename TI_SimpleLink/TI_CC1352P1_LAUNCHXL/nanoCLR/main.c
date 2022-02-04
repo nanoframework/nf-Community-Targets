@@ -40,14 +40,6 @@ CLR_SETTINGS clrSettings;
 extern GPIO_PinConfig gpioPinConfigs[GPIO_MAX_PINS];
 extern GPIO_CallbackFxn gpioCallbackFunctions[GPIO_MAX_PINS];
 
-// this has to be define in a C file, otherwise the linker can't replace the weak one declared in the SDK driver library
-const GPIOCC26XX_Config GPIOCC26XX_config = {
-    .pinConfigs = (GPIO_PinConfig *)gpioPinConfigs,
-    .callbacks = (GPIO_CallbackFxn *)gpioCallbackFunctions,
-    .numberOfPinConfigs = GPIO_MAX_PINS,
-    .numberOfCallbacks = GPIO_MAX_PINS,
-    .intPriority = (~0)};
-
 extern void ReceiverThread(UArg arg0, UArg arg1);
 extern void CLRStartupThread(UArg arg0, UArg arg1);
 
