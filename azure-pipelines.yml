@@ -1088,7 +1088,7 @@ jobs:
       -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
       -DAPI_nanoFramework.TI.EasyLink=ON
       -DAPI_nanoFramework.Hardware.TI=ON
-
+      -DAPI_nanoFramework.System.Text=ON
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('TI_CC1352P1_LAUNCHXL_868_versioncounter_1_7_4', 0)]
     GccArm_Version:
@@ -1154,7 +1154,7 @@ jobs:
       -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
       -DAPI_nanoFramework.TI.EasyLink=ON
       -DAPI_nanoFramework.Hardware.TI=ON
-
+      -DAPI_nanoFramework.System.Text=ON
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('TI_CC1352P1_LAUNCHXL_915_versioncounter_1_7_4', 0)]
     GccArm_Version:

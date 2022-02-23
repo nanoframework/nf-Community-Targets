@@ -13,14 +13,13 @@
 #include <ti/sysbios/BIOS.h>
 #include <ti/sysbios/knl/Task.h>
 
-// board Header files
-#include <ti_drivers_config.h>
-
-#include <ti/drivers/gpio/GPIOCC26XX.h>
 // clang-format off
 #include DeviceFamily_constructPath(inc/hw_prcm.h)
 #include DeviceFamily_constructPath(driverlib/sys_ctrl.h)
 // clang-format on
+
+// need this until fix in TI SDK is implemented
+extern void PIN_init_nano();
 
 //////////////////////////////
 
@@ -35,10 +34,6 @@ CLR_SETTINGS clrSettings;
 // this define has to match the one in cpu_gpio.cpp
 #define GPIO_MAX_PINS 16
 
-// these are declared in cpu_gpio.cpp
-extern GPIO_PinConfig gpioPinConfigs[GPIO_MAX_PINS];
-extern GPIO_CallbackFxn gpioCallbackFunctions[GPIO_MAX_PINS];
-
 extern void ReceiverThread(UArg arg0, UArg arg1);
 extern void CLRStartupThread(UArg arg0, UArg arg1);
 
@@ -50,8 +45,15 @@ int main(void)
     // must be called before PIN_init()
     WakeupReasonStore = SysCtrlResetSourceGet();
 
+    // hack required to be able to config wakeup from deep sleep
+    // bug introduced in SDK 5.30.01.01.
+    PIN_init_nano();
+
     // Call board init functions
-    Board_init();
+    // Board_init();
+    
+    ADC_init();
+    ConfigUART();
 
     // setup Task thread
     Task_Params_init(&taskParams);
@@ -59,12 +61,7 @@ int main(void)
     taskParams.priority = 4;
 
     // create Receiver
-    receiverHandle = Task_create((Task_FuncPtr)ReceiverThread, &taskParams, Error_IGNORE);
-    if (receiverHandle == NULL)
-    {
-        while (1)
-            ;
-    }
+    Task_construct(&receiverTask, ReceiverThread, &taskParams, Error_IGNORE);
 
     // CLR settings to launch CLR thread
     (void)memset(&clrSettings, 0, sizeof(CLR_SETTINGS));
@@ -75,19 +72,11 @@ int main(void)
 
     // setup CLR task
     taskParams.arg0 = (UArg)&clrSettings;
-    taskParams.stackSize = THREADSTACKSIZE;
+    taskParams.stackSize = 2 * THREADSTACKSIZE;
     taskParams.priority = 4;
-    clrHandle = Task_create(CLRStartupThread, &taskParams, Error_IGNORE);
-    if (clrHandle == NULL)
-    {
-        while (1)
-            ;
-    }
 
-    GPIO_init();
-    ADC_init();
-    ConfigUART();
-
+    Task_construct(&clrTask, CLRStartupThread, &taskParams, Error_IGNORE);
+    
     BIOS_start();
 
     return (0);
