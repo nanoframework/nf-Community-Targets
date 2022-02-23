@@ -3,16 +3,14 @@
 // See LICENSE file in the project root for full license information.
 //
 
-#include <stdint.h>
 #include <nanoCLR_Application.h>
 #include <nanoHAL_v2.h>
 
-// RTOS header files
-#include <xdc/std.h>
+// board Header files
+#include <ti_drivers_config.h>
 #include <xdc/runtime/Error.h>
 #include <ti/sysbios/BIOS.h>
 #include <ti/sysbios/knl/Task.h>
-
 // clang-format off
 #include DeviceFamily_constructPath(inc/hw_prcm.h)
 #include DeviceFamily_constructPath(driverlib/sys_ctrl.h)
