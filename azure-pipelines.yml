@@ -1084,13 +1084,14 @@ jobs:
       -DAPI_Windows.Devices.Spi=OFF
       -DAPI_Windows.Devices.I2c=OFF
       -DAPI_Windows.Devices.Pwm=OFF
-      -DAPI_Windows.Devices.SerialCommunication=OFF
+      -DAPI_Windows.Devices.SerialCommunication=OFF -DAPI_System.IO.Ports=OFF
       -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
       -DAPI_nanoFramework.TI.EasyLink=ON
       -DAPI_nanoFramework.Hardware.TI=ON
       -DAPI_nanoFramework.System.Text=ON
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('TI_CC1352P1_LAUNCHXL_868_versioncounter_1_7_4', 0)]
+    GNU_GCC_TOOLCHAIN_PATH: $(Agent.TempDirectory)\GNU_Tools_ARM_Embedded
     GccArm_Version:
 
   steps:
@@ -1150,13 +1151,14 @@ jobs:
       -DAPI_Windows.Devices.Spi=OFF
       -DAPI_Windows.Devices.I2c=OFF
       -DAPI_Windows.Devices.Pwm=OFF
-      -DAPI_Windows.Devices.SerialCommunication=OFF
+      -DAPI_Windows.Devices.SerialCommunication=OFF -DAPI_System.IO.Ports=OFF
       -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
       -DAPI_nanoFramework.TI.EasyLink=ON
       -DAPI_nanoFramework.Hardware.TI=ON
       -DAPI_nanoFramework.System.Text=ON
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('TI_CC1352P1_LAUNCHXL_915_versioncounter_1_7_4', 0)]
+    GNU_GCC_TOOLCHAIN_PATH: $(Agent.TempDirectory)\GNU_Tools_ARM_Embedded
     GccArm_Version:
 
   steps:
