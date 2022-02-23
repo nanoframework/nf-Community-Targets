@@ -51,7 +51,7 @@ int main(void)
 
     // Call board init functions
     // Board_init();
-    
+
     ADC_init();
     ConfigUART();
 
@@ -76,7 +76,7 @@ int main(void)
     taskParams.priority = 4;
 
     Task_construct(&clrTask, CLRStartupThread, &taskParams, Error_IGNORE);
-    
+
     BIOS_start();
 
     return (0);
