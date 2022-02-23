@@ -24,8 +24,8 @@ extern void PIN_init_nano();
 // Stack size in bytes
 #define THREADSTACKSIZE 2048
 
-Task_Handle receiverHandle;
-Task_Handle clrHandle;
+Task_Struct receiverTask;
+Task_Struct clrTask;
 
 CLR_SETTINGS clrSettings;
 
