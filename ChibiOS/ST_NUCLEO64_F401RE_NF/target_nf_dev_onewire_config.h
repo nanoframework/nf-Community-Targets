@@ -8,10 +8,10 @@
 ///////////
 
 // enable USART1
-#define NF_ONEWIRE_STM32_UART_USE_USART1    TRUE
+#define NF_ONEWIRE_STM32_UART_USE_USART1 TRUE
 
 // buffers size
 // tx buffer size: 32 bytes
-#define UART1_TX_SIZE  32
+#define UART1_TX_SIZE 32
 // rx buffer size: 32 bytes
-#define UART1_RX_SIZE  32
+#define UART1_RX_SIZE 32
