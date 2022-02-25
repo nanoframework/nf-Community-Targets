@@ -62,7 +62,7 @@
           "API_Hardware.Esp32": "OFF",
           "API_Hardware.Stm32": "ON",
           "API_nanoFramework.Devices.Can": "OFF",
-          "API_nanoFramework.Devices.OneWire": "OFF",
+          "API_nanoFramework.Device.OneWire": "OFF",
           "API_System.Math": "OFF",
           "API_System.Net": "ON",
           "API_Windows.Devices.Adc": "ON",
