@@ -3,8 +3,8 @@
 // See LICENSE file in the project root for full license information.
 //
 
-#include "target_nf_devices_onewire_config.h"
-#include <nanoFramework.Devices.OneWire/nf_devices_onewire_native_target.h>
+#include "target_nf_dev_onewire_config.h"
+#include <nanoFramework.Device.OneWire/nf_dev_onewire_target.h>
 
 ///////////
 // UART4 //
