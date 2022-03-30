@@ -3,10 +3,19 @@
 
 trigger:
   branches:
-    include: ["main", "master", "develop*", "release-*", "refs/tags/*" ]
+    include:
+      - main
+      - develop
+      - release-*
+      - refs/tags/*
   paths:
-    exclude: [ "doc", "*.md", ".gitignore", "README.md" ]
+    exclude:
+      - .gitignore
+      - .clang-format
+      - LICENSE.md
+      - README.md
 
+# PR always trigger build
 pr:
   autoCancel: true
 
@@ -29,7 +38,7 @@ resources:
     - repository: templatesBuild
       type: github
       name: nanoframework/nf-interpreter
-      ref: refs/heads/develop
+      ref: refs/heads/main
       endpoint: nanoframework
     - repository: esp32_idf
       type: github
@@ -111,7 +120,7 @@ jobs:
           {
             # scheduled daily build: get commit date
             # clone nf-interpreter
-            git clone https://github.com/nanoframework/nf-interpreter.git -b develop nf-interpreter --depth 1 -q
+            git clone https://github.com/nanoframework/nf-interpreter.git -b main nf-interpreter --depth 1 -q
             cd "nf-interpreter" > $null
 
             $interpreterLastCommitDate = git show -s --format=%cd --date=short
@@ -222,7 +231,7 @@ jobs:
       -DAPI_nanoFramework.System.Text=ON
 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('MBN_QUAIL_versioncounter_1_7_4', 0)]
+    REVISION: $[counter('MBN_QUAIL_versioncounter_1_8_0', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -296,7 +305,7 @@ jobs:
       -DAPI_nanoFramework.System.Text=ON
 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('BrainPad2_versioncounter_1_7_4', 0)]
+    REVISION: $[counter('BrainPad2_versioncounter_1_8_0', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -357,7 +366,7 @@ jobs:
       -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
       -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('GHI_FEZ_CERB40_NF_versioncounter_1_7_4', 0)]
+    REVISION: $[counter('GHI_FEZ_CERB40_NF_versioncounter_1_8_0', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -420,7 +429,7 @@ jobs:
       -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('I2M_ELECTRON_NF_versioncounter_1_7_4', 0)]
+    REVISION: $[counter('I2M_ELECTRON_NF_versioncounter_1_8_0', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -485,7 +494,7 @@ jobs:
       -DAPI_Hardware.Stm32=ON
 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('I2M_OXYGEN_NF_versioncounter_1_7_4', 0)]
+    REVISION: $[counter('I2M_OXYGEN_NF_versioncounter_1_8_0', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -550,7 +559,7 @@ jobs:
       -DAPI_Hardware.Stm32=ON
 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('WEACT_F411CE_versioncounter_1_7_4', 0)]
+    REVISION: $[counter('WEACT_F411CE_versioncounter_1_8_0', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -615,7 +624,7 @@ jobs:
       -DAPI_nanoFramework.Device.OneWire=ON
 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO64_F401RE_NF_versioncounter_1_7_4', 0)]
+    REVISION: $[counter('ST_NUCLEO64_F401RE_NF_versioncounter_1_8_0', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -684,7 +693,7 @@ jobs:
       -DAPI_Hardware.Stm32=ON
 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO64_F411RE_NF_versioncounter_1_7_4', 0)]
+    REVISION: $[counter('ST_NUCLEO64_F411RE_NF_versioncounter_1_8_0', 0)]
     GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
@@ -751,7 +760,7 @@ jobs:
       -DAPI_nanoFramework.System.Text=ON
 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_STM32F411_DISCOVERY_versioncounter_1_7_4', 0)]
+    REVISION: $[counter('ST_STM32F411_DISCOVERY_versioncounter_1_8_0', 0)]
     GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
@@ -814,7 +823,7 @@ jobs:
       -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO144_F412ZG_NF_versioncounter_1_7_4', 0)]
+    REVISION: $[counter('ST_NUCLEO144_F412ZG_NF_versioncounter_1_8_0', 0)]
     GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
@@ -886,7 +895,7 @@ jobs:
       -DAPI_nanoFramework.System.Text=ON
 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO144_F746ZG_versioncounter_1_7_4', 0)]
+    REVISION: $[counter('ST_NUCLEO144_F746ZG_versioncounter_1_8_0', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -954,7 +963,7 @@ jobs:
       -DAPI_nanoFramework.Devices.Can=ON
 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_STM32F4_DISCOVERY_versioncounter_1_7_4', 0)]
+    REVISION: $[counter('ST_STM32F4_DISCOVERY_versioncounter_1_8_0', 0)]
     GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
@@ -1022,7 +1031,7 @@ jobs:
       -DNF_SECURITY_MBEDTLS=ON
 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO144_F439ZI_versioncounter_1_7_4', 0)]
+    REVISION: $[counter('ST_NUCLEO144_F439ZI_versioncounter_1_8_0', 0)]
     GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
@@ -1090,7 +1099,7 @@ jobs:
       -DAPI_nanoFramework.Hardware.TI=ON
       -DAPI_nanoFramework.System.Text=ON
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('TI_CC1352P1_LAUNCHXL_868_versioncounter_1_7_4', 0)]
+    REVISION: $[counter('TI_CC1352P1_LAUNCHXL_868_versioncounter_1_8_0', 0)]
     GNU_GCC_TOOLCHAIN_PATH: $(Agent.TempDirectory)\GNU_Tools_ARM_Embedded
     GccArm_Version:
 
@@ -1157,7 +1166,7 @@ jobs:
       -DAPI_nanoFramework.Hardware.TI=ON
       -DAPI_nanoFramework.System.Text=ON
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('TI_CC1352P1_LAUNCHXL_915_versioncounter_1_7_4', 0)]
+    REVISION: $[counter('TI_CC1352P1_LAUNCHXL_915_versioncounter_1_8_0', 0)]
     GNU_GCC_TOOLCHAIN_PATH: $(Agent.TempDirectory)\GNU_Tools_ARM_Embedded
     GccArm_Version:
 
@@ -1223,7 +1232,7 @@ jobs:
       -DNF_FEATURE_HAS_SDCARD=ON
 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('PybStick2x_versioncounter_1_7_4', 0)]
+    REVISION: $[counter('PybStick2x_versioncounter_1_8_0', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -1293,7 +1302,7 @@ jobs:
       -DAPI_nanoFramework.System.Collections=ON
       -DAPI_nanoFramework.System.Text=ON
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('NETDUINO3_WIFI_versioncounter_1_7_4', 0)]
+    REVISION: $[counter('NETDUINO3_WIFI_versioncounter_1_8_0', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
