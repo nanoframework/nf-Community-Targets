@@ -242,9 +242,11 @@ jobs:
   - checkout: templatesBuild
     fetchDepth: 1
   
-  - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
@@ -316,9 +318,11 @@ jobs:
   - checkout: templatesBuild
     fetchDepth: 1
   
-  - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
@@ -377,9 +381,11 @@ jobs:
   - checkout: templatesBuild
     fetchDepth: 1
 
-  - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
@@ -440,9 +446,11 @@ jobs:
   - checkout: templatesBuild
     fetchDepth: 1
 
-  - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
@@ -505,9 +513,11 @@ jobs:
   - checkout: templatesBuild
     fetchDepth: 1
 
-  - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
@@ -570,9 +580,11 @@ jobs:
   - checkout: templatesBuild
     fetchDepth: 1
 
-  - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
@@ -635,9 +647,11 @@ jobs:
   - checkout: templatesBuild
     fetchDepth: 1
 
-  - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
@@ -704,9 +718,11 @@ jobs:
   - checkout: templatesBuild
     fetchDepth: 1
 
-  - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
@@ -771,9 +787,11 @@ jobs:
   - checkout: templatesBuild
     fetchDepth: 1
 
-  - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
@@ -834,9 +852,11 @@ jobs:
   - checkout: templatesBuild
     fetchDepth: 1
 
-  - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
@@ -906,9 +926,11 @@ jobs:
   - checkout: templatesBuild
     fetchDepth: 1
 
-  - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
@@ -974,9 +996,11 @@ jobs:
   - checkout: templatesBuild
     fetchDepth: 1
 
-  - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
@@ -1042,9 +1066,11 @@ jobs:
   - checkout: templatesBuild
     fetchDepth: 1
 
-  - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
@@ -1109,9 +1135,11 @@ jobs:
   - checkout: templatesBuild
     fetchDepth: 1
 
-  - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
@@ -1176,9 +1204,11 @@ jobs:
   - checkout: templatesBuild
     fetchDepth: 1
 
-  - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
@@ -1243,9 +1273,11 @@ jobs:
   - checkout: templatesBuild
     fetchDepth: 1
 
-  - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
@@ -1313,9 +1345,11 @@ jobs:
   - checkout: templatesBuild
     fetchDepth: 1
 
-  - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild

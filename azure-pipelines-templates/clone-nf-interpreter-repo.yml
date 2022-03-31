@@ -5,7 +5,6 @@ steps:
 
   # clone nf-interpreter repo to launch the build
   - checkout: templatesBuild
-    fetchDepth: 1
 
   # Copy ChibiOS target files to nf-interpreter folder
   - task: CopyFiles@2
