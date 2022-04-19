@@ -27,4 +27,4 @@ SPI_CONFIG_PINS(1, GPIOB, 3, GPIOB, 4, GPIOB, 5, 5)
 // port for MOSI pin is: SPI2_MOSI
 
 // GPIO alternate pin function is 5 (see alternate function mapping table in device datasheet)
-//SPI_CONFIG_PINS(2, GPIOB, 13, GPIOB, 14, GPIOB, 15, 5)
+// SPI_CONFIG_PINS(2, GPIOB, 13, GPIOB, 14, GPIOB, 15, 5)
