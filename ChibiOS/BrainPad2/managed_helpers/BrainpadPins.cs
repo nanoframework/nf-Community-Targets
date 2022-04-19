@@ -3,7 +3,7 @@
 // See LICENSE file in the project root for full license information.
 //
 using System;
-using Windows.Devices.Gpio;
+using System.Device.Gpio;
 
 namespace STM32F4.Pins
 {
@@ -27,9 +27,9 @@ namespace STM32F4.Pins
             GpioPin l2 = GpioController.GetDefault().OpenPin(38);
             GpioPin l3 = GpioController.GetDefault().OpenPin(40);
 
-            l1.SetDriveMode(GpioPinDriveMode.Output);
-            l2.SetDriveMode(GpioPinDriveMode.Output);
-            l3.SetDriveMode(GpioPinDriveMode.Output);
+            l1.SetDriveMode(PinMode.Output);
+            l2.SetDriveMode(PinMode.Output);
+            l3.SetDriveMode(PinMode.Output);
 
             l1.Write(GpioPinValue.Low);
             l2.Write(GpioPinValue.Low);

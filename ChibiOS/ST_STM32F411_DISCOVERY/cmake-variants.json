@@ -69,20 +69,13 @@
           "API_nanoFramework.System.Text": "ON",
           "API_System.Math": "ON",
           "API_System.Net": "OFF",
-          "API_Windows.Devices.Adc": "ON",
           "API_System.Device.Adc": "ON",
           "API_Windows.Devices.Dac": "OFF",
-          "API_Windows.Devices.Gpio": "ON",
           "API_System.Device.Gpio": "ON",
-          "API_Windows.Devices.I2c": "ON",
-          "API_Windows.Devices.I2s": "OFF",
-          "API_Windows.Devices.Pwm": "ON",
+          "API_System.Device.I2c": "ON",
           "API_System.Device.Pwm": "ON",
-          "API_Windows.Devices.SerialCommunication": "ON",
           "API_System.IO.Ports": "ON",
-          "API_Windows.Devices.Spi": "ON",
           "API_System.Device.Spi": "ON",
-          "API_Windows.Devices.Wifi": "OFF",
           "API_Windows.Storage": "OFF"
         }
       }

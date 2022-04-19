@@ -8,7 +8,7 @@
 
 using System;
 using System.Diagnostics;
-using Windows.Devices.I2c;
+using System.Device.I2c;
 using System.Threading;
 
 

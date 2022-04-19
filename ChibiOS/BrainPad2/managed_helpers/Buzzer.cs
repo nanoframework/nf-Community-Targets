@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-using Windows.Devices.Pwm;
+using System.Device.Pwm;
 
 namespace FirmwareSelectors
 {

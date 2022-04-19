@@ -219,12 +219,12 @@ jobs:
       -DNF_FEATURE_HAS_SDCARD=ON
       -DAPI_System.Math=ON
       -DAPI_Hardware.Stm32=ON
-      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
-      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
-      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
-      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
-      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
-      -DAPI_nanoFramework.Device.OneWire=ON
+      -DAPI_System.Device.Gpio=ON
+      -DAPI_System.Device.Spi=ON
+      -DAPI_System.Device.I2c=ON
+      -DAPI_System.Device.Pwm=ON
+      -DAPI_System.IO.Ports=ON
+      -DAPI_nanoFramework.Devices.OneWire=ON
       -DAPI_Windows.Storage=ON
       -DAPI_nanoFramework.ResourceManager=ON
       -DAPI_nanoFramework.System.Collections=ON
@@ -293,13 +293,13 @@ jobs:
       -DSWO_OUTPUT=OFF
       -DAPI_System.Math=ON
       -DAPI_Hardware.Stm32=ON
-      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
-      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
-      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
-      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
-      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
-      -DAPI_Windows.Devices.Dac=OFF
-      -DAPI_nanoFramework.Device.OneWire=OFF
+      -DAPI_System.Device.Gpio=ON
+      -DAPI_System.Device.Spi=ON
+      -DAPI_System.Device.I2c=ON
+      -DAPI_System.Device.Pwm=ON
+      -DAPI_System.IO.Ports=ON
+      -DAPI_System.Device.Dac=OFF
+      -DAPI_nanoFramework.Devices.OneWire=OFF
       -DAPI_nanoFramework.Devices.Can=OFF
       -DAPI_Windows.Storage=OFF
       -DAPI_nanoFramework.ResourceManager=ON
@@ -363,12 +363,12 @@ jobs:
       -DRTOS=ChibiOS
       -DNF_FEATURE_DEBUGGER=ON
       -DNF_FEATURE_RTC=ON
-      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
-      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
-      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
-      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
-      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
-      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Device.Gpio=ON
+      -DAPI_System.Device.Spi=ON
+      -DAPI_System.Device.I2c=ON
+      -DAPI_System.Device.Pwm=ON
+      -DAPI_System.IO.Ports=ON
+      -DAPI_System.Device.Adc=ON
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('GHI_FEZ_CERB40_NF_versioncounter_1_8_0', 0)]
     GccArm_Version:
@@ -427,12 +427,12 @@ jobs:
       -DNF_FEATURE_DEBUGGER=ON
       -DUSE_RNG=OFF
       -DNF_FEATURE_RTC=ON
-      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
-      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
-      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
-      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
-      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
-      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Device.Gpio=ON
+      -DAPI_System.Device.Spi=ON
+      -DAPI_System.Device.I2c=ON
+      -DAPI_System.Device.Pwm=ON
+      -DAPI_System.IO.Ports=ON
+      -DAPI_System.Device.Adc=ON
 
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('I2M_ELECTRON_NF_versioncounter_1_8_0', 0)]
@@ -492,12 +492,12 @@ jobs:
       -DNF_FEATURE_DEBUGGER=ON
       -DUSE_RNG=OFF
       -DNF_FEATURE_RTC=ON
-      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
-      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
-      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
-      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
-      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
-      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Device.Gpio=ON
+      -DAPI_System.Device.Spi=ON
+      -DAPI_System.Device.I2c=ON
+      -DAPI_System.Device.Pwm=ON
+      -DAPI_System.IO.Ports=ON
+      -DAPI_System.Device.Adc=ON
       -DAPI_System.Math=ON
       -DAPI_Hardware.Stm32=ON
 
@@ -559,12 +559,12 @@ jobs:
       -DNF_FEATURE_DEBUGGER=ON
       -DUSE_RNG=OFF
       -DNF_FEATURE_RTC=ON
-      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
-      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
-      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
-      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
-      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
-      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Device.Gpio=ON
+      -DAPI_System.Device.Spi=ON
+      -DAPI_System.Device.I2c=ON
+      -DAPI_System.Device.Pwm=ON
+      -DAPI_System.IO.Ports=ON
+      -DAPI_System.Device.Adc=ON
       -DAPI_System.Math=ON
       -DAPI_Hardware.Stm32=ON
 
@@ -627,13 +627,13 @@ jobs:
       -DUSE_RNG=OFF
       -DSWO_OUTPUT=ON
       -DNF_FEATURE_RTC=ON
-      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
-      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
-      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
-      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
-      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
-      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
-      -DAPI_nanoFramework.Device.OneWire=ON
+      -DAPI_System.Device.Gpio=ON
+      -DAPI_System.Device.Spi=ON
+      -DAPI_System.Device.I2c=ON
+      -DAPI_System.Device.Pwm=ON
+      -DAPI_System.IO.Ports=ON
+      -DAPI_System.Device.Adc=ON
+      -DAPI_nanoFramework.Devices.OneWire=ON
 
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_NUCLEO64_F401RE_NF_versioncounter_1_8_0', 0)]
@@ -694,12 +694,12 @@ jobs:
       -DUSE_RNG=OFF
       -DSWO_OUTPUT=ON
       -DNF_FEATURE_RTC=ON
-      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
-      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
-      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
-      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
-      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
-      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Device.Gpio=ON
+      -DAPI_System.Device.Spi=ON
+      -DAPI_System.Device.I2c=ON
+      -DAPI_System.Device.Pwm=ON
+      -DAPI_System.IO.Ports=ON
+      -DAPI_System.Device.Adc=ON
       -DAPI_nanoFramework.System.Collections=ON
       -DAPI_nanoFramework.ResourceManager=ON
       -DAPI_nanoFramework.System.Text=ON
@@ -765,12 +765,12 @@ jobs:
       -DUSE_RNG=OFF
       -DSWO_OUTPUT=ON
       -DNF_FEATURE_RTC=ON
-      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
-      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
-      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
-      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
-      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
-      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Device.Gpio=ON
+      -DAPI_System.Device.Spi=ON
+      -DAPI_System.Device.I2c=ON
+      -DAPI_System.Device.Pwm=ON
+      -DAPI_System.IO.Ports=ON
+      -DAPI_System.Device.Adc=ON
       -DAPI_nanoFramework.System.Collections=ON
       -DAPI_nanoFramework.ResourceManager=ON
       -DAPI_nanoFramework.System.Text=ON
@@ -833,12 +833,12 @@ jobs:
       -DNF_FEATURE_DEBUGGER=ON
       -DSWO_OUTPUT=ON
       -DNF_FEATURE_RTC=ON
-      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
-      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
-      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
-      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
-      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
-      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Device.Gpio=ON
+      -DAPI_System.Device.Spi=ON
+      -DAPI_System.Device.I2c=ON
+      -DAPI_System.Device.Pwm=ON
+      -DAPI_System.IO.Ports=ON
+      -DAPI_System.Device.Adc=ON
 
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_NUCLEO144_F412ZG_NF_versioncounter_1_8_0', 0)]
@@ -901,12 +901,12 @@ jobs:
       -DNF_FEATURE_HAS_CONFIG_BLOCK=ON
       -DAPI_System.Math=ON
       -DAPI_Hardware.Stm32=ON
-      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
-      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
-      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
-      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
-      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
-      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Device.Gpio=ON
+      -DAPI_System.Device.Spi=ON
+      -DAPI_System.Device.I2c=ON
+      -DAPI_System.Device.Pwm=ON
+      -DAPI_System.IO.Ports=ON
+      -DAPI_System.Device.Adc=ON
       -DAPI_System.Net=ON
       -DNF_SECURITY_MBEDTLS=ON
       -DAPI_nanoFramework.Device.OneWire=ON
@@ -975,13 +975,13 @@ jobs:
       -DNF_FEATURE_RTC=ON
       -DAPI_System.Math=ON
       -DAPI_Hardware.Stm32=ON
-      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
-      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
-      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
-      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
-      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
-      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
-      -DAPI_nanoFramework.Device.OneWire=ON
+      -DAPI_System.Device.Gpio=ON
+      -DAPI_System.Device.Spi=ON
+      -DAPI_System.Device.I2c=ON
+      -DAPI_System.Device.Pwm=ON
+      -DAPI_System.IO.Ports=ON
+      -DAPI_System.Device.Adc=ON
+      -DAPI_nanoFramework.Devices.OneWire=ON
       -DAPI_nanoFramework.Devices.Can=ON
 
     # creates a counter and assigns it to the revision variable
@@ -1045,12 +1045,12 @@ jobs:
       -DNF_FEATURE_HAS_CONFIG_BLOCK=ON
       -DAPI_System.Math=ON
       -DAPI_Hardware.Stm32=ON
-      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
-      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
-      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
-      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
-      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
-      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Device.Gpio=ON
+      -DAPI_System.Device.Spi=ON
+      -DAPI_System.Device.I2c=ON
+      -DAPI_System.Device.Pwm=ON
+      -DAPI_System.IO.Ports=ON
+      -DAPI_System.Device.Adc=ON
       -DAPI_System.Net=ON
       -DNF_SECURITY_MBEDTLS=ON
 
@@ -1115,12 +1115,12 @@ jobs:
       -DNF_FEATURE_DEBUGGER=ON
       -DNF_FEATURE_RTC=ON
       -DNF_FEATURE_WATCHDOG=OFF
-      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
-      -DAPI_Windows.Devices.Spi=OFF
-      -DAPI_Windows.Devices.I2c=OFF
-      -DAPI_Windows.Devices.Pwm=OFF
-      -DAPI_Windows.Devices.SerialCommunication=OFF -DAPI_System.IO.Ports=OFF
-      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Device.Gpio=ON
+      -DAPI_System.Device.Spi=OFF
+      -DAPI_System.Device.I2c=OFF
+      -DAPI_System.Device.Pwm=OFF
+      -DAPI_System.IO.Ports=OFF
+      -DAPI_System.Device.Adc=ON
       -DAPI_nanoFramework.TI.EasyLink=ON
       -DAPI_nanoFramework.Hardware.TI=ON
       -DAPI_nanoFramework.System.Text=ON
@@ -1184,12 +1184,12 @@ jobs:
       -DNF_FEATURE_DEBUGGER=ON
       -DNF_FEATURE_RTC=ON
       -DNF_FEATURE_WATCHDOG=OFF
-      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
-      -DAPI_Windows.Devices.Spi=OFF
-      -DAPI_Windows.Devices.I2c=OFF
-      -DAPI_Windows.Devices.Pwm=OFF
-      -DAPI_Windows.Devices.SerialCommunication=OFF -DAPI_System.IO.Ports=OFF
-      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Device.Gpio=ON
+      -DAPI_System.Device.Spi=OFF
+      -DAPI_System.Device.I2c=OFF
+      -DAPI_System.Device.Pwm=OFF
+      -DAPI_System.IO.Ports=OFF
+      -DAPI_System.Device.Adc=ON
       -DAPI_nanoFramework.TI.EasyLink=ON
       -DAPI_nanoFramework.Hardware.TI=ON
       -DAPI_nanoFramework.System.Text=ON
@@ -1250,12 +1250,12 @@ jobs:
       -DNF_FEATURE_DEBUGGER=ON
       -DUSE_RNG=OFF
       -DNF_FEATURE_RTC=ON
-      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
-      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
-      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
-      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
-      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
-      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Device.Gpio=ON
+      -DAPI_System.Device.Spi=ON
+      -DAPI_System.Device.I2c=ON
+      -DAPI_System.Device.Pwm=ON
+      -DAPI_System.IO.Ports=ON
+      -DAPI_System.Device.Adc=ON
       -DAPI_nanoFramework.System.Text=ON
       -DAPI_Windows.Storage=ON
       -DAPI_System.IO.FileSystem=ON
@@ -1322,12 +1322,12 @@ jobs:
       -DNF_FEATURE_HAS_SDCARD=ON
       -DAPI_System.Math=ON
       -DAPI_Hardware.Stm32=ON
-      -DAPI_Windows.Devices.Gpio=ON -DAPI_System.Device.Gpio=ON
-      -DAPI_Windows.Devices.Spi=ON -DAPI_System.Device.Spi=ON
-      -DAPI_Windows.Devices.I2c=ON -DAPI_System.Device.I2c=ON
-      -DAPI_Windows.Devices.Pwm=ON -DAPI_System.Device.Pwm=ON
-      -DAPI_Windows.Devices.SerialCommunication=ON -DAPI_System.IO.Ports=ON
-      -DAPI_Windows.Devices.Adc=ON -DAPI_System.Device.Adc=ON
+      -DAPI_System.Device.Gpio=ON
+      -DAPI_System.Device.Spi=ON
+      -DAPI_System.Device.I2c=ON
+      -DAPI_System.Device.Pwm=ON
+      -DAPI_System.IO.Ports=ON
+      -DAPI_System.Device.Adc=ON
       -DAPI_System.Device.Dac=OFF
       -DAPI_nanoFramework.Device.OneWire=ON
       -DAPI_nanoFramework.ResourceManager=ON

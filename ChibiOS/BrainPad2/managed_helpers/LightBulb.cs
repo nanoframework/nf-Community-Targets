@@ -1,5 +1,5 @@
 ﻿using System;
-using Windows.Devices.Pwm;
+using System.Device.Pwm;
 using STM32F4.Pins;
 
 namespace FirmwareSelectors
