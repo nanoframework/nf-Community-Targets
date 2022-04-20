@@ -1053,6 +1053,7 @@ jobs:
       -DAPI_System.Device.Adc=ON
       -DAPI_System.Net=ON
       -DNF_SECURITY_MBEDTLS=ON
+      -DAPI_nanoFramework.System.Text=ON
 
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_NUCLEO144_F439ZI_versioncounter_1_8_0', 0)]
