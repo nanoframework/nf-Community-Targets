@@ -210,26 +210,7 @@ jobs:
     TargetBoard: MBN_QUAIL
     TargetPlatform: 'stm32'
     TargetSeries: 'stm32f4xx'
-    BuildOptions: >-
-      -DTARGET_SERIES=STM32F4xx
-      -DRTOS=ChibiOS
-      -DSUPPORT_ANY_BASE_CONVERSION=ON
-      -DNF_FEATURE_DEBUGGER=ON
-      -DNF_FEATURE_RTC=ON
-      -DNF_FEATURE_HAS_SDCARD=ON
-      -DAPI_System.Math=ON
-      -DAPI_Hardware.Stm32=ON
-      -DAPI_System.Device.Gpio=ON
-      -DAPI_System.Device.Spi=ON
-      -DAPI_System.Device.I2c=ON
-      -DAPI_System.Device.Pwm=ON
-      -DAPI_System.IO.Ports=ON
-      -DAPI_nanoFramework.Devices.OneWire=ON
-      -DAPI_Windows.Storage=ON
-      -DAPI_nanoFramework.ResourceManager=ON
-      -DAPI_nanoFramework.System.Collections=ON
-      -DAPI_nanoFramework.System.Text=ON
-
+    BuildOptions: 
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('MBN_QUAIL_versioncounter_1_8_0', 0)]
     GccArm_Version:
@@ -252,7 +233,7 @@ jobs:
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
@@ -282,30 +263,7 @@ jobs:
     TargetBoard: BrainPad2
     TargetPlatform: 'stm32'
     TargetSeries: 'stm32f4xx'
-    BuildOptions: >-
-      -DTARGET_SERIES=STM32F4xx
-      -DRTOS=ChibiOS
-      -DSUPPORT_ANY_BASE_CONVERSION=OFF
-      -DNF_FEATURE_DEBUGGER=ON
-      -DUSE_RNG=OFF
-      -DNF_FEATURE_RTC=ON
-      -DNF_FEATURE_HAS_SDCARD=OFF
-      -DSWO_OUTPUT=OFF
-      -DAPI_System.Math=ON
-      -DAPI_Hardware.Stm32=ON
-      -DAPI_System.Device.Gpio=ON
-      -DAPI_System.Device.Spi=ON
-      -DAPI_System.Device.I2c=ON
-      -DAPI_System.Device.Pwm=ON
-      -DAPI_System.IO.Ports=ON
-      -DAPI_System.Device.Dac=OFF
-      -DAPI_nanoFramework.Devices.OneWire=OFF
-      -DAPI_nanoFramework.Devices.Can=OFF
-      -DAPI_Windows.Storage=OFF
-      -DAPI_nanoFramework.ResourceManager=ON
-      -DAPI_nanoFramework.System.Collections=ON
-      -DAPI_nanoFramework.System.Text=ON
-
+    BuildOptions: 
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('BrainPad2_versioncounter_1_8_0', 0)]
     GccArm_Version:
@@ -328,7 +286,7 @@ jobs:
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
@@ -358,17 +316,7 @@ jobs:
     TargetBoard: GHI_FEZ_CERB40_NF
     TargetPlatform: 'stm32'
     TargetSeries: 'stm32f4xx'
-    BuildOptions: >-
-      -DTARGET_SERIES=STM32F4xx
-      -DRTOS=ChibiOS
-      -DNF_FEATURE_DEBUGGER=ON
-      -DNF_FEATURE_RTC=ON
-      -DAPI_System.Device.Gpio=ON
-      -DAPI_System.Device.Spi=ON
-      -DAPI_System.Device.I2c=ON
-      -DAPI_System.Device.Pwm=ON
-      -DAPI_System.IO.Ports=ON
-      -DAPI_System.Device.Adc=ON
+    BuildOptions: 
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('GHI_FEZ_CERB40_NF_versioncounter_1_8_0', 0)]
     GccArm_Version:
@@ -391,7 +339,7 @@ jobs:
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
@@ -421,19 +369,7 @@ jobs:
     TargetBoard: I2M_ELECTRON_NF
     TargetPlatform: 'stm32'
     TargetSeries: 'stm32f4xx'
-    BuildOptions: >-
-      -DTARGET_SERIES=STM32F4xx
-      -DRTOS=ChibiOS
-      -DNF_FEATURE_DEBUGGER=ON
-      -DUSE_RNG=OFF
-      -DNF_FEATURE_RTC=ON
-      -DAPI_System.Device.Gpio=ON
-      -DAPI_System.Device.Spi=ON
-      -DAPI_System.Device.I2c=ON
-      -DAPI_System.Device.Pwm=ON
-      -DAPI_System.IO.Ports=ON
-      -DAPI_System.Device.Adc=ON
-
+    BuildOptions:
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('I2M_ELECTRON_NF_versioncounter_1_8_0', 0)]
     GccArm_Version:
@@ -456,7 +392,7 @@ jobs:
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
@@ -486,21 +422,7 @@ jobs:
     TargetBoard: I2M_OXYGEN_NF
     TargetPlatform: 'stm32'
     TargetSeries: 'stm32f4xx'
-    BuildOptions: >-
-      -DTARGET_SERIES=STM32F4xx
-      -DRTOS=ChibiOS
-      -DNF_FEATURE_DEBUGGER=ON
-      -DUSE_RNG=OFF
-      -DNF_FEATURE_RTC=ON
-      -DAPI_System.Device.Gpio=ON
-      -DAPI_System.Device.Spi=ON
-      -DAPI_System.Device.I2c=ON
-      -DAPI_System.Device.Pwm=ON
-      -DAPI_System.IO.Ports=ON
-      -DAPI_System.Device.Adc=ON
-      -DAPI_System.Math=ON
-      -DAPI_Hardware.Stm32=ON
-
+    BuildOptions: 
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('I2M_OXYGEN_NF_versioncounter_1_8_0', 0)]
     GccArm_Version:
@@ -523,7 +445,7 @@ jobs:
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
@@ -553,21 +475,7 @@ jobs:
     TargetBoard: WEACT_F411CE
     TargetPlatform: 'stm32'
     TargetSeries: 'stm32f4xx'
-    BuildOptions: >-
-      -DTARGET_SERIES=STM32F4xx
-      -DRTOS=ChibiOS
-      -DNF_FEATURE_DEBUGGER=ON
-      -DUSE_RNG=OFF
-      -DNF_FEATURE_RTC=ON
-      -DAPI_System.Device.Gpio=ON
-      -DAPI_System.Device.Spi=ON
-      -DAPI_System.Device.I2c=ON
-      -DAPI_System.Device.Pwm=ON
-      -DAPI_System.IO.Ports=ON
-      -DAPI_System.Device.Adc=ON
-      -DAPI_System.Math=ON
-      -DAPI_Hardware.Stm32=ON
-
+    BuildOptions: 
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('WEACT_F411CE_versioncounter_1_8_0', 0)]
     GccArm_Version:
@@ -590,7 +498,7 @@ jobs:
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
@@ -620,21 +528,7 @@ jobs:
     TargetBoard: ST_NUCLEO64_F401RE_NF
     TargetPlatform: 'stm32'
     TargetSeries: 'stm32f4xx'
-    BuildOptions: >-
-      -DTARGET_SERIES=STM32F4xx
-      -DRTOS=ChibiOS
-      -DNF_FEATURE_DEBUGGER=ON
-      -DUSE_RNG=OFF
-      -DSWO_OUTPUT=ON
-      -DNF_FEATURE_RTC=ON
-      -DAPI_System.Device.Gpio=ON
-      -DAPI_System.Device.Spi=ON
-      -DAPI_System.Device.I2c=ON
-      -DAPI_System.Device.Pwm=ON
-      -DAPI_System.IO.Ports=ON
-      -DAPI_System.Device.Adc=ON
-      -DAPI_nanoFramework.Devices.OneWire=ON
-
+    BuildOptions: 
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_NUCLEO64_F401RE_NF_versioncounter_1_8_0', 0)]
     GccArm_Version:
@@ -657,7 +551,7 @@ jobs:
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
@@ -687,25 +581,7 @@ jobs:
     TargetBoard: ST_NUCLEO64_F411RE_NF
     TargetPlatform: 'stm32'
     TargetSeries: 'stm32f4xx'
-    BuildOptions: >-
-      -DTARGET_SERIES=STM32F4xx
-      -DRTOS=ChibiOS
-      -DNF_FEATURE_DEBUGGER=ON
-      -DUSE_RNG=OFF
-      -DSWO_OUTPUT=ON
-      -DNF_FEATURE_RTC=ON
-      -DAPI_System.Device.Gpio=ON
-      -DAPI_System.Device.Spi=ON
-      -DAPI_System.Device.I2c=ON
-      -DAPI_System.Device.Pwm=ON
-      -DAPI_System.IO.Ports=ON
-      -DAPI_System.Device.Adc=ON
-      -DAPI_nanoFramework.System.Collections=ON
-      -DAPI_nanoFramework.ResourceManager=ON
-      -DAPI_nanoFramework.System.Text=ON
-      -DAPI_System.Math=ON
-      -DAPI_Hardware.Stm32=ON
-
+    BuildOptions: 
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_NUCLEO64_F411RE_NF_versioncounter_1_8_0', 0)]
     GccArm_Version:
@@ -728,7 +604,7 @@ jobs:
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
@@ -758,23 +634,7 @@ jobs:
     TargetBoard: ST_STM32F411_DISCOVERY
     TargetPlatform: 'stm32'
     TargetSeries: 'stm32f4xx'
-    BuildOptions: >-
-      -DTARGET_SERIES=STM32F4xx
-      -DRTOS=ChibiOS
-      -DNF_FEATURE_DEBUGGER=ON
-      -DUSE_RNG=OFF
-      -DSWO_OUTPUT=ON
-      -DNF_FEATURE_RTC=ON
-      -DAPI_System.Device.Gpio=ON
-      -DAPI_System.Device.Spi=ON
-      -DAPI_System.Device.I2c=ON
-      -DAPI_System.Device.Pwm=ON
-      -DAPI_System.IO.Ports=ON
-      -DAPI_System.Device.Adc=ON
-      -DAPI_nanoFramework.System.Collections=ON
-      -DAPI_nanoFramework.ResourceManager=ON
-      -DAPI_nanoFramework.System.Text=ON
-
+    BuildOptions: 
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_STM32F411_DISCOVERY_versioncounter_1_8_0', 0)]
     GccArm_Version:
@@ -797,7 +657,7 @@ jobs:
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
@@ -827,19 +687,7 @@ jobs:
     TargetBoard: ST_NUCLEO144_F412ZG_NF
     TargetPlatform: 'stm32'
     TargetSeries: 'stm32f4xx'
-    BuildOptions: >-
-      -DTARGET_SERIES=STM32F4xx
-      -DRTOS=ChibiOS
-      -DNF_FEATURE_DEBUGGER=ON
-      -DSWO_OUTPUT=ON
-      -DNF_FEATURE_RTC=ON
-      -DAPI_System.Device.Gpio=ON
-      -DAPI_System.Device.Spi=ON
-      -DAPI_System.Device.I2c=ON
-      -DAPI_System.Device.Pwm=ON
-      -DAPI_System.IO.Ports=ON
-      -DAPI_System.Device.Adc=ON
-
+    BuildOptions:
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_NUCLEO144_F412ZG_NF_versioncounter_1_8_0', 0)]
     GccArm_Version:
@@ -862,7 +710,7 @@ jobs:
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
@@ -892,28 +740,7 @@ jobs:
     TargetBoard: ST_NUCLEO144_F746ZG
     TargetPlatform: 'stm32'
     TargetSeries: 'stm32f7xx'
-    BuildOptions: >-
-      -DTARGET_SERIES=STM32F7xx
-      -DRTOS=ChibiOS
-      -DNF_FEATURE_DEBUGGER=ON
-      -DSWO_OUTPUT=ON
-      -DNF_FEATURE_RTC=ON
-      -DNF_FEATURE_HAS_CONFIG_BLOCK=ON
-      -DAPI_System.Math=ON
-      -DAPI_Hardware.Stm32=ON
-      -DAPI_System.Device.Gpio=ON
-      -DAPI_System.Device.Spi=ON
-      -DAPI_System.Device.I2c=ON
-      -DAPI_System.Device.Pwm=ON
-      -DAPI_System.IO.Ports=ON
-      -DAPI_System.Device.Adc=ON
-      -DAPI_System.Net=ON
-      -DNF_SECURITY_MBEDTLS=ON
-      -DAPI_nanoFramework.Device.OneWire=ON
-      -DAPI_nanoFramework.System.Collections=ON
-      -DAPI_nanoFramework.ResourceManager=ON
-      -DAPI_nanoFramework.System.Text=ON
-
+    BuildOptions: 
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_NUCLEO144_F746ZG_versioncounter_1_8_0', 0)]
     GccArm_Version:
@@ -936,7 +763,7 @@ jobs:
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
@@ -966,24 +793,7 @@ jobs:
     TargetBoard: ST_STM32F4_DISCOVERY
     TargetPlatform: 'stm32'
     TargetSeries: 'stm32f4xx'
-    BuildOptions: >-
-      -DTARGET_SERIES=STM32F4xx
-      -DRTOS=ChibiOS
-      -DSUPPORT_ANY_BASE_CONVERSION=ON
-      -DNF_FEATURE_DEBUGGER=ON
-      -DSWO_OUTPUT=ON
-      -DNF_FEATURE_RTC=ON
-      -DAPI_System.Math=ON
-      -DAPI_Hardware.Stm32=ON
-      -DAPI_System.Device.Gpio=ON
-      -DAPI_System.Device.Spi=ON
-      -DAPI_System.Device.I2c=ON
-      -DAPI_System.Device.Pwm=ON
-      -DAPI_System.IO.Ports=ON
-      -DAPI_System.Device.Adc=ON
-      -DAPI_nanoFramework.Devices.OneWire=ON
-      -DAPI_nanoFramework.Devices.Can=ON
-
+    BuildOptions:
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_STM32F4_DISCOVERY_versioncounter_1_8_0', 0)]
     GccArm_Version:
@@ -1006,7 +816,7 @@ jobs:
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
@@ -1036,25 +846,7 @@ jobs:
     TargetBoard: ST_NUCLEO144_F439ZI
     TargetPlatform: 'stm32'
     TargetSeries: 'stm32f4xx'
-    BuildOptions: >-
-      -DTARGET_SERIES=STM32F4xx
-      -DRTOS=ChibiOS
-      -DNF_FEATURE_DEBUGGER=ON
-      -DSWO_OUTPUT=ON
-      -DNF_FEATURE_RTC=ON
-      -DNF_FEATURE_HAS_CONFIG_BLOCK=ON
-      -DAPI_System.Math=ON
-      -DAPI_Hardware.Stm32=ON
-      -DAPI_System.Device.Gpio=ON
-      -DAPI_System.Device.Spi=ON
-      -DAPI_System.Device.I2c=ON
-      -DAPI_System.Device.Pwm=ON
-      -DAPI_System.IO.Ports=ON
-      -DAPI_System.Device.Adc=ON
-      -DAPI_System.Net=ON
-      -DNF_SECURITY_MBEDTLS=ON
-      -DAPI_nanoFramework.System.Text=ON
-
+    BuildOptions: 
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_NUCLEO144_F439ZI_versioncounter_1_8_0', 0)]
     GccArm_Version:
@@ -1077,7 +869,7 @@ jobs:
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
@@ -1109,22 +901,7 @@ jobs:
     TargetPlatform: 'ti_simplelink'
     TargetSeries: 'CC13X2'
     BuildOptions: >-
-      -DTARGET_SERIES=CC13X2
-      -DRTOS=TI_SimpleLink
       -DRADIO_FREQUENCY=868
-      -DSUPPORT_ANY_BASE_CONVERSION=OFF
-      -DNF_FEATURE_DEBUGGER=ON
-      -DNF_FEATURE_RTC=ON
-      -DNF_FEATURE_WATCHDOG=OFF
-      -DAPI_System.Device.Gpio=ON
-      -DAPI_System.Device.Spi=OFF
-      -DAPI_System.Device.I2c=OFF
-      -DAPI_System.Device.Pwm=OFF
-      -DAPI_System.IO.Ports=OFF
-      -DAPI_System.Device.Adc=ON
-      -DAPI_nanoFramework.TI.EasyLink=ON
-      -DAPI_nanoFramework.Hardware.TI=ON
-      -DAPI_nanoFramework.System.Text=ON
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('TI_CC1352P1_LAUNCHXL_868_versioncounter_1_8_0', 0)]
     GNU_GCC_TOOLCHAIN_PATH: $(Agent.TempDirectory)\GNU_Tools_ARM_Embedded
@@ -1146,7 +923,7 @@ jobs:
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-ti-simplelink.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
@@ -1178,22 +955,7 @@ jobs:
     TargetPlatform: 'ti_simplelink'
     TargetSeries: 'CC13X2'
     BuildOptions: >-
-      -DTARGET_SERIES=CC13X2
-      -DRTOS=TI_SimpleLink
       -DRADIO_FREQUENCY=915
-      -DSUPPORT_ANY_BASE_CONVERSION=OFF
-      -DNF_FEATURE_DEBUGGER=ON
-      -DNF_FEATURE_RTC=ON
-      -DNF_FEATURE_WATCHDOG=OFF
-      -DAPI_System.Device.Gpio=ON
-      -DAPI_System.Device.Spi=OFF
-      -DAPI_System.Device.I2c=OFF
-      -DAPI_System.Device.Pwm=OFF
-      -DAPI_System.IO.Ports=OFF
-      -DAPI_System.Device.Adc=ON
-      -DAPI_nanoFramework.TI.EasyLink=ON
-      -DAPI_nanoFramework.Hardware.TI=ON
-      -DAPI_nanoFramework.System.Text=ON
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('TI_CC1352P1_LAUNCHXL_915_versioncounter_1_8_0', 0)]
     GNU_GCC_TOOLCHAIN_PATH: $(Agent.TempDirectory)\GNU_Tools_ARM_Embedded
@@ -1215,7 +977,7 @@ jobs:
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-ti-simplelink.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
@@ -1245,23 +1007,7 @@ jobs:
     TargetBoard: PybStick2x
     TargetPlatform: 'stm32'
     TargetSeries: 'stm32f4xx'
-    BuildOptions: >-
-      -DTARGET_SERIES=STM32F4xx
-      -DRTOS=ChibiOS
-      -DNF_FEATURE_DEBUGGER=ON
-      -DUSE_RNG=OFF
-      -DNF_FEATURE_RTC=ON
-      -DAPI_System.Device.Gpio=ON
-      -DAPI_System.Device.Spi=ON
-      -DAPI_System.Device.I2c=ON
-      -DAPI_System.Device.Pwm=ON
-      -DAPI_System.IO.Ports=ON
-      -DAPI_System.Device.Adc=ON
-      -DAPI_nanoFramework.System.Text=ON
-      -DAPI_Windows.Storage=ON
-      -DAPI_System.IO.FileSystem=ON
-      -DNF_FEATURE_HAS_SDCARD=ON
-
+    BuildOptions: 
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('PybStick2x_versioncounter_1_8_0', 0)]
     GccArm_Version:
@@ -1284,7 +1030,7 @@ jobs:
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
@@ -1314,26 +1060,7 @@ jobs:
     TargetBoard: NETDUINO3_WIFI
     TargetPlatform: 'stm32'
     TargetSeries: 'stm32f4xx'
-    BuildOptions: >-
-      -DTARGET_SERIES=STM32F4xx
-      -DRTOS=ChibiOS
-      -DSUPPORT_ANY_BASE_CONVERSION=ON
-      -DNF_FEATURE_DEBUGGER=ON
-      -DNF_FEATURE_RTC=ON
-      -DNF_FEATURE_HAS_SDCARD=ON
-      -DAPI_System.Math=ON
-      -DAPI_Hardware.Stm32=ON
-      -DAPI_System.Device.Gpio=ON
-      -DAPI_System.Device.Spi=ON
-      -DAPI_System.Device.I2c=ON
-      -DAPI_System.Device.Pwm=ON
-      -DAPI_System.IO.Ports=ON
-      -DAPI_System.Device.Adc=ON
-      -DAPI_System.Device.Dac=OFF
-      -DAPI_nanoFramework.Device.OneWire=ON
-      -DAPI_nanoFramework.ResourceManager=ON
-      -DAPI_nanoFramework.System.Collections=ON
-      -DAPI_nanoFramework.System.Text=ON
+    BuildOptions: 
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('NETDUINO3_WIFI_versioncounter_1_8_0', 0)]
     GccArm_Version:
@@ -1356,7 +1083,7 @@ jobs:
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
