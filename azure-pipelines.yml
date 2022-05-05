@@ -46,9 +46,6 @@ resources:
       endpoint: nanoframework
       ref: refs/tags/v4.4
 
-variables:
-  GNU_GCC_TOOLCHAIN_PATH: $(Agent.TempDirectory)\GNU_Tools_ARM_Embedded
-
 jobs:
 
 ##############################
@@ -904,7 +901,6 @@ jobs:
       -DRADIO_FREQUENCY=868
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('TI_CC1352P1_LAUNCHXL_868_versioncounter_1_8_0', 0)]
-    GNU_GCC_TOOLCHAIN_PATH: $(Agent.TempDirectory)\GNU_Tools_ARM_Embedded
     GccArm_Version:
 
   steps:
@@ -958,7 +954,6 @@ jobs:
       -DRADIO_FREQUENCY=915
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('TI_CC1352P1_LAUNCHXL_915_versioncounter_1_8_0', 0)]
-    GNU_GCC_TOOLCHAIN_PATH: $(Agent.TempDirectory)\GNU_Tools_ARM_Embedded
     GccArm_Version:
 
   steps:
