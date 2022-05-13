@@ -22,4 +22,3 @@
 
 // buffers size
 #define CAN2_RX_BUFFER_SIZE 16
-
