@@ -56,7 +56,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-latest'
 
   steps:
   - checkout: self
@@ -69,7 +69,7 @@ jobs:
 ##############################
 - job: Get_Commit_Message
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-latest'
 
   steps:
   - checkout: self
@@ -80,7 +80,7 @@ jobs:
 ##############################
 - job: Check_Build_Options
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-latest'
 
   dependsOn: 
   - Get_Commit_Message
@@ -201,7 +201,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-latest'
 
   variables:
     TargetBoard: MBN_QUAIL
@@ -254,7 +254,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-latest'
 
   variables:
     TargetBoard: BrainPad2
@@ -307,7 +307,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-latest'
 
   variables:
     TargetBoard: GHI_FEZ_CERB40_NF
@@ -360,7 +360,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-latest'
 
   variables:
     TargetBoard: I2M_ELECTRON_NF
@@ -413,7 +413,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-latest'
 
   variables:
     TargetBoard: I2M_OXYGEN_NF
@@ -466,7 +466,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-latest'
 
   variables:
     TargetBoard: WEACT_F411CE
@@ -519,7 +519,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-latest'
 
   variables:
     TargetBoard: ST_NUCLEO64_F401RE_NF
@@ -572,7 +572,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-latest'
 
   variables:
     TargetBoard: ST_NUCLEO64_F411RE_NF
@@ -625,7 +625,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-latest'
 
   variables:
     TargetBoard: ST_STM32F411_DISCOVERY
@@ -678,7 +678,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-latest'
 
   variables:
     TargetBoard: ST_NUCLEO144_F412ZG_NF
@@ -731,7 +731,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-latest'
 
   variables:
     TargetBoard: ST_NUCLEO144_F746ZG
@@ -784,7 +784,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-latest'
 
   variables:
     TargetBoard: ST_STM32F4_DISCOVERY
@@ -837,7 +837,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-latest'
 
   variables:
     TargetBoard: ST_NUCLEO144_F439ZI
@@ -890,7 +890,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-latest'
 
   variables:
     TargetBoard: TI_CC1352P1_LAUNCHXL
@@ -943,7 +943,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-latest'
 
   variables:
     TargetBoard: TI_CC1352P1_LAUNCHXL
@@ -996,7 +996,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-latest'
 
   variables:
     TargetBoard: PybStick2x
@@ -1049,7 +1049,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-latest'
 
   variables:
     TargetBoard: NETDUINO3_WIFI
@@ -1129,7 +1129,7 @@ jobs:
     )
 
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-latest'
 
   steps:
   - checkout: self
