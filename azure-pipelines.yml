@@ -1033,14 +1033,16 @@ jobs:
 
 ##############################
 - job: Build_LilygoTWatch2020
-  condition: or(
-              contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] LilygoTWatch2020'),
-              contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-              contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] LilygoTWatch2020'),
-              contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-              eq(variables['BUILD_ALL'], 'true'),
-              eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-            )
+  condition: >-
+    or(
+      contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] LilygoTWatch2020'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] LilygoTWatch2020'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['LilygoTWatch2020'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
 
   dependsOn: 
   - Get_Commit_Message
@@ -1051,14 +1053,16 @@ jobs:
 
   variables:
     TargetBoard: ESP32
-    TargetPlatform: 'esp32'
     TargetSeries: 'esp32'
+    TargetPlatform: 'esp32'
+    IDF_PATH: 'D:/a/1/s/esp-idf'
+    PIP_CACHE_DIR: $(Pipeline.Workspace)/.pip
     BuildOptions: 
     IDF_Target: esp32
     TargetName: LilygoTWatch2020
     PackageName: LilygoTWatch2020    
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('LilygoTWatch2020_versioncounter_1_0_0', 0)]
+    REVISION: $[counter('LilygoTWatch2020_versioncounter_1_8_0', 0)]
 
   steps:
   - checkout: self
@@ -1068,7 +1072,6 @@ jobs:
   - checkout: esp32_idf
     fetchDepth: 1
 
-  - template: azure-pipelines-templates/set-build-version.yml
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
@@ -1076,10 +1079,9 @@ jobs:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-esp32-build-components.yml@templatesBuild
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
-  - template: azure-pipelines-templates/build-esp32.yml@templatesBuild
+  - template: azure-pipelines-templates/build-espressif-esp32-targets.yml@templatesBuild
     parameters:
       buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-
   - task: CopyFiles@1
     condition: succeeded()
     displayName: Copying bootloader
@@ -1089,7 +1091,6 @@ jobs:
         bootloader.bin
       TargetFolder: '$(Build.ArtifactStagingDirectory)\$(TargetPublishName)'
       flattenFolders: true
-
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
       buildDirectory: '$(Build.SourcesDirectory)\nf-interpreter\build'
