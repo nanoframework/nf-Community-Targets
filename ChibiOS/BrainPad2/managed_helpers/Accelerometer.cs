@@ -1,5 +1,5 @@
 ﻿using System;
-using Windows.Devices.I2c;
+using Syste.Device.I2c;
 
 namespace FirmwareSelectors
 {

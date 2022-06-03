@@ -1,5 +1,5 @@
 ﻿using System;
-using Windows.Devices.Adc;
+using System.Device.Adc;
 
 namespace FirmwareSelectors
 {

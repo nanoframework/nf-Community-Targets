@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-using Windows.Devices.Gpio;
+using System.Device.Gpio;
 using System.Diagnostics;
 using STM32F4.Pins;
 using nanoFramework.Driver.SSD1306;

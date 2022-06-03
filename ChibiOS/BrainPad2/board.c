@@ -14,6 +14,8 @@
     limitations under the License.
 */
 
+// clang-format off
+
 /*
  * This file has been automatically generated using ChibiStudio board
  * generator plugin. Do not edit manually.
@@ -263,3 +265,5 @@ bool mmc_lld_is_write_protected(MMCDriver *mmcp) {
  */
 void boardInit(void) {
 }
+
+// clang-format on

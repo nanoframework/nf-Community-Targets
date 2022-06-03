@@ -7,11 +7,13 @@
 <!--- Check the targets that are affected in the list below -->
 <!--- If the change(s) apply to all targets just check the ALL option -->
 <!--- Not choosing which targets the PR affects will cause the PR to be closed immediately -->
-- [ ] MBN_QUAIL
+- [ ] BrainPad2
 - [ ] GHI_FEZ_CERB40_NF
 - [ ] I2M_ELECTRON_NF
 - [ ] I2M_OXYGEN_NF
-- [ ] WEACT_F411CE
+- [ ] MBN_QUAIL
+- [ ] NETDUINO3_WIFI
+- [ ] PybStick2x
 - [ ] ST_NUCLEO64_F401RE_NF
 - [ ] ST_NUCLEO64_F411RE_NF
 - [ ] ST_STM32F411_DISCOVERY
@@ -19,14 +21,10 @@
 - [ ] ST_NUCLEO144_F746ZG
 - [ ] ST_STM32F4_DISCOVERY
 - [ ] ST_NUCLEO144_F439ZI
+- [ ] WEACT_F411CE
 - [ ] TI_CC1352P1_LAUNCHXL_868
 - [ ] TI_CC1352P1_LAUNCHXL_915
-- [ ] ESP32_OLIMEX
-- [ ] M5Stack
-- [ ] M5StickC
-- [ ] M5StickCPlus
 - [ ] LilygoTWatch2020
-- [ ] PybStick2x
 - [ ] BUILD ALL
 
 ## Motivation and Context

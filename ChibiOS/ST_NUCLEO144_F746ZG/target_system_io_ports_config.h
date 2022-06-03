@@ -12,8 +12,7 @@
 
 // buffers size
 // rx buffer size: 256 bytes
-#define UART2_RX_SIZE  256
-
+#define UART2_RX_SIZE 256
 
 ///////////
 // UART6 //
@@ -24,4 +23,4 @@
 
 // buffers size
 // rx buffer size: 256 bytes
-#define UART6_RX_SIZE  256
+#define UART6_RX_SIZE 256
