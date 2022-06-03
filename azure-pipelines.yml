@@ -1040,7 +1040,7 @@ jobs:
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] LilygoTWatch2020'),
       contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
       eq(variables['BUILD_ALL'], 'true'),
-      eq(variables['LilygoTWatch2020'], 'true'),
+      eq(variables['BUILD_LilygoTWatch2020'], 'true'),
       eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
     )
 
