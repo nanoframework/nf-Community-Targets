@@ -24,6 +24,7 @@
 - [ ] WEACT_F411CE
 - [ ] TI_CC1352P1_LAUNCHXL_868
 - [ ] TI_CC1352P1_LAUNCHXL_915
+- [ ] LilygoTWatch2020
 - [ ] BUILD ALL
 
 ## Motivation and Context
