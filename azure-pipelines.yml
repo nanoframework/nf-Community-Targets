@@ -1080,6 +1080,71 @@ jobs:
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
+- job: Build_LilygoTWatch2021
+  condition: >-
+    or(
+      contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] LilygoTWatch2021'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommit.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] LilygoTWatch2021'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_LilygoTWatch2021'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
+
+  dependsOn: 
+  - Get_Commit_Message
+  - Check_Build_Options
+
+  pool:
+    vmImage: 'windows-latest'
+
+  variables:
+    TargetBoard: ESP32
+    TargetSeries: 'esp32'
+    TargetPlatform: 'esp32'
+    IDF_PATH: 'D:/a/1/s/esp-idf'
+    PIP_CACHE_DIR: $(Pipeline.Workspace)/.pip
+    BuildOptions: 
+    IDF_Target: esp32
+    TargetName: LilygoTWatch2021
+    PackageName: LilygoTWatch2021
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('LilygoTWatch2021_versioncounter_1_8_0', 0)]
+
+  steps:
+  - checkout: self
+    fetchDepth: 1
+  - checkout: templatesBuild
+    fetchDepth: 1
+  - checkout: esp32_idf
+    fetchDepth: 1
+
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
+  - template: azure-pipelines-templates/download-install-esp32-build-components.yml@templatesBuild
+  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
+  - template: azure-pipelines-templates/build-espressif-esp32-targets.yml@templatesBuild
+    parameters:
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+  - task: CopyFiles@1
+    condition: succeeded()
+    displayName: Copying bootloader
+    inputs:
+      sourceFolder: '$(Build.SourcesDirectory)\nf-interpreter\build\bootloader'
+      Contents: |
+        bootloader.bin
+      TargetFolder: '$(Build.ArtifactStagingDirectory)\$(TargetPublishName)'
+      flattenFolders: true
+  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
+    parameters:
+      buildDirectory: '$(Build.SourcesDirectory)\nf-interpreter\build'
+  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
+
+##############################
 - job: Build_NETDUINO3_WIFI
   condition: >-
     or( 
@@ -1153,6 +1218,7 @@ jobs:
   - Build_TI_CC1352P1_LAUNCHXL_915
   - Build_PybStick2x
   - Build_LilygoTWatch2020
+  - Build_LilygoTWatch2021
   - Build_NETDUINO3_WIFI
 
 
@@ -1175,6 +1241,7 @@ jobs:
       failed('Build_TI_CC1352P1_LAUNCHXL_915'),
       failed('Build_PybStick2x'),
       failed('Build_LilygoTWatch2020')
+      failed('Build_LilygoTWatch2021')
       failed('Build_NETDUINO3_WIFI'),      
     )
 

@@ -25,6 +25,7 @@
 - [ ] TI_CC1352P1_LAUNCHXL_868
 - [ ] TI_CC1352P1_LAUNCHXL_915
 - [ ] LilygoTWatch2020
+- [ ] LilygoTWatch2021
 - [ ] BUILD ALL
 
 ## Motivation and Context
