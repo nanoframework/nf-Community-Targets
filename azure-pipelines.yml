@@ -1240,9 +1240,9 @@ jobs:
       failed('Build_TI_CC1352P1_LAUNCHXL_868'),
       failed('Build_TI_CC1352P1_LAUNCHXL_915'),
       failed('Build_PybStick2x'),
-      failed('Build_LilygoTWatch2020')
-      failed('Build_LilygoTWatch2021')
-      failed('Build_NETDUINO3_WIFI'),      
+      failed('Build_LilygoTWatch2020'),
+      failed('Build_LilygoTWatch2021'),
+      failed('Build_NETDUINO3_WIFI')    
     )
 
   pool:
