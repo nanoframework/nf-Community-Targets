@@ -1153,6 +1153,7 @@ jobs:
   - Build_ST_NUCLEO144_F439ZI
   - Build_TI_CC1352P1_LAUNCHXL_868
   - Build_TI_CC1352P1_LAUNCHXL_915
+  - Build_LilygoTWatch2020
 
 
   condition: >-
@@ -1173,7 +1174,7 @@ jobs:
       failed('Build_ST_NUCLEO144_F439ZI'),
       failed('Build_TI_CC1352P1_LAUNCHXL_868'),
       failed('Build_TI_CC1352P1_LAUNCHXL_915'),
-      failed('Build_PybStick2x')
+      failed('Build_LilygoTWatch2020')
     )
 
   pool:
