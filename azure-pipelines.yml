@@ -65,7 +65,6 @@ jobs:
   - template: azure-pipelines-templates/download-install-llvm.yml@templatesBuild
   - template: azure-pipelines-templates/check-code-style.yml@templatesBuild
 
-
 ##############################
 - job: Get_Commit_Message
   pool:
@@ -1137,34 +1136,34 @@ jobs:
 - job: Report_Build_Failure
 
   dependsOn:
+  - Build_MBN_QUAIL
   - Build_BrainPad2
   - Build_GHI_FEZ_CERB40_NF
   - Build_I2M_ELECTRON_NF
   - Build_I2M_OXYGEN_NF
-  - Build_PybStick2x
-  - Build_MBN_QUAIL
-  - Build_NETDUINO3_WIFI
+  - Build_WEACT_F411CE
   - Build_ST_NUCLEO64_F401RE_NF
-  - Build_ST_STM32F411_DISCOVERY
   - Build_ST_NUCLEO64_F411RE_NF
+  - Build_ST_STM32F411_DISCOVERY
   - Build_ST_NUCLEO144_F412ZG_NF
   - Build_ST_NUCLEO144_F746ZG
   - Build_ST_STM32F4_DISCOVERY
   - Build_ST_NUCLEO144_F439ZI
   - Build_TI_CC1352P1_LAUNCHXL_868
   - Build_TI_CC1352P1_LAUNCHXL_915
+  - Build_PybStick2x
   - Build_LilygoTWatch2020
+  - Build_NETDUINO3_WIFI
 
 
   condition: >-
     or(
+      failed('Build_MBN_QUAIL'),
       failed('Build_BrainPad2'),
       failed('Build_GHI_FEZ_CERB40_NF'),
       failed('Build_I2M_ELECTRON_NF'),
       failed('Build_I2M_OXYGEN_NF'),
-      failed('Build_PybStick2x'),
-      failed('Build_MBN_QUAIL'),
-      failed('Build_NETDUINO3_WIFI'),      
+      failed('Build_WEACT_F411CE'),      
       failed('Build_ST_NUCLEO64_F401RE_NF'),
       failed('Build_ST_NUCLEO64_F411RE_NF'),
       failed('Build_ST_STM32F411_DISCOVERY'),
@@ -1174,7 +1173,9 @@ jobs:
       failed('Build_ST_NUCLEO144_F439ZI'),
       failed('Build_TI_CC1352P1_LAUNCHXL_868'),
       failed('Build_TI_CC1352P1_LAUNCHXL_915'),
+      failed('Build_PybStick2x'),
       failed('Build_LilygoTWatch2020')
+      failed('Build_NETDUINO3_WIFI'),      
     )
 
   pool:
