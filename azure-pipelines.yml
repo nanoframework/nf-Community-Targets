@@ -231,7 +231,7 @@ jobs:
       repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
@@ -283,7 +283,7 @@ jobs:
       repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
@@ -335,7 +335,7 @@ jobs:
       repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
@@ -387,7 +387,7 @@ jobs:
       repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
@@ -439,7 +439,7 @@ jobs:
       repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
@@ -491,7 +491,7 @@ jobs:
       repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
@@ -543,7 +543,7 @@ jobs:
       repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
@@ -595,7 +595,7 @@ jobs:
       repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
@@ -647,7 +647,7 @@ jobs:
       repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
@@ -699,7 +699,7 @@ jobs:
       repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
@@ -751,7 +751,7 @@ jobs:
       repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
@@ -803,7 +803,7 @@ jobs:
       repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
@@ -855,7 +855,7 @@ jobs:
       repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
@@ -907,7 +907,7 @@ jobs:
       repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
@@ -959,7 +959,7 @@ jobs:
       repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
@@ -1011,7 +1011,7 @@ jobs:
       repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
@@ -1064,7 +1064,7 @@ jobs:
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/build-espressif-esp32-targets.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
   - task: CopyFiles@1
     condition: succeeded()
     displayName: Copying bootloader
@@ -1129,7 +1129,7 @@ jobs:
   - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/build-espressif-esp32-targets.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
   - task: CopyFiles@1
     condition: succeeded()
     displayName: Copying bootloader
@@ -1193,7 +1193,7 @@ jobs:
       repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
   - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##################################
