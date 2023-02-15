@@ -7,7 +7,7 @@
     ],
     "configurePresets": [
         {
-            "name": "TI_CC1352R1_LAUNCHXL",
+            "name": "TI_CC1352P1_LAUNCHXL",
             "inherits": [
                 "arm-gcc-cortex-preset",
                 "user-tools-repos",
