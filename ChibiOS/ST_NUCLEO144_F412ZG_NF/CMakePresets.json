@@ -1,0 +1,53 @@
+{
+    "version": 4,
+    "include": [
+        "../../../CMake/arm-gcc.json",
+        "../../../config/user-tools-repos.json",
+        "../../../config/user-prefs.json"
+    ],
+    "configurePresets": [
+        {
+            "name": "ST_NUCLEO144_F412ZG_NF",
+            "inherits": [
+                "arm-gcc-cortex-preset",
+                "user-tools-repos",
+                "user-prefs"
+            ],
+            "hidden": false,
+            "cacheVariables": {
+                "TARGET_BOARD": "${presetName}",
+                "RTOS": "ChibiOS",
+                "TARGET_SERIES": "STM32F4xx",
+                "USE_RNG": "ON",
+                "DP_FLOATINGPOINT": "OFF",
+                "SUPPORT_ANY_BASE_CONVERSION": "OFF",
+                "SWO_OUTPUT": "OFF",
+                "NF_BUILD_RTM": "OFF",
+                "NF_FEATURE_DEBUGGER": "ON",
+                "NF_FEATURE_RTC": "ON",
+                "NF_FEATURE_USE_FILESYSTEM": "OFF",
+                "NF_NETWORKING_SNTP": "OFF",
+                "API_Hardware.Stm32": "ON",
+                "API_nanoFramework.Device.Can": "OFF",
+                "API_nanoFramework.Device.OneWire": "OFF",
+                "API_System.Math": "ON",
+                "API_System.Net": "OFF",
+                "API_System.Device.Adc": "ON",
+                "API_System.Device.Gpio": "ON",
+                "API_System.Device.I2c": "ON",
+                "API_System.Device.Pwm": "ON",
+                "API_System.IO.Ports": "ON",
+                "API_System.Device.Spi": "ON",
+                "API_windows.Storage": "OFF"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "inherits": "base-user",
+            "name": "ST_NUCLEO144_F412ZG_NF",
+            "displayName": "ST_NUCLEO144_F412ZG_NF",
+            "configurePreset": "ST_NUCLEO144_F412ZG_NF"
+        }
+    ]
+}

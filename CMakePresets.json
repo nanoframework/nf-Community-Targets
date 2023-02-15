@@ -1,0 +1,21 @@
+{
+    "version": 4,
+    "include": [
+        "ChibiOS/BrainPad2/CMakePresets.json",
+        "ChibiOS/GHI_FEZ_CERB40_NF/CMakePresets.json",
+        "ChibiOS/I2M_ELECTRON_NF/CMakePresets.json",
+        "ChibiOS/I2M_OXYGEN_NF/CMakePresets.json",
+        "ChibiOS/MBN_QUAIL/CMakePresets.json",
+        "ChibiOS/NETDUINO3_WIFI/CMakePresets.json",
+        "ChibiOS/PybStick2x/CMakePresets.json",
+        "ChibiOS/ST_NUCLEO64_F401RE_NF/CMakePresets.json",
+        "ChibiOS/ST_NUCLEO64_F411RE_NF/CMakePresets.json",
+        "ChibiOS/ST_NUCLEO144_F412ZG_NF/CMakePresets.json",
+        "ChibiOS/ST_NUCLEO144_F439ZI/CMakePresets.json",
+        "ChibiOS/ST_NUCLEO144_F746ZG/CMakePresets.json",
+        "ChibiOS/ST_STM32F4_DISCOVERY/CMakePresets.json",
+        "ChibiOS/ST_STM32F411_DISCOVERY/CMakePresets.json",
+        "ChibiOS/WEACT_F411CE/CMakePresets.json",
+        "TI_SimpleLink/TI_CC1352P1_LAUNCHXL/CMakePresets.json"
+    ]
+}
