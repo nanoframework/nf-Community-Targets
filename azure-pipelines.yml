@@ -220,6 +220,8 @@ jobs:
   
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)'
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
@@ -272,6 +274,8 @@ jobs:
   
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)'
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
@@ -324,6 +328,8 @@ jobs:
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)'
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
@@ -376,6 +382,8 @@ jobs:
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)'
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
@@ -428,6 +436,8 @@ jobs:
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)'
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
@@ -480,6 +490,8 @@ jobs:
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)'
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
@@ -532,6 +544,8 @@ jobs:
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)'
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
@@ -584,6 +598,8 @@ jobs:
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)'
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
@@ -636,6 +652,8 @@ jobs:
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)'
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
@@ -688,6 +706,8 @@ jobs:
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)'
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
@@ -740,6 +760,8 @@ jobs:
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)'
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
@@ -792,6 +814,8 @@ jobs:
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)'
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
@@ -844,6 +868,8 @@ jobs:
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)'
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
@@ -896,6 +922,8 @@ jobs:
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)'
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
@@ -948,6 +976,8 @@ jobs:
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)'
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
@@ -1000,6 +1030,8 @@ jobs:
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)'
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
@@ -1057,6 +1089,8 @@ jobs:
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)'
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
@@ -1122,6 +1156,8 @@ jobs:
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)'
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
@@ -1182,6 +1218,8 @@ jobs:
 
   - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
   - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)'
   - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
