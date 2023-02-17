@@ -32,3 +32,14 @@ steps:
       targetFolder: $(Build.SourcesDirectory)\install-scripts
       cleanTargetFolder: false
       overWrite: true
+
+  # Copy community targets CMake presets
+  - task: CopyFiles@2
+    displayName: Copy CMake presets
+    inputs:
+      sourceFolder: $(Build.SourcesDirectory)\nf-Community-Targets
+      targetFolder: $(Build.SourcesDirectory)\nf-interpreter\targets-community
+      Contents: |
+        CMakePresets.json
+      cleanTargetFolder: false
+      overWrite: true
