@@ -1,8 +1,8 @@
 /**
  * These arguments were used when this file was generated. They will be automatically applied on subsequent loads
  * via the GUI or CLI. Run CLI with '--help' for additional information on how to override these arguments.
- * @cliArgs --board "/ti/boards/CC1352P1_LAUNCHXL" --product "simplelink_cc13x2_26x2_sdk@4.20.01.04"
- * @versions {"data":"2020090214","timestamp":"2020090214","tool":"1.6.0+1543","templates":"2020090214"}
+ * @cliArgs --board "/ti/boards/CC1352P1_LAUNCHXL" --product "simplelink_cc13xx_cc26xx_sdk@5.30.01.01"
+ * @versions {"tool":"1.15.0+2826"}
  */
 
 /**
@@ -29,10 +29,11 @@ ADC1.adcPinInstance.$name = "CONFIG_PIN_0";
 
 RF.$hardware = system.deviceData.board.components["SKY13317-373LF"];
 
-UART21.$name               = "UART0";
-UART21.$hardware           = system.deviceData.board.components.XDS110UART;
-UART21.txPinInstance.$name = "CONFIG_PIN_1";
-UART21.rxPinInstance.$name = "CONFIG_PIN_2";
+UART21.$name              = "UART0";
+UART21.$hardware          = system.deviceData.board.components.XDS110UART;
+UART21.uart.$assign       = "UART0";
+UART21.uart.txPin.$assign = "boosterpack.4";
+UART21.uart.rxPin.$assign = "boosterpack.3";
 
 easylink.EasyLink_Phy_50kbps2gfsk                                  = true;
 easylink.EasyLink_Phy_5kbpsSlLr                                    = true;
@@ -49,11 +50,8 @@ easylink.radioConfigEasylinkPhy200kbps2gfsk.codeExportConfig.$name = "ti_devices
  * version of the tool will not impact the pinmux you originally saw.  These lines can be completely deleted in order to
  * re-solve from scratch.
  */
-ADC1.adc.$suggestSolution          = "ADC0";
-ADC1.adc.adcPin.$suggestSolution   = "boosterpack.2";
-RF.rfAntennaPin0.$suggestSolution  = "DIO_28";
-RF.rfAntennaPin1.$suggestSolution  = "DIO_29";
-RF.rfAntennaPin2.$suggestSolution  = "DIO_30";
-UART21.uart.$suggestSolution       = "UART0";
-UART21.uart.txPin.$suggestSolution = "boosterpack.4";
-UART21.uart.rxPin.$suggestSolution = "boosterpack.3";
+ADC1.adc.$suggestSolution         = "ADC0";
+ADC1.adc.adcPin.$suggestSolution  = "boosterpack.2";
+RF.rfAntennaPin0.$suggestSolution = "ball.41";
+RF.rfAntennaPin1.$suggestSolution = "ball.42";
+RF.rfAntennaPin2.$suggestSolution = "ball.43";
