@@ -207,7 +207,7 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('MBN_QUAIL_versioncounter_1_8_0', 0)]
+    REVISION: $[counter('MBN_QUAIL_versioncounter_1_8_1', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -261,7 +261,7 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('BrainPad2_versioncounter_1_8_0', 0)]
+    REVISION: $[counter('BrainPad2_versioncounter_1_8_1', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -315,7 +315,7 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('GHI_FEZ_CERB40_NF_versioncounter_1_8_0', 0)]
+    REVISION: $[counter('GHI_FEZ_CERB40_NF_versioncounter_1_8_1', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -369,7 +369,7 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions:
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('I2M_ELECTRON_NF_versioncounter_1_8_0', 0)]
+    REVISION: $[counter('I2M_ELECTRON_NF_versioncounter_1_8_1', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -423,7 +423,7 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('I2M_OXYGEN_NF_versioncounter_1_8_0', 0)]
+    REVISION: $[counter('I2M_OXYGEN_NF_versioncounter_1_8_1', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -477,7 +477,7 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('WEACT_F411CE_versioncounter_1_8_0', 0)]
+    REVISION: $[counter('WEACT_F411CE_versioncounter_1_8_1', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -531,7 +531,7 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO64_F401RE_NF_versioncounter_1_8_0', 0)]
+    REVISION: $[counter('ST_NUCLEO64_F401RE_NF_versioncounter_1_8_1', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -585,7 +585,7 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO64_F411RE_NF_versioncounter_1_8_0', 0)]
+    REVISION: $[counter('ST_NUCLEO64_F411RE_NF_versioncounter_1_8_1', 0)]
     GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
@@ -639,7 +639,7 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_STM32F411_DISCOVERY_versioncounter_1_8_0', 0)]
+    REVISION: $[counter('ST_STM32F411_DISCOVERY_versioncounter_1_8_1', 0)]
     GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
@@ -693,7 +693,7 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions:
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO144_F412ZG_NF_versioncounter_1_8_0', 0)]
+    REVISION: $[counter('ST_NUCLEO144_F412ZG_NF_versioncounter_1_8_1', 0)]
     GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
@@ -747,7 +747,7 @@ jobs:
     TargetSeries: 'stm32f7xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO144_F746ZG_versioncounter_1_8_0', 0)]
+    REVISION: $[counter('ST_NUCLEO144_F746ZG_versioncounter_1_8_1', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -801,7 +801,7 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions:
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_STM32F4_DISCOVERY_versioncounter_1_8_0', 0)]
+    REVISION: $[counter('ST_STM32F4_DISCOVERY_versioncounter_1_8_1', 0)]
     GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
@@ -855,7 +855,7 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO144_F439ZI_versioncounter_1_8_0', 0)]
+    REVISION: $[counter('ST_NUCLEO144_F439ZI_versioncounter_1_8_1', 0)]
     GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
@@ -911,7 +911,7 @@ jobs:
     BuildOptions: >-
       -DRADIO_FREQUENCY=868
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('TI_CC1352P1_LAUNCHXL_868_versioncounter_1_8_0', 0)]
+    REVISION: $[counter('TI_CC1352P1_LAUNCHXL_868_versioncounter_1_8_1', 0)]
     GccArm_Version:
 
   steps:
@@ -965,7 +965,7 @@ jobs:
     BuildOptions: >-
       -DRADIO_FREQUENCY=915
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('TI_CC1352P1_LAUNCHXL_915_versioncounter_1_8_0', 0)]
+    REVISION: $[counter('TI_CC1352P1_LAUNCHXL_915_versioncounter_1_8_1', 0)]
     GccArm_Version:
 
   steps:
@@ -1017,7 +1017,7 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('PybStick2x_versioncounter_1_8_0', 0)]
+    REVISION: $[counter('PybStick2x_versioncounter_1_8_1', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
@@ -1077,7 +1077,7 @@ jobs:
     TargetName: LilygoTWatch2020
     PackageName: LilygoTWatch2020    
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('LilygoTWatch2020_versioncounter_1_8_0', 0)]
+    REVISION: $[counter('LilygoTWatch2020_versioncounter_1_8_1', 0)]
 
   steps:
   - checkout: self
@@ -1144,7 +1144,7 @@ jobs:
     TargetName: LilygoTWatch2021
     PackageName: LilygoTWatch2021
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('LilygoTWatch2021_versioncounter_1_8_0', 0)]
+    REVISION: $[counter('LilygoTWatch2021_versioncounter_1_8_1', 0)]
 
   steps:
   - checkout: self
@@ -1205,7 +1205,7 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('NETDUINO3_WIFI_versioncounter_1_8_0', 0)]
+    REVISION: $[counter('NETDUINO3_WIFI_versioncounter_1_8_1', 0)]
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
