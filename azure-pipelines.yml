@@ -211,6 +211,7 @@ jobs:
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
+    CMakePreset: MBN_QUAIL
 
   steps:
   - checkout: self
@@ -265,6 +266,7 @@ jobs:
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
+    CMakePreset: BrainPad2
 
   steps:
   - checkout: self
@@ -319,6 +321,7 @@ jobs:
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
+    CMakePreset: GHI_FEZ_CERB40_NF
 
   steps:
   - checkout: self
@@ -373,6 +376,7 @@ jobs:
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
+    CMakePreset: I2M_ELECTRON_NF
 
   steps:
   - checkout: self
@@ -427,6 +431,7 @@ jobs:
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
+    CMakePreset: I2M_OXYGEN_NF
 
   steps:
   - checkout: self
@@ -481,6 +486,7 @@ jobs:
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
+    CMakePreset: WEACT_F411CE
 
   steps:
   - checkout: self
@@ -535,6 +541,7 @@ jobs:
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
+    CMakePreset: ST_NUCLEO64_F401RE_NF
 
   steps:
   - checkout: self
@@ -589,6 +596,7 @@ jobs:
     GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
+    CMakePreset: ST_NUCLEO64_F411RE_NF
 
   steps:
   - checkout: self
@@ -643,6 +651,7 @@ jobs:
     GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
+    CMakePreset: ST_STM32F411_DISCOVERY
 
   steps:
   - checkout: self
@@ -697,6 +706,7 @@ jobs:
     GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
+    CMakePreset: ST_NUCLEO144_F412ZG_NF
 
   steps:
   - checkout: self
@@ -751,6 +761,7 @@ jobs:
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
+    CMakePreset: ST_NUCLEO144_F746ZG
 
   steps:
   - checkout: self
@@ -805,6 +816,7 @@ jobs:
     GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
+    CMakePreset: ST_STM32F4_DISCOVERY
 
   steps:
   - checkout: self
@@ -859,6 +871,7 @@ jobs:
     GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
+    CMakePreset: ST_NUCLEO144_F439ZI
 
   steps:
   - checkout: self
@@ -913,6 +926,7 @@ jobs:
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('TI_CC1352P1_LAUNCHXL_868_versioncounter_1_8_1', 0)]
     GccArm_Version:
+    CMakePreset: TI_CC1352P1_LAUNCHXL
 
   steps:
   - checkout: self
@@ -967,6 +981,7 @@ jobs:
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('TI_CC1352P1_LAUNCHXL_915_versioncounter_1_8_1', 0)]
     GccArm_Version:
+    CMakePreset: TI_CC1352P1_LAUNCHXL
 
   steps:
   - checkout: self
@@ -1021,6 +1036,7 @@ jobs:
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
+    CMakePreset: PybStick2x
 
   steps:
   - checkout: self
@@ -1078,6 +1094,7 @@ jobs:
     PackageName: LilygoTWatch2020    
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('LilygoTWatch2020_versioncounter_1_8_1', 0)]
+    CMakePreset: LilygoTWatch2020
 
   steps:
   - checkout: self
@@ -1145,6 +1162,7 @@ jobs:
     PackageName: LilygoTWatch2021
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('LilygoTWatch2021_versioncounter_1_8_1', 0)]
+    CMakePreset: LilygoTWatch2021
 
   steps:
   - checkout: self
@@ -1209,6 +1227,7 @@ jobs:
     GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
+    CMakePreset: NETDUINO3_WIFI
 
   steps:
   - checkout: self
