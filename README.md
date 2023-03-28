@@ -41,24 +41,24 @@ The above firmware builds include support for the class libraries and features m
 
 |          Target          | Gpio | Spi | I2c | Pwm | Adc | Dac | Serial | OneWire | CAN | Events | SWO | Networking | Bluetooth BLE | Large Heap |  UI  |
 | :----------------------: | :--: | :--: | :--: | :--: | :--: | :--: | :----: | :-----: | :--: | :----: | :--: | :--------: | :-----------: | :--------: | :--: |
-|        MBN_QUAIL        | ✔️ | ✔️ | ✔️ | ✔️ |     |     |  ✔️  |  ✔️  |     |       | ✔️ |           |               |           |     |
-|     GHI FEZ CERB40-I     | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |     |  ✔️  |         |     |       | ✔️ |           |               |           |     |
-| IngenuityMicro Electron | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |     |  ✔️  |         |     |       |     |           |               |           |     |
-|  IngenuityMicro Oxygen  | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |     |  ✔️  |         |     |  ✔️  |     |           |               |           |     |
-|    ST Nucleo64 F401RE    | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |     |  ✔️  |  ✔️  |     |  ✔️  | ✔️ |           |               |           |     |
-|    ST Nucleo64 F411RE    | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |     |  ✔️  |         |     |  ✔️  | ✔️ |           |               |           |     |
-|  ST STM32F411 DISCOVERY  | ✔️ |     |     |     |     |     |       |         |     |       |     |           |               |           |     |
-|   ST Nucleo144 F412ZG   | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |     |  ✔️  |         |     |  ✔️  | ✔️ |           |               |           |     |
-|   ST Nucleo144 F746ZG   | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |     |  ✔️  |  ✔️  |     |  ✔️  | ✔️ |    ✔️    |               |           |     |
-|     ST STM32F4DISCO     | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |     |  ✔️  |  ✔️  | ✔️ |  ✔️  | ✔️ |           |               |           |     |
-|   ST Nucleo144 F439ZI   | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |     |  ✔️  |         |     |  ✔️  | ✔️ |    ✔️    |               |           |     |
-| TI CC1352P1 LAUNCHXL_868 | ✔️ |     |     |     |     |     |       |         |     |       |     |           |               |           |     |
-| TI CC1352P1 LAUNCHXL_915 | ✔️ |     |     |     |     |     |       |         |     |       |     |           |               |           |     |
-|     PybStick Std 26     | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |  ✔️  |         |     |  ✔️  |     |           |               |           |     |
-|      NETDUINO3_WIFI      | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |     |  ✔️  |  ✔️  | ✔️ |       |     |           |               |           |     |
-|        BrainPad2        | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |     |  ✔️  |  ✔️  | ✔️ |       |     |           |               |           |     |
-|     LilygoTWatch2020     | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |  ✔️  |  ✔️  | ✔️ |       | ✔️ |           |     ✔️     |    ✔️    | ✔️ |
-|     LilygoTWatch2021     | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |  ✔️  |  ✔️  | ✔️ |       | ✔️ |           |     ✔️     |    ✔️    | ✔️ |
+|        MBN_QUAIL        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |     |     |  :heavy_check_mark:  |  :heavy_check_mark:  |     |       | :heavy_check_mark: |           |               |           |     |
+|     GHI FEZ CERB40-I     | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |     |  :heavy_check_mark:  |         |     |       | :heavy_check_mark: |           |               |           |     |
+| IngenuityMicro Electron | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |     |  :heavy_check_mark:  |         |     |       |     |           |               |           |     |
+|  IngenuityMicro Oxygen  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |     |  :heavy_check_mark:  |         |     |  :heavy_check_mark:  |     |           |               |           |     |
+|    ST Nucleo64 F401RE    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |     |  :heavy_check_mark:  |  :heavy_check_mark:  |     |  :heavy_check_mark:  | :heavy_check_mark: |           |               |           |     |
+|    ST Nucleo64 F411RE    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |     |  :heavy_check_mark:  |         |     |  :heavy_check_mark:  | :heavy_check_mark: |           |               |           |     |
+|  ST STM32F411 DISCOVERY  | :heavy_check_mark: |     |     |     |     |     |       |         |     |       |     |           |               |           |     |
+|   ST Nucleo144 F412ZG   | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |     |  :heavy_check_mark:  |         |     |  :heavy_check_mark:  | :heavy_check_mark: |           |               |           |     |
+|   ST Nucleo144 F746ZG   | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |     |  :heavy_check_mark:  |  :heavy_check_mark:  |     |  :heavy_check_mark:  | :heavy_check_mark: |    :heavy_check_mark:    |               |           |     |
+|     ST STM32F4DISCO     | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |     |  :heavy_check_mark:  |  :heavy_check_mark:  | :heavy_check_mark: |  :heavy_check_mark:  | :heavy_check_mark: |           |               |           |     |
+|   ST Nucleo144 F439ZI   | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |     |  :heavy_check_mark:  |         |     |  :heavy_check_mark:  | :heavy_check_mark: |    :heavy_check_mark:    |               |           |     |
+| TI CC1352P1 LAUNCHXL_868 | :heavy_check_mark: |     |     |     |     |     |       |         |     |       |     |           |               |           |     |
+| TI CC1352P1 LAUNCHXL_915 | :heavy_check_mark: |     |     |     |     |     |       |         |     |       |     |           |               |           |     |
+|     PybStick Std 26     | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  :heavy_check_mark:  |         |     |  :heavy_check_mark:  |     |           |               |           |     |
+|      NETDUINO3_WIFI      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |     |  :heavy_check_mark:  |  :heavy_check_mark:  | :heavy_check_mark: |       |     |           |               |           |     |
+|        BrainPad2        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |     |  :heavy_check_mark:  |  :heavy_check_mark:  | :heavy_check_mark: |       |     |           |               |           |     |
+|     LilygoTWatch2020     | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  :heavy_check_mark:  |  :heavy_check_mark:  | :heavy_check_mark: |       | :heavy_check_mark: |           |     :heavy_check_mark:     |    :heavy_check_mark:    | :heavy_check_mark: |
+|     LilygoTWatch2021     | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  :heavy_check_mark:  |  :heavy_check_mark:  | :heavy_check_mark: |       | :heavy_check_mark: |           |     :heavy_check_mark:     |    :heavy_check_mark:    | :heavy_check_mark: |
 
 </details>
 
