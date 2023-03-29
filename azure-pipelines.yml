@@ -115,34 +115,45 @@ jobs:
           if($env:Build_Reason -eq "Schedule")
           {
             # scheduled daily build: get commit date
+            "**Scheduled build**" | Write-Host
+
+            $yesterdayDate = [System.DateTime]::UtcNow.AddDays(-1).Date
+  
+            # get commit date for this repo
+            $thisRepoLastCommitDate = git show -s --format=%cd --date=short
+            $thisRepoLastCommitDate = [DateTime]$thisRepoLastCommitDate
+            "Last commit for this repo dated $thisRepoLastCommitDate" | Write-Host
+
             # clone nf-interpreter
             git clone https://github.com/nanoframework/nf-interpreter.git -b main nf-interpreter --depth 1 -q
             cd "nf-interpreter" > $null
 
+            # get commit date for nf-interpreter
             $interpreterLastCommitDate = git show -s --format=%cd --date=short
             $interpreterLastCommitDate = [DateTime]$interpreterLastCommitDate
+            "Last commit for nf-interpreter dated $interpreterLastCommitDate" | Write-Host
 
-            if($interpreterLastCommitDate -eq [System.DateTime]::UtcNow.Date)
+            if(($interpreterLastCommitDate -eq $yesterdayDate) -or ($thisRepoLastCommitDate -eq $yesterdayDate))
             {
-              # last commit from nf-interpreter is from today, build ALL images
+              # last commit is from yesterday, build ALL images
               echo "##vso[task.setvariable variable=GO;isOutput=true]true"  
 
               "**Update upstream: Build ALL**" | Write-Host
             }
             else
             {
-              # last commit from nf-interpreter is older than today, skip build
+              # last commit from nf-interpreter or this repo are older than today, skip build
 
-              "***********************************************************************" | Write-Host
-              "* Last commit from nf-interpreter is older than today, skipping build *" | Write-Host
-              "***********************************************************************" | Write-Host
+              "***************************************************" | Write-Host
+              "* Last commit is older than today, skipping build *" | Write-Host
+              "***************************************************" | Write-Host
 
               echo "##vso[task.setvariable variable=GO;isOutput=true]false"
             }
           }
           elseif($env:Build_Reason -eq "IndividualCI")
           {
-              "**build for a push (commit)**" | Write-Host
+              "**Build for a push (commit)**" | Write-Host
 
               # need to wrap this in a try/catch because PR doesn't always exist
               try
@@ -174,7 +185,7 @@ jobs:
             # build for other reasons: build depending on target tag
             echo "##vso[task.setvariable variable=GO;isOutput=true]false"
 
-            "**build for other reasons**" | Write-Host  
+            "**Build for other reasons**" | Write-Host  
           }
         }
       }
