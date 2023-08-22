@@ -1,0 +1,64 @@
+{
+    "version": 4,
+    "include": [
+        "../../../CMake/arm-gcc.json",
+        "../../../config/user-tools-repos.json",
+        "../../../config/user-prefs.json"
+    ],
+    "configurePresets": [
+        {
+            "name": "NESHTEC_NESHNODE_V1",
+            "inherits": [
+                "arm-gcc-cortex-preset",
+                "user-tools-repos",
+                "user-prefs"
+            ],
+            "hidden": false,
+            "cacheVariables": {
+                "TARGET_BOARD": "${presetName}",
+                "RTOS": "ChibiOS",
+                "TARGET_SERIES": "STM32F7xx",
+                "CHIBIOS_CONTRIB_REQUIRED": "OFF",
+                "STM32_CUBE_PACKAGE_REQUIRED": "OFF",
+                "SUPPORT_ANY_BASE_CONVERSION": "ON",
+                "RTOS": "ChibiOS",
+                "TARGET_SERIES": "STM32F7xx",
+                "RTOS_SOURCE_FOLDER": "",
+                "TARGET_BOARD": "NESHTEC_NESHNODE_V1",
+                "CHIBIOS_CONTRIB_REQUIRED": "OFF",
+                "CHIBIOS_CONTRIB_SOURCE": "",
+                "STM32_CUBE_PACKAGE_REQUIRED": "OFF",
+                "STM32_CUBE_PACKAGE_SOURCE": "",
+                "MBEDTLS_SOURCE": "",
+                "FATFS_SOURCE": "",
+                "SUPPORT_ANY_BASE_CONVERSION": "ON",
+                "NF_FEATURE_DEBUGGER": "ON",
+                "NF_FEATURE_RTC": "ON",
+                "NF_FEATURE_HAS_CONFIG_BLOCK": "ON",
+                "NF_SECURITY_MBEDTLS": "ON",
+                "SWO_OUTPUT": "OFF",
+                "NF_BUILD_RTM": "OFF",
+                "API_System.Math": "ON",
+                "API_Hardware.Stm32": "ON",
+                "API_System.Device.Gpio": "ON",
+                "API_System.Device.Spi": "ON",
+                "API_System.Device.I2c": "ON",
+                "API_System.Device.Pwm": "ON",
+                "API_System.IO.Ports": "ON",
+                "API_System.Device.Adc": "ON",
+                "API_System.Net": "ON",
+                "API_nanoFramework.ResourceManager": "ON",
+                "API_nanoFramework.System.Collections": "ON",
+                "API_nanoFramework.System.Text": "ON"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "inherits": "base-user",
+            "name": "NESHTEC_NESHNODE_V1",
+            "displayName": "NESHTEC_NESHNODE_V1",
+            "configurePreset": "NESHTEC_NESHNODE_V1"
+        }
+    ]
+}
