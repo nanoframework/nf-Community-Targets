@@ -46,9 +46,9 @@
     "buildPresets": [
         {
             "inherits": "base-user",
-            "name": "GHI_FEZ_CERB40_NF",
-            "displayName": "GHI_FEZ_CERB40_NF",
-            "configurePreset": "GHI_FEZ_CERB40_NF"
+            "name": "GHI_FEZ_CERBERUS_NF",
+            "displayName": "GHI_FEZ_CERBERUS_NF",
+            "configurePreset": "GHI_FEZ_CERBERUS_NF"
         }
     ]
 }
