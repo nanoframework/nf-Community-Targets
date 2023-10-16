@@ -15,17 +15,16 @@
 #include <nanoCLR_Application.h>
 #include <nanoPAL_BlockStorage.h>
 #include <nanoHAL_v2.h>
-#include <targetPAL.h> 
+#include <targetPAL.h>
 
 // need to declare the Receiver thread here
 osThreadDef(ReceiverThread, osPriorityHigh, 2048, "ReceiverThread");
 // declare CLRStartup thread here 
-osThreadDef(CLRStartupThread, osPriorityNormal, 4096, "CLRStartupThread"); 
+osThreadDef(CLRStartupThread, osPriorityNormal, 4096, "CLRStartupThread");
 
 //  Application entry point.
 int main(void)
 {
-
   // HAL initialization, this also initializes the configured device drivers
   // and performs the board-specific initializations.
   halInit();
@@ -43,8 +42,8 @@ int main(void)
   Watchdog_Init();
 
 #if (HAL_NF_USE_STM32_CRC == TRUE)
-    // startup crc
-    crcStart(NULL);
+  // startup crc
+  crcStart(NULL);
 #endif
 
   //  Initializes a serial-over-USB CDC driver.
@@ -75,8 +74,8 @@ int main(void)
   // start kernel, after this main() will behave like a thread with priority osPriorityNormal
   osKernelStart();
 
-    while (true)
-    {
+  while (true)
+  {
     osDelay(100);
   }
 }
