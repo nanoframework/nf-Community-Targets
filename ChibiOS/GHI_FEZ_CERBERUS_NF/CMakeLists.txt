@@ -21,27 +21,3 @@ nf_setup_target_build(
     CLR_EXTRA_LINKMAP_PROPERTIES
         ",--library-path=${CMAKE_SOURCE_DIR}/targets/ChibiOS/_common,--defsym=__main_stack_size__=0x400,--defsym=__process_stack_size__=0x800,--defsym=__crt_heap_size__=0x10000"
 )
-
-# if HEX2DFU tool is available pack the binaries into a DFU package
-if(HEX2DFU_TOOL_AVAILABLE)
-
-    ####################################################################################################
-    ## when changing the linker file make sure to update the new addresses for the image files below  ##
-    ## DO NOT use the leading 0x notation, just the address in plain hexadecimal formating            ##
-    ####################################################################################################
-
-    if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
-        nf_generate_dfu_package(
-            ${CMAKE_SOURCE_DIR}/build/${NANOBOOTER_PROJECT_NAME}.bin 08000000 
-            ${CMAKE_SOURCE_DIR}/build/${NANOCLR_PROJECT_NAME}.bin 08008000 
-            ${CMAKE_SOURCE_DIR}/build/nanobooter-nanoclr.dfu
-        )
-    else()
-        nf_generate_dfu_package(
-            ${CMAKE_SOURCE_DIR}/build/${NANOBOOTER_PROJECT_NAME}.bin 08000000 
-            ${CMAKE_SOURCE_DIR}/build/${NANOCLR_PROJECT_NAME}.bin 08004000 
-            ${CMAKE_SOURCE_DIR}/build/nanobooter-nanoclr.dfu
-        )
-    endif()
-
-endif()
