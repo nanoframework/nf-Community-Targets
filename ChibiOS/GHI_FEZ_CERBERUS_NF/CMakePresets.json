@@ -10,7 +10,7 @@
             "name": "GHI_FEZ_CERBERUS_NF",
             "inherits": [
                 "arm-gcc-cortex-preset",
-                "user-tools-repos-local",
+                "user-tools-repos",
                 "user-prefs"
             ],
             "hidden": false,
