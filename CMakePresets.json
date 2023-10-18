@@ -3,6 +3,7 @@
     "include": [
         "ChibiOS/BrainPad2/CMakePresets.json",
         "ChibiOS/GHI_FEZ_CERB40_NF/CMakePresets.json",
+        "ChibiOS/GHI_FEZ_CERBERUS_NF/CMakePresets.json",
         "ChibiOS/I2M_ELECTRON_NF/CMakePresets.json",
         "ChibiOS/I2M_OXYGEN_NF/CMakePresets.json",
         "ChibiOS/MBN_QUAIL/CMakePresets.json",

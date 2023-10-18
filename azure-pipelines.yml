@@ -414,6 +414,61 @@ jobs:
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
+- job: Build_GHI_FEZ_CERBERUS_NF
+  condition: >-
+    or(
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] GHI_FEZ_CERBERUS_NF'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] GHI_FEZ_CERBERUS_NF'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_GHI_FEZ_CERBERUS_NF'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
+
+  dependsOn: 
+  - Check_Code_Style
+
+  pool:
+    vmImage: 'windows-latest'
+
+  variables:
+    TargetBoard: GHI_FEZ_CERBERUS_NF
+    TargetPlatform: 'stm32'
+    TargetSeries: 'stm32f4xx'
+    BuildOptions: 
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('GHI_FEZ_CERBERUS_NF_versioncounter_1_8_1', 0)]
+    GccArm_Version:
+    NeedsDFU: false
+    NeedsSRECORD: false
+    CMakePreset: GHI_FEZ_CERBERUS_NF
+
+  steps:
+  - checkout: self
+    fetchDepth: 1
+  - checkout: templatesBuild
+    fetchDepth: 1
+
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
+  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
+  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
+  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
+  - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
+    parameters:
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
+  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
+    parameters:
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
+
+##############################
 - job: Build_I2M_ELECTRON_NF
   condition: >-
     or(
@@ -1327,6 +1382,7 @@ jobs:
   - Build_MBN_QUAIL
   - Build_BrainPad2
   - Build_GHI_FEZ_CERB40_NF
+  - Build_GHI_FEZ_CERBERUS_NF
   - Build_I2M_ELECTRON_NF
   - Build_I2M_OXYGEN_NF
   - Build_WEACT_F411CE
@@ -1350,6 +1406,7 @@ jobs:
       failed('Build_MBN_QUAIL'),
       failed('Build_BrainPad2'),
       failed('Build_GHI_FEZ_CERB40_NF'),
+      failed('Build_GHI_FEZ_CERBERUS_NF'),
       failed('Build_I2M_ELECTRON_NF'),
       failed('Build_I2M_OXYGEN_NF'),
       failed('Build_WEACT_F411CE'),      

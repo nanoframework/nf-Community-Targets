@@ -9,6 +9,7 @@
 <!--- Not choosing which targets the PR affects will cause the PR to be closed immediately -->
 - [ ] BrainPad2
 - [ ] GHI_FEZ_CERB40_NF
+- [ ] GHI_FEZ_CERBERUS_NF
 - [ ] I2M_ELECTRON_NF
 - [ ] I2M_OXYGEN_NF
 - [ ] MBN_QUAIL
