@@ -909,6 +909,60 @@ jobs:
   - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
 
 ##############################
+- job: Build_ST_NUCLEO144_F767ZI
+  condition: >-
+    or(
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F767ZI'),
+      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F767ZI'),
+      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_ST_NUCLEO144_F767ZI'], 'true'),
+      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
+
+  dependsOn: 
+  - Check_Code_Style
+
+  pool:
+    vmImage: 'windows-latest'
+
+  variables:
+    TargetBoard: ST_NUCLEO144_F767ZI
+    TargetPlatform: 'stm32'
+    BuildOptions: 
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('ST_NUCLEO144_F767ZI_versioncounter_1_8_1', 0)]
+    GccArm_Version:
+    NeedsDFU: true
+    NeedsSRECORD: false
+    CMakePreset: ST_NUCLEO144_F767ZI
+
+  steps:
+  - checkout: self
+    fetchDepth: 1
+  - checkout: templatesBuild
+    fetchDepth: 1
+
+  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
+  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
+  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
+  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
+  - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
+    parameters:
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
+  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
+    parameters:
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
+
+##############################
 - job: Build_ST_STM32F4_DISCOVERY
   condition: >-
     or(
