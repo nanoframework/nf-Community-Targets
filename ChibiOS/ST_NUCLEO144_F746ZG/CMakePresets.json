@@ -49,7 +49,7 @@
                 "API_System.Device.Pwm": "ON",
                 "API_System.IO.Ports": "ON",
                 "API_System.Device.Spi": "ON",
-                "API_Windows.Storage": "OFF",
+                "API_Windows.Storage": "OFF"
             }
         }
     ],
