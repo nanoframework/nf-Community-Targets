@@ -343,7 +343,7 @@
                                      PIN_PUPDR_FLOATING(GPIOA_PA6_PWM) |      \
                                      PIN_PUPDR_FLOATING(GPIOA_RMII_CRS_DV) |  \
                                      PIN_PUPDR_FLOATING(GPIOA_MCO) |          \
-                                     PIN_PUPDR_PULLDOWN(GPIOA_USB_DET) |      \
+                                     PIN_PUPDR_FLOATING(GPIOA_USB_DET) |      \
                                      PIN_PUPDR_FLOATING(GPIOA_PA10_PWM) |     \
                                      PIN_PUPDR_FLOATING(GPIOA_OTG_FS_DN) |    \
                                      PIN_PUPDR_FLOATING(GPIOA_OTG_FS_DP) |    \
