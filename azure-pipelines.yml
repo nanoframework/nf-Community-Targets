@@ -44,7 +44,7 @@ resources:
       type: github
       name: espressif/esp-idf
       endpoint: nanoframework
-      ref: refs/tags/v4.4.6
+      ref: refs/tags/v4.4.7
 
 jobs:
 
