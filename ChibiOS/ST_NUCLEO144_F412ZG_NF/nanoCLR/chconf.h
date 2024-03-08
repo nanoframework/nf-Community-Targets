@@ -330,12 +330,12 @@
 #define CH_CFG_USE_DYNAMIC TRUE
 #endif
 
-/** @} *//**
- * @brief   Threads registry APIs.
- * @details If enabled then the registry APIs are included in the kernel.
- *
- * @note    The default is @p TRUE.
- */
+/** @} */ /**
+           * @brief   Threads registry APIs.
+           * @details If enabled then the registry APIs are included in the kernel.
+           *
+           * @note    The default is @p TRUE.
+           */
 #if !defined(CH_CFG_USE_REGISTRY)
 #define CH_CFG_USE_REGISTRY TRUE
 #endif
