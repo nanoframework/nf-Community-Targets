@@ -330,6 +330,155 @@
 #define CH_CFG_USE_DYNAMIC TRUE
 #endif
 
+/** @} *//**
+ * @brief   Threads registry APIs.
+ * @details If enabled then the registry APIs are included in the kernel.
+ *
+ * @note    The default is @p TRUE.
+ */
+#if !defined(CH_CFG_USE_REGISTRY)
+#define CH_CFG_USE_REGISTRY TRUE
+#endif
+
+/**
+ * @brief   Threads synchronization APIs.
+ * @details If enabled then the @p chThdWait() function is included in
+ *          the kernel.
+ *
+ * @note    The default is @p TRUE.
+ */
+#if !defined(CH_CFG_USE_WAITEXIT)
+#define CH_CFG_USE_WAITEXIT TRUE
+#endif
+
+/**
+ * @brief   Semaphores APIs.
+ * @details If enabled then the Semaphores APIs are included in the kernel.
+ *
+ * @note    The default is @p TRUE.
+ */
+#if !defined(CH_CFG_USE_SEMAPHORES)
+#define CH_CFG_USE_SEMAPHORES TRUE
+#endif
+
+/**
+ * @brief   Semaphores queuing mode.
+ * @details If enabled then the threads are enqueued on semaphores by
+ *          priority rather than in FIFO order.
+ *
+ * @note    The default is @p FALSE. Enable this if you have special
+ *          requirements.
+ * @note    Requires @p CH_CFG_USE_SEMAPHORES.
+ */
+#if !defined(CH_CFG_USE_SEMAPHORES_PRIORITY)
+#define CH_CFG_USE_SEMAPHORES_PRIORITY FALSE
+#endif
+
+/**
+ * @brief   Mutexes APIs.
+ * @details If enabled then the mutexes APIs are included in the kernel.
+ *
+ * @note    The default is @p TRUE.
+ */
+#if !defined(CH_CFG_USE_MUTEXES)
+#define CH_CFG_USE_MUTEXES TRUE
+#endif
+
+/**
+ * @brief   Enables recursive behavior on mutexes.
+ * @note    Recursive mutexes are heavier and have an increased
+ *          memory footprint.
+ *
+ * @note    The default is @p FALSE.
+ * @note    Requires @p CH_CFG_USE_MUTEXES.
+ */
+#if !defined(CH_CFG_USE_MUTEXES_RECURSIVE)
+#define CH_CFG_USE_MUTEXES_RECURSIVE FALSE
+#endif
+
+/**
+ * @brief   Conditional Variables APIs.
+ * @details If enabled then the conditional variables APIs are included
+ *          in the kernel.
+ *
+ * @note    The default is @p TRUE.
+ * @note    Requires @p CH_CFG_USE_MUTEXES.
+ */
+#if !defined(CH_CFG_USE_CONDVARS)
+#define CH_CFG_USE_CONDVARS TRUE
+#endif
+
+/**
+ * @brief   Conditional Variables APIs with timeout.
+ * @details If enabled then the conditional variables APIs with timeout
+ *          specification are included in the kernel.
+ *
+ * @note    The default is @p TRUE.
+ * @note    Requires @p CH_CFG_USE_CONDVARS.
+ */
+#if !defined(CH_CFG_USE_CONDVARS_TIMEOUT)
+#define CH_CFG_USE_CONDVARS_TIMEOUT TRUE
+#endif
+
+/**
+ * @brief   Events Flags APIs.
+ * @details If enabled then the event flags APIs are included in the kernel.
+ *
+ * @note    The default is @p TRUE.
+ */
+#if !defined(CH_CFG_USE_EVENTS)
+#define CH_CFG_USE_EVENTS TRUE
+#endif
+
+/**
+ * @brief   Events Flags APIs with timeout.
+ * @details If enabled then the events APIs with timeout specification
+ *          are included in the kernel.
+ *
+ * @note    The default is @p TRUE.
+ * @note    Requires @p CH_CFG_USE_EVENTS.
+ */
+#if !defined(CH_CFG_USE_EVENTS_TIMEOUT)
+#define CH_CFG_USE_EVENTS_TIMEOUT TRUE
+#endif
+
+/**
+ * @brief   Synchronous Messages APIs.
+ * @details If enabled then the synchronous messages APIs are included
+ *          in the kernel.
+ *
+ * @note    The default is @p TRUE.
+ */
+#if !defined(CH_CFG_USE_MESSAGES)
+#define CH_CFG_USE_MESSAGES TRUE
+#endif
+
+/**
+ * @brief   Synchronous Messages queuing mode.
+ * @details If enabled then messages are served by priority rather than in
+ *          FIFO order.
+ *
+ * @note    The default is @p FALSE. Enable this if you have special
+ *          requirements.
+ * @note    Requires @p CH_CFG_USE_MESSAGES.
+ */
+#if !defined(CH_CFG_USE_MESSAGES_PRIORITY)
+#define CH_CFG_USE_MESSAGES_PRIORITY FALSE
+#endif
+
+/**
+ * @brief   Dynamic Threads APIs.
+ * @details If enabled then the dynamic threads creation APIs are included
+ *          in the kernel.
+ *
+ * @note    The default is @p TRUE.
+ * @note    Requires @p CH_CFG_USE_WAITEXIT.
+ * @note    Requires @p CH_CFG_USE_HEAP and/or @p CH_CFG_USE_MEMPOOLS.
+ */
+#if !defined(CH_CFG_USE_DYNAMIC)
+#define CH_CFG_USE_DYNAMIC TRUE
+#endif
+
 /** @} */
 
 /*===========================================================================*/
