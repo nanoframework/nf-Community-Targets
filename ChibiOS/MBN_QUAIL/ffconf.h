@@ -56,7 +56,7 @@
 #define FF_USE_STRFUNC 1
 #define FF_PRINT_LLI   0
 #define FF_PRINT_FLOAT 0
-#define FF_STRF_ENCODE 3
+#define FF_STRF_ENCODE 0
 /* FF_USE_STRFUNC switches string functions, f_gets(), f_putc(), f_puts() and
 /  f_printf().
 /
