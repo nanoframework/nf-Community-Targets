@@ -30,7 +30,7 @@
                 "NF_FEATURE_HAS_CONFIG_BLOCK": "OFF",
                 "NF_FEATURE_HAS_SDCARD": "ON",
                 "NF_FEATURE_HAS_USB_MSD": "OFF",
-                "NF_FEATURE_USE_FILESYSTEM": "ON",
+                "NF_FEATURE_HAS_ACCESSIBLE_STORAGE": "ON", 
                 "NF_NETWORKING_SNTP": "OFF",
                 "API_Hardware.Stm32": "ON",
                 "API_nanoFramework.Device.Can": "OFF",
