@@ -919,7 +919,7 @@ jobs:
     TargetPlatform: 'stm32'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO144_F767ZI_versioncounter_1_9_0', 0)]
+    REVISION: $[counter('ST_NUCLEO144_F767ZI_versioncounter_1_9_1', 0)]
     NeedsDFU: true
     NeedsSRECORD: false
     CMakePreset: ST_NUCLEO144_F767ZI
