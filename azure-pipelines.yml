@@ -917,6 +917,7 @@ jobs:
   variables:
     TargetBoard: ST_NUCLEO144_F767ZI
     TargetPlatform: 'stm32'
+    TargetSeries: 'stm32f7xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_NUCLEO144_F767ZI_versioncounter_1_12_3', 0)]
