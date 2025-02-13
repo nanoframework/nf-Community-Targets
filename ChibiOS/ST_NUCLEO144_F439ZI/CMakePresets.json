@@ -35,13 +35,15 @@
                 "API_nanoFramework.Device.OneWire": "OFF",
                 "API_System.Math": "OFF",
                 "API_System.Net": "ON",
+                "API_nanoFramework.System.IO.Hashing": "OFF",
+                "API_nanoFramework.System.Security.Cryptography": "ON",
                 "API_System.Device.Adc": "ON",
                 "API_System.Device.Gpio": "ON",
                 "API_System.Device.I2c": "ON",
                 "API_System.Device.Pwm": "ON",
                 "API_System.IO.Ports": "ON",
                 "API_System.Device.Spi": "ON",
-                "API_Windows.Storage": "OFF"
+                "API_System.IO.FileSystem": "OFF"
             }
         }
     ],

@@ -25,7 +25,7 @@ osThreadDef(CLRStartupThread, osPriorityNormal, 4096, "CLRStartupThread");
 //  Application entry point.
 int main(void)
 {
-        // find out wakeup reason
+    // find out wakeup reason
     if ((PWR->CSR1 & PWR_CSR1_WUIF) == PWR_CSR1_WUIF)
     {
         // standby, match WakeupReason_FromStandby enum
