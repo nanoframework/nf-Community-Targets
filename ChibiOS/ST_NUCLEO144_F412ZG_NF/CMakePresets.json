@@ -38,7 +38,7 @@
                 "API_System.Device.Pwm": "ON",
                 "API_System.IO.Ports": "ON",
                 "API_System.Device.Spi": "ON",
-                "API_windows.Storage": "OFF"
+                "API_System.IO.FileSystem": "OFF"
             }
         }
     ],
