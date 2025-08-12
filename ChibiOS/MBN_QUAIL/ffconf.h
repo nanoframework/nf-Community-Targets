@@ -191,7 +191,6 @@
 #define FF_VOLUME_STRS ""
 #endif
 
-
 #define FF_MULTI_PARTITION 0
 /* This option switches support for multiple volumes on the physical drive.
 /  By default (0), each logical drive number is bound to the same physical drive
