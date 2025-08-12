@@ -3,6 +3,7 @@
 
 /* CHIBIOS FIX */
 #include "ch.h"
+#include <target_platform.h>
 
 /*---------------------------------------------------------------------------/
 /  Configurations of FatFs Module

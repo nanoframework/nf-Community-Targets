@@ -51,11 +51,6 @@ int main(void) {
   // startup crc
   crcStart(NULL);
   #endif
-
-  #if NF_FEATURE_USE_SPIFFS
-  // config and init SPIFFS
-  hal_spiffs_config();
-  #endif
   
   // starts the serial driver
   sdStart(&SERIAL_DRIVER, NULL);
