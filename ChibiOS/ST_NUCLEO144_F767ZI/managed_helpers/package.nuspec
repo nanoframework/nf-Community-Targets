@@ -16,7 +16,7 @@
     <license type="file">LICENSE.md</license>
     <copyright>Copyright (c) .NET Foundation and Contributors</copyright>
     <references></references>
-    <tags>nanoFramework, nano Framework, NETNF, NETMF, Micro Framework, STM32, .net, STM32F769I </tags>
+    <tags>nanoFramework, nano Framework, NETNF, NETMF, Micro Framework, STM32, .net, ST_NUCLEO144_F767ZI </tags>
   </metadata>
   <files>
     <file src="ST_NUCLEO144_F767ZI.Adc.cs" target="content" />
