@@ -931,13 +931,12 @@ jobs:
     TargetPlatform: 'stm32'
     TargetSeries: 'stm32f7xx'
     BuildOptions:
-      # creates a counter and assigns it to the revision variable
-      REVISION: $[counter('ST_NUCLEO144_F767ZI_versioncounter_1_12_4', 0)]
-      GccArm_Version:
-      NeedsDFU: true
-      NeedsSRECORD: false
-      CMakePreset: ST_NUCLEO144_F767ZI
-
+    # creates a counter and assigns it to the revision variable
+    REVISION: $[counter('ST_NUCLEO144_F767ZI_versioncounter_1_12_4', 0)]
+    GccArm_Version:
+    NeedsDFU: true
+    NeedsSRECORD: false
+    CMakePreset: ST_NUCLEO144_F767ZI
   steps:
     - checkout: self
       fetchDepth: 1
