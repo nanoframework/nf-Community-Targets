@@ -933,6 +933,7 @@ jobs:
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
     REVISION: $[counter('ST_NUCLEO144_F767ZI_versioncounter_1_12_4', 0)]
+    GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
     CMakePreset: ST_NUCLEO144_F767ZI
@@ -1443,6 +1444,7 @@ jobs:
   - Build_ST_STM32F411_DISCOVERY
   - Build_ST_NUCLEO144_F412ZG_NF
   - Build_ST_NUCLEO144_F746ZG
+  - Build_ST_NUCLEO144_F767ZI
   - Build_ST_STM32F4_DISCOVERY
   - Build_ST_NUCLEO144_F439ZI
   - Build_TI_CC1352P1_LAUNCHXL_868
@@ -1466,6 +1468,7 @@ jobs:
       failed('Build_ST_STM32F411_DISCOVERY'),
       failed('Build_ST_NUCLEO144_F412ZG_NF'),
       failed('Build_ST_NUCLEO144_F746ZG'),
+      failed('Build_ST_NUCLEO144_F767ZI'),
       failed('Build_ST_STM32F4_DISCOVERY'),
       failed('Build_ST_NUCLEO144_F439ZI'),
       failed('Build_TI_CC1352P1_LAUNCHXL_868'),
