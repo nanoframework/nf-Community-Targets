@@ -942,7 +942,6 @@ jobs:
       fetchDepth: 1
     - checkout: templatesBuild
       fetchDepth: 1
-  
     - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
     - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
       parameters:
