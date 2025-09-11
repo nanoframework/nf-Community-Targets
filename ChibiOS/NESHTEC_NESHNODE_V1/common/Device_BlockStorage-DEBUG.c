@@ -31,8 +31,8 @@ const BlockRange BlockRange2[] = {
 
 // 256kB blocks
 const BlockRange BlockRange3[] = {
-    // 08040000 nanoCLR
-    {BlockRange_BLOCKTYPE_CODE, 0, 1},
+    // 08080000 nanoCLR
+    {BlockRange_BLOCKTYPE_CODE, 0, 2},
 
     // 080C0000 deployment
     {BlockRange_BLOCKTYPE_DEPLOYMENT, 2, 2}};

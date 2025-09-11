@@ -218,7 +218,8 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('MBN_QUAIL_versioncounter_1_12_3', 0)]
+    REVISION: $[counter('MBN_QUAIL_versioncounter_1_12_4', 0)]
+    GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
     CMakePreset: MBN_QUAIL
@@ -272,7 +273,8 @@ jobs:
     TargetSeries: 'stm32f7xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('NESHTEC_NESHNODE_V1_versioncounter_1_12_3', 0)]
+    REVISION: $[counter('NESHTEC_NESHNODE_V1_versioncounter_1_12_4', 0)]
+    GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
     CMakePreset: NESHTEC_NESHNODE_V1
@@ -326,7 +328,8 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('BrainPad2_versioncounter_1_12_3', 0)]
+    REVISION: $[counter('BrainPad2_versioncounter_1_12_4', 0)]
+    GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
     CMakePreset: BrainPad2
@@ -380,7 +383,8 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('GHI_FEZ_CERB40_NF_versioncounter_1_12_3', 0)]
+    REVISION: $[counter('GHI_FEZ_CERB40_NF_versioncounter_1_12_4', 0)]
+    GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
     CMakePreset: GHI_FEZ_CERB40_NF
@@ -434,7 +438,7 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('GHI_FEZ_CERBERUS_NF_versioncounter_1_12_3', 0)]
+    REVISION: $[counter('GHI_FEZ_CERBERUS_NF_versioncounter_1_12_4', 0)]
     NeedsDFU: false
     NeedsSRECORD: false
     CMakePreset: GHI_FEZ_CERBERUS_NF
@@ -488,7 +492,8 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions:
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('I2M_ELECTRON_NF_versioncounter_1_12_3', 0)]
+    REVISION: $[counter('I2M_ELECTRON_NF_versioncounter_1_12_4', 0)]
+    GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
     CMakePreset: I2M_ELECTRON_NF
@@ -542,7 +547,8 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('I2M_OXYGEN_NF_versioncounter_1_12_3', 0)]
+    REVISION: $[counter('I2M_OXYGEN_NF_versioncounter_1_12_4', 0)]
+    GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
     CMakePreset: I2M_OXYGEN_NF
@@ -596,7 +602,8 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('WEACT_F411CE_versioncounter_1_12_3', 0)]
+    REVISION: $[counter('WEACT_F411CE_versioncounter_1_12_4', 0)]
+    GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
     CMakePreset: WEACT_F411CE
@@ -650,7 +657,8 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO64_F401RE_NF_versioncounter_1_12_3', 0)]
+    REVISION: $[counter('ST_NUCLEO64_F401RE_NF_versioncounter_1_12_4', 0)]
+    GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
     CMakePreset: ST_NUCLEO64_F401RE_NF
@@ -704,7 +712,8 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO64_F411RE_NF_versioncounter_1_12_3', 0)]
+    REVISION: $[counter('ST_NUCLEO64_F411RE_NF_versioncounter_1_12_4', 0)]
+    GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
     CMakePreset: ST_NUCLEO64_F411RE_NF
@@ -758,7 +767,8 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_STM32F411_DISCOVERY_versioncounter_1_12_3', 0)]
+    REVISION: $[counter('ST_STM32F411_DISCOVERY_versioncounter_1_12_4', 0)]
+    GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
     CMakePreset: ST_STM32F411_DISCOVERY
@@ -812,7 +822,8 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions:
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO144_F412ZG_NF_versioncounter_1_12_3', 0)]
+    REVISION: $[counter('ST_NUCLEO144_F412ZG_NF_versioncounter_1_12_4', 0)]
+    GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
     CMakePreset: ST_NUCLEO144_F412ZG_NF
@@ -866,7 +877,8 @@ jobs:
     TargetSeries: 'stm32f7xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO144_F746ZG_versioncounter_1_12_3', 0)]
+    REVISION: $[counter('ST_NUCLEO144_F746ZG_versioncounter_1_12_4', 0)]
+    GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
     CMakePreset: ST_NUCLEO144_F746ZG
@@ -974,7 +986,8 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions:
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_STM32F4_DISCOVERY_versioncounter_1_12_3', 0)]
+    REVISION: $[counter('ST_STM32F4_DISCOVERY_versioncounter_1_12_4', 0)]
+    GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
     CMakePreset: ST_STM32F4_DISCOVERY
@@ -1028,7 +1041,8 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO144_F439ZI_versioncounter_1_12_3', 0)]
+    REVISION: $[counter('ST_NUCLEO144_F439ZI_versioncounter_1_12_4', 0)]
+    GccArm_Version:
     NeedsDFU: false
     NeedsSRECORD: false
     CMakePreset: ST_NUCLEO144_F439ZI
@@ -1084,7 +1098,8 @@ jobs:
     BuildOptions: >-
       -DRADIO_FREQUENCY=868
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('TI_CC1352P1_LAUNCHXL_868_versioncounter_1_12_3', 0)]
+    REVISION: $[counter('TI_CC1352P1_LAUNCHXL_868_versioncounter_1_12_4', 0)]
+    GccArm_Version:
     CMakePreset: TI_CC1352P1_LAUNCHXL
 
   steps:
@@ -1138,7 +1153,8 @@ jobs:
     BuildOptions: >-
       -DRADIO_FREQUENCY=915
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('TI_CC1352P1_LAUNCHXL_915_versioncounter_1_12_3', 0)]
+    REVISION: $[counter('TI_CC1352P1_LAUNCHXL_915_versioncounter_1_12_4', 0)]
+    GccArm_Version:
     CMakePreset: TI_CC1352P1_LAUNCHXL
 
   steps:
@@ -1190,7 +1206,8 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('PybStick2x_versioncounter_1_12_3', 0)]
+    REVISION: $[counter('PybStick2x_versioncounter_1_12_4', 0)]
+    GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
     CMakePreset: PybStick2x
@@ -1250,7 +1267,7 @@ jobs:
     TargetName: LilygoTWatch2020
     PackageName: LilygoTWatch2020    
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('LilygoTWatch2020_versioncounter_1_12_3', 0)]
+    REVISION: $[counter('LilygoTWatch2020_versioncounter_1_12_4', 0)]
     CMakePreset: LilygoTWatch2020
 
   steps:
@@ -1318,7 +1335,7 @@ jobs:
     TargetName: LilygoTWatch2021
     PackageName: LilygoTWatch2021
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('LilygoTWatch2021_versioncounter_1_12_3', 0)]
+    REVISION: $[counter('LilygoTWatch2021_versioncounter_1_12_4', 0)]
     CMakePreset: LilygoTWatch2021
 
   steps:
@@ -1380,7 +1397,8 @@ jobs:
     TargetSeries: 'stm32f4xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('NETDUINO3_WIFI_versioncounter_1_12_3', 0)]
+    REVISION: $[counter('NETDUINO3_WIFI_versioncounter_1_12_4', 0)]
+    GccArm_Version:
     NeedsDFU: true
     NeedsSRECORD: false
     CMakePreset: NETDUINO3_WIFI
