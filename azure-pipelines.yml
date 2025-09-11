@@ -932,7 +932,7 @@ jobs:
     TargetSeries: 'stm32f7xx'
     BuildOptions: 
     # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO144_F767ZI_versioncounter_1_12_3', 0)]
+    REVISION: $[counter('ST_NUCLEO144_F767ZI_versioncounter_1_12_4', 0)]
     NeedsDFU: true
     NeedsSRECORD: false
     CMakePreset: ST_NUCLEO144_F767ZI
