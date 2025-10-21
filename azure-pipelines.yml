@@ -1260,6 +1260,7 @@ jobs:
     TargetSeries: 'esp32'
     TargetPlatform: 'esp32'
     IDF_PATH: 'D:/a/1/s/esp-idf'
+    IDF_TAG: "v5.4.2"
     PIP_CACHE_DIR: $(Pipeline.Workspace)/.pip
     BuildOptions: 
     IDF_Target: esp32
@@ -1289,6 +1290,7 @@ jobs:
   - template: azure-pipelines-templates/build-espressif-esp32-targets.yml@templatesBuild
     parameters:
       repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
+      partitionsDirectory: '$(Build.SourcesDirectory)/nf-interpreter/targets/ESP32/_IDF/$(IDF_Target)'
   - task: CopyFiles@1
     condition: succeeded()
     displayName: Copying bootloader
@@ -1328,6 +1330,7 @@ jobs:
     TargetSeries: 'esp32'
     TargetPlatform: 'esp32'
     IDF_PATH: 'D:/a/1/s/esp-idf'
+    IDF_TAG: "v5.4.2"    
     PIP_CACHE_DIR: $(Pipeline.Workspace)/.pip
     BuildOptions: 
     IDF_Target: esp32
@@ -1357,6 +1360,7 @@ jobs:
   - template: azure-pipelines-templates/build-espressif-esp32-targets.yml@templatesBuild
     parameters:
       repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
+      partitionsDirectory: '$(Build.SourcesDirectory)/nf-interpreter/targets/ESP32/_IDF/$(IDF_Target)'
   - task: CopyFiles@1
     condition: succeeded()
     displayName: Copying bootloader
@@ -1490,4 +1494,3 @@ jobs:
       status: 'failure'
       webhookUrl: '$(DiscordWebhook)'
       message: ''
-
