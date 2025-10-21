@@ -56,7 +56,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   steps:
   - checkout: self
@@ -68,7 +68,7 @@ jobs:
 ##############################
 - job: Get_Commit_Message
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   steps:
   - checkout: self
@@ -79,7 +79,7 @@ jobs:
 ##############################
 - job: Check_Build_Options
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   dependsOn: 
   - Get_Commit_Message
@@ -210,7 +210,7 @@ jobs:
   - Check_Code_Style
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   variables:
     TargetBoard: MBN_QUAIL
@@ -265,7 +265,7 @@ jobs:
   - Check_Code_Style
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   variables:
     TargetBoard: NESHTEC_NESHNODE_V1
@@ -320,7 +320,7 @@ jobs:
   - Check_Code_Style
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   variables:
     TargetBoard: BrainPad2
@@ -375,7 +375,7 @@ jobs:
   - Check_Code_Style
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   variables:
     TargetBoard: GHI_FEZ_CERB40_NF
@@ -430,7 +430,7 @@ jobs:
   - Check_Code_Style
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   variables:
     TargetBoard: GHI_FEZ_CERBERUS_NF
@@ -484,7 +484,7 @@ jobs:
   - Check_Code_Style
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   variables:
     TargetBoard: I2M_ELECTRON_NF
@@ -539,7 +539,7 @@ jobs:
   - Check_Code_Style
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   variables:
     TargetBoard: I2M_OXYGEN_NF
@@ -594,7 +594,7 @@ jobs:
   - Check_Code_Style
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   variables:
     TargetBoard: WEACT_F411CE
@@ -649,7 +649,7 @@ jobs:
   - Check_Code_Style
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   variables:
     TargetBoard: ST_NUCLEO64_F401RE_NF
@@ -704,7 +704,7 @@ jobs:
   - Check_Code_Style
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   variables:
     TargetBoard: ST_NUCLEO64_F411RE_NF
@@ -759,7 +759,7 @@ jobs:
   - Check_Code_Style
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   variables:
     TargetBoard: ST_STM32F411_DISCOVERY
@@ -814,7 +814,7 @@ jobs:
   - Check_Code_Style
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   variables:
     TargetBoard: ST_NUCLEO144_F412ZG_NF
@@ -869,7 +869,7 @@ jobs:
   - Check_Code_Style
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   variables:
     TargetBoard: ST_NUCLEO144_F746ZG
@@ -924,7 +924,7 @@ jobs:
     - Check_Code_Style
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   variables:
     TargetBoard: ST_NUCLEO144_F767ZI
@@ -977,7 +977,7 @@ jobs:
   - Check_Code_Style
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   variables:
     TargetBoard: ST_STM32F4_DISCOVERY
@@ -1032,7 +1032,7 @@ jobs:
   - Check_Code_Style
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   variables:
     TargetBoard: ST_NUCLEO144_F439ZI
@@ -1087,7 +1087,7 @@ jobs:
   - Check_Code_Style
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   variables:
     TargetBoard: TI_CC1352P1_LAUNCHXL
@@ -1142,7 +1142,7 @@ jobs:
   - Check_Code_Style
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   variables:
     TargetBoard: TI_CC1352P1_LAUNCHXL
@@ -1197,7 +1197,7 @@ jobs:
   - Check_Code_Style
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   variables:
     TargetBoard: PybStick2x
@@ -1253,7 +1253,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   variables:
     TargetBoard: ESP32
@@ -1321,7 +1321,7 @@ jobs:
   - Check_Build_Options
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   variables:
     TargetBoard: ESP32
@@ -1388,7 +1388,7 @@ jobs:
   - Check_Code_Style
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   variables:
     TargetBoard: NETDUINO3_WIFI
@@ -1478,7 +1478,7 @@ jobs:
     )
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2022'
 
   steps:
   - checkout: self
