@@ -246,7 +246,6 @@ jobs:
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
     parameters:
@@ -301,7 +300,6 @@ jobs:
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
     parameters:
@@ -356,7 +354,6 @@ jobs:
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
     parameters:
@@ -411,7 +408,6 @@ jobs:
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
     parameters:
@@ -465,7 +461,6 @@ jobs:
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
     parameters:
@@ -520,7 +515,6 @@ jobs:
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
     parameters:
@@ -575,7 +569,6 @@ jobs:
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
     parameters:
@@ -630,7 +623,6 @@ jobs:
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
     parameters:
@@ -685,7 +677,6 @@ jobs:
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
     parameters:
@@ -740,7 +731,6 @@ jobs:
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
     parameters:
@@ -795,7 +785,6 @@ jobs:
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
     parameters:
@@ -850,7 +839,6 @@ jobs:
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
     parameters:
@@ -905,7 +893,6 @@ jobs:
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
     parameters:
@@ -1013,7 +1000,6 @@ jobs:
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
     parameters:
@@ -1068,7 +1054,6 @@ jobs:
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
     parameters:
@@ -1233,7 +1218,6 @@ jobs:
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
     parameters:
@@ -1294,7 +1278,6 @@ jobs:
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-esp32-build-components.yml@templatesBuild
-  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/build-espressif-esp32-targets.yml@templatesBuild
     parameters:
       repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
@@ -1364,7 +1347,6 @@ jobs:
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-esp32-build-components.yml@templatesBuild
-  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/build-espressif-esp32-targets.yml@templatesBuild
     parameters:
       repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
@@ -1428,7 +1410,6 @@ jobs:
     parameters:
       repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
   - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-install-ninja.yml@templatesBuild
   - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
   - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
     parameters:
