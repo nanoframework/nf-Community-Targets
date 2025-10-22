@@ -114,14 +114,22 @@ jobs:
         {
           if($env:Build_Reason -eq "Schedule")
           {
-            # scheduled daily build: get commit date
+            # scheduled daily build: check commits for the scheduled day (UTC)
             "**Scheduled build**" | Write-Host
 
-            $yesterdayDate = [System.DateTime]::UtcNow.AddDays(-1).Date
-  
-            # get commit date for this repo
-            $thisRepoLastCommitDate = git show -s --format=%cd --date=short
-            $thisRepoLastCommitDate = [DateTime]$thisRepoLastCommitDate
+            try {
+              $queuedDateUtc = [System.DateTimeOffset]::Parse($env:Build_QueuedDate).UtcDateTime.Date
+            } catch {
+              # fallback, should not happen
+              $queuedDateUtc = [System.DateTime]::UtcNow.Date
+            }
+            "Scheduled (queued) date (UTC): $queuedDateUtc" | Write-Host
+
+            $fmt = 'yyyy-MM-dd'
+
+            # get commit date for this repo (yyyy-MM-dd from git) parsed invariantly
+            $thisRepoLastCommitDateStr = git show -s --format=%cd --date=short
+            $thisRepoLastCommitDate = [System.DateTime]::ParseExact($thisRepoLastCommitDateStr, $fmt, [System.Globalization.CultureInfo]::InvariantCulture)
             "Last commit for this repo dated $thisRepoLastCommitDate" | Write-Host
 
             # clone nf-interpreter
@@ -129,23 +137,23 @@ jobs:
             cd "nf-interpreter" > $null
 
             # get commit date for nf-interpreter
-            $interpreterLastCommitDate = git show -s --format=%cd --date=short
-            $interpreterLastCommitDate = [DateTime]$interpreterLastCommitDate
+            $interpreterLastCommitDateStr = git show -s --format=%cd --date=short
+            $interpreterLastCommitDate = [System.DateTime]::ParseExact($interpreterLastCommitDateStr, $fmt, [System.Globalization.CultureInfo]::InvariantCulture)
             "Last commit for nf-interpreter dated $interpreterLastCommitDate" | Write-Host
 
-            if(($interpreterLastCommitDate -eq $yesterdayDate) -or ($thisRepoLastCommitDate -eq $yesterdayDate))
+            if(($interpreterLastCommitDate -eq $queuedDateUtc) -or ($thisRepoLastCommitDate -eq $queuedDateUtc))
             {
-              # last commit is from yesterday, build ALL images
-              echo "##vso[task.setvariable variable=GO;isOutput=true]true"  
+              # last commit is from the scheduled day, build ALL images
+              echo "##vso[task.setvariable variable=GO;isOutput=true]true"
 
               "**Update upstream: Build ALL**" | Write-Host
             }
             else
             {
-              # last commit from nf-interpreter or this repo are older than today, skip build
+              # no commits for the scheduled day, skip build
 
               "***************************************************" | Write-Host
-              "* Last commit is older than today, skipping build *" | Write-Host
+              "* No commits for scheduled day, skipping build    *" | Write-Host
               "***************************************************" | Write-Host
 
               echo "##vso[task.setvariable variable=GO;isOutput=true]false"
