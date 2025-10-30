@@ -10,10 +10,13 @@
  * STM32F76xxI generic setup.
  * 
  * RAM0 - Data, Heap.
- * RAM3 - Main Stack, Process Stack, BSS, NOCACHE, ETH.
+ * RAM3 - Main Stack, Process Stack, BSS, NOCACHE.
+ * SRAM2 (ram2) - Ethernet DMA buffers/descriptors (DMA-accessible).
  *
  * Notes:
- * BSS is placed in DTCM RAM in order to simplify DMA buffers management.
+ * BSS is placed in DTCM RAM. Ethernet DMA descriptors/buffers are placed in SRAM2
+ * (ram2) because DTCM is not accessible by peripheral DMA. SRAM2 is cacheable,
+ * so ensure appropriate cache maintenance (clean/invalidate) when using DMA.
  */
 MEMORY
 {
@@ -104,7 +107,8 @@ INCLUDE rules_stacks.ld
 REGION_ALIAS("NOCACHE_RAM", ram3);
 
 /* RAM region to be used for eth segment.*/
-REGION_ALIAS("ETH_RAM", ram3);
+/* Changed from ram3 (DTCM, not DMA-accessible) to ram2 (SRAM2, DMA-accessible) so Ethernet DMA can access descriptors/buffers. */
+REGION_ALIAS("ETH_RAM", ram2);
 
 SECTIONS
 {
@@ -119,14 +123,16 @@ SECTIONS
         __nocache_end__ = .;
     } > NOCACHE_RAM
 
-    /* Special section for Ethernet DMA non cache-able areas.*/
-    .eth (NOLOAD) : ALIGN(4)
+    /* Special section for Ethernet DMA areas.
+       Placed in SRAM2 (ram2) which is DMA-accessible. SRAM2 is cacheable;
+       drivers must perform cache maintenance as required. */
+    .eth (NOLOAD) : ALIGN(32)
     {
         __eth_base__ = .;
         *(.eth)
         *(.eth.*)
         *(.bss.__eth_*)
-        . = ALIGN(4);
+        . = ALIGN(32);
         __eth_end__ = .;
     } > ETH_RAM
 }
