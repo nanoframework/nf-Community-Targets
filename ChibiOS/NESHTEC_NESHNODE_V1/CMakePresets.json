@@ -15,7 +15,7 @@
             ],
             "hidden": false,
             "cacheVariables": {
-                "NF_TARGET_DEFCONFIG": "ChibiOS/NESHTEC_NESHNODE_V1/defconfig"
+                "NF_TARGET_DEFCONFIG": "targets-community/ChibiOS/NESHTEC_NESHNODE_V1/defconfig"
             }
         }
     ],

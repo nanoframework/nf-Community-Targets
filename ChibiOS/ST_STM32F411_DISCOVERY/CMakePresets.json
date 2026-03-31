@@ -15,7 +15,7 @@
             ],
             "hidden": false,
             "cacheVariables": {
-                "NF_TARGET_DEFCONFIG": "ChibiOS/ST_STM32F411_DISCOVERY/defconfig"
+                "NF_TARGET_DEFCONFIG": "targets-community/ChibiOS/ST_STM32F411_DISCOVERY/defconfig"
             }
         }
     ],

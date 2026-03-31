@@ -15,7 +15,7 @@
             ],
             "hidden": false,
             "cacheVariables": {
-                "NF_TARGET_DEFCONFIG": "ChibiOS/GHI_FEZ_CERBERUS_NF/defconfig"
+                "NF_TARGET_DEFCONFIG": "targets-community/ChibiOS/GHI_FEZ_CERBERUS_NF/defconfig"
             }
         }
     ],

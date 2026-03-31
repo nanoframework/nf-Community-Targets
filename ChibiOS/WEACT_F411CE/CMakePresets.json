@@ -15,7 +15,7 @@
             ],
             "hidden": false,
             "cacheVariables": {
-                "NF_TARGET_DEFCONFIG": "ChibiOS/WEACT_F411CE/defconfig"
+                "NF_TARGET_DEFCONFIG": "targets-community/ChibiOS/WEACT_F411CE/defconfig"
             }
         }
     ],
