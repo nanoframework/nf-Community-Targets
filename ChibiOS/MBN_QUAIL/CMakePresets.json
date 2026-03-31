@@ -15,7 +15,7 @@
             ],
             "hidden": false,
             "cacheVariables": {
-                "NF_TARGET_DEFCONFIG": "targets-community/ChibiOS/MBN_QUAIL/defconfig"
+                "NF_TARGET_DEFCONFIG": "ChibiOS/MBN_QUAIL/defconfig"
             }
         }
     ],

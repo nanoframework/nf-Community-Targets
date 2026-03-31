@@ -15,7 +15,7 @@
             ],
             "hidden": false,
             "cacheVariables": {
-                "NF_TARGET_DEFCONFIG": "targets-community/ChibiOS/PybStick2x/defconfig"
+                "NF_TARGET_DEFCONFIG": "ChibiOS/PybStick2x/defconfig"
             }
         }
     ],

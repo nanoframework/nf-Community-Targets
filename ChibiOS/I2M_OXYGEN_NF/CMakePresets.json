@@ -15,7 +15,7 @@
             ],
             "hidden": false,
             "cacheVariables": {
-                "NF_TARGET_DEFCONFIG": "targets-community/ChibiOS/I2M_OXYGEN_NF/defconfig"
+                "NF_TARGET_DEFCONFIG": "ChibiOS/I2M_OXYGEN_NF/defconfig"
             }
         }
     ],

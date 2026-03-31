@@ -15,7 +15,7 @@
             ],
             "hidden": false,
             "cacheVariables": {
-                "NF_TARGET_DEFCONFIG": "targets-community/ChibiOS/ST_NUCLEO64_F411RE_NF/defconfig"
+                "NF_TARGET_DEFCONFIG": "ChibiOS/ST_NUCLEO64_F411RE_NF/defconfig"
             }
         }
     ],

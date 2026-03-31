@@ -15,7 +15,7 @@
             ],
             "hidden": false,
             "cacheVariables": {
-                "NF_TARGET_DEFCONFIG": "targets-community/ChibiOS/NETDUINO3_WIFI/defconfig"
+                "NF_TARGET_DEFCONFIG": "ChibiOS/NETDUINO3_WIFI/defconfig"
             }
         }
     ],

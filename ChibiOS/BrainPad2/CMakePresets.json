@@ -15,7 +15,7 @@
             ],
             "hidden": false,
             "cacheVariables": {
-                "NF_TARGET_DEFCONFIG": "targets-community/ChibiOS/BrainPad2/defconfig"
+                "NF_TARGET_DEFCONFIG": "ChibiOS/BrainPad2/defconfig"
             }
         }
     ],

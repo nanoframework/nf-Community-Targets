@@ -15,7 +15,7 @@
             ],
             "hidden": false,
             "cacheVariables": {
-                "NF_TARGET_DEFCONFIG": "targets-community/ChibiOS/ST_NUCLEO144_F767ZI/defconfig"
+                "NF_TARGET_DEFCONFIG": "ChibiOS/ST_NUCLEO144_F767ZI/defconfig"
             }
         }
     ],
