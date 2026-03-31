@@ -31,7 +31,7 @@ int main(void) {
   halInit();
 
   // Init SWO to make it available to output as soon as possible
-#if (SWO_OUTPUT == TRUE)  
+#if CONFIG_CHIBIOS_CHIBIOS_CHIBIOS_SWO_OUTPUT  
   SwoInit();
 #endif
   
