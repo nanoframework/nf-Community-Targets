@@ -9,7 +9,7 @@ The CC1352P1 LaunchPad board contains a TI CC1352P1 device.
 
 ## Radio frequency
 
-The radio frequency can be set during the build using the `RADIO_FREQUENCY` option. Valid values are 868 and 915 (MHz).
+The radio frequency can be set during the build using the `TI_SIMPLELINK_RADIO_FREQ_MHZ` option. Valid values are 868 and 915 (MHz).
 
 ## Jumper Settings
 
