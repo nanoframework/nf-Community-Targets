@@ -233,7 +233,7 @@ static const USBDescriptor vcom_strings[] = {
 // value: value to convert
 // pbuf: pointer to the buffer 
 // len: buffer length
-void IntToUnicode(uint32_t value , uint8_t *pbuf, uint8_t len)
+static void IntToUnicode(uint32_t value , uint8_t *pbuf, uint8_t len)
 {
   uint8_t idx = 0;
   
@@ -255,7 +255,7 @@ void IntToUnicode(uint32_t value , uint8_t *pbuf, uint8_t len)
 }
 
 // Create the serial number string descriptor
-void Get_SerialNum(uint8_t* pbuf)
+static void Get_SerialNum(uint8_t* pbuf)
 {
   uint32_t deviceserial0, deviceserial1, deviceserial2;
   
