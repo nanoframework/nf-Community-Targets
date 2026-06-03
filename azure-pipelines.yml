@@ -90,7 +90,9 @@ stages:
             }
           }
           catch
-          {}
+          {
+            Write-Warning "GitHub API call to retrieve PR body failed: $_"
+          }
         }
         else
         {
@@ -113,30 +115,28 @@ stages:
               "**Scheduled build**" | Write-Host
 
               try {
-                $queuedDateUtc = [System.DateTimeOffset]::Parse($env:Build_QueuedDate).UtcDateTime.Date
+                $queuedDateUtc = [System.DateTimeOffset]::Parse($env:Build_QueuedDate).UtcDateTime
               } catch {
                 # fallback, should not happen
-                $queuedDateUtc = [System.DateTime]::UtcNow.Date
+                $queuedDateUtc = [System.DateTime]::UtcNow
               }
-              "Scheduled (queued) date (UTC): $queuedDateUtc" | Write-Host
+              "Scheduled (queued) datetime (UTC): $queuedDateUtc" | Write-Host
 
-              $fmt = 'yyyy-MM-dd'
-
-              # get commit date for this repo (yyyy-MM-dd from git) parsed invariantly
-              $thisRepoLastCommitDateStr = git show -s --format=%cd --date=short
-              $thisRepoLastCommitDate = [System.DateTime]::ParseExact($thisRepoLastCommitDateStr, $fmt, [System.Globalization.CultureInfo]::InvariantCulture)
+              # get commit datetime for this repo (ISO 8601 from git)
+              $thisRepoLastCommitDateStr = git show -s --format=%cd --date=iso-strict
+              $thisRepoLastCommitDate = [System.DateTimeOffset]::Parse($thisRepoLastCommitDateStr).UtcDateTime
               "Last commit for this repo dated $thisRepoLastCommitDate" | Write-Host
 
               # clone nf-interpreter
               git clone https://github.com/nanoframework/nf-interpreter.git -b main nf-interpreter --depth 1 -q
               cd "nf-interpreter" > $null
 
-              # get commit date for nf-interpreter
-              $interpreterLastCommitDateStr = git show -s --format=%cd --date=short
-              $interpreterLastCommitDate = [System.DateTime]::ParseExact($interpreterLastCommitDateStr, $fmt, [System.Globalization.CultureInfo]::InvariantCulture)
+              # get commit datetime for nf-interpreter
+              $interpreterLastCommitDateStr = git show -s --format=%cd --date=iso-strict
+              $interpreterLastCommitDate = [System.DateTimeOffset]::Parse($interpreterLastCommitDateStr).UtcDateTime
               "Last commit for nf-interpreter dated $interpreterLastCommitDate" | Write-Host
 
-              if(($interpreterLastCommitDate -eq $queuedDateUtc) -or ($thisRepoLastCommitDate -eq $queuedDateUtc))
+              if(($interpreterLastCommitDate -ge $queuedDateUtc) -or ($thisRepoLastCommitDate -ge $queuedDateUtc))
               {
                 # last commit is from the scheduled day, build ALL images
                 echo "##vso[task.setvariable variable=GO;isOutput=true]true"
@@ -181,7 +181,12 @@ stages:
                     }
                 }
                 catch
-                {}
+                {
+                    $httpStatus = if ($_.Exception.Response) { $_.Exception.Response.StatusCode.value__ } else { $null }
+                    if ($null -eq $httpStatus -or $httpStatus -ne 404) {
+                        Write-Warning "GitHub API call to retrieve PR associated with commit failed: $_"
+                    }
+                }
             }
             else
             {

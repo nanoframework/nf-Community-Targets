@@ -15,8 +15,6 @@ jobs:
 - job: Build_${{ parameters.packageName }}
   condition: >-
     or(
-      contains(stageDependencies.Check_Build_Options.Check_Build_Options.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ${{ parameters.packageName }}'),
-      contains(stageDependencies.Check_Build_Options.Check_Build_Options.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
       contains(stageDependencies.Check_Build_Options.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ${{ parameters.packageName }}'),
       contains(stageDependencies.Check_Build_Options.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
       eq(variables['BUILD_ALL'], 'true'),
