@@ -1,0 +1,76 @@
+# Copyright (c) .NET Foundation and Contributors
+# See LICENSE file in the project root for full license information.
+
+parameters:
+  - name: targetName
+    type: string
+  - name: idfTarget
+    type: string
+  - name: idfTag
+    type: string
+    default: 'v5.5.4'
+  - name: targetBoard
+    type: string
+    default: 'ESP32'
+
+jobs:
+- job: Build_${{ parameters.targetName }}
+  condition: >-
+    or(
+      contains(stageDependencies.Check_Build_Options.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ${{ parameters.targetName }}'),
+      contains(stageDependencies.Check_Build_Options.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_${{ parameters.targetName }}'], 'true'),
+      eq(stageDependencies.Check_Build_Options.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
+
+  pool:
+    vmImage: 'windows-latest'
+
+  variables:
+    TargetBoard: ${{ parameters.targetBoard }}
+    TargetSeries: 'esp32'
+    TargetPlatform: 'esp32'
+    IDF_PATH: 'D:/a/1/s/esp-idf'
+    IDF_TAG: ${{ parameters.idfTag }}
+    PIP_CACHE_DIR: $(Pipeline.Workspace)/.pip
+    BuildOptions:
+    IDF_Target: ${{ parameters.idfTarget }}
+    TargetName: ${{ parameters.targetName }}
+    PackageName: ${{ parameters.targetName }}
+    REVISION: $[counter('${{ parameters.targetName }}_versioncounter_1_17_0', 0)]
+    CMakePreset: ${{ parameters.targetName }}
+
+  steps:
+  - checkout: self
+    fetchDepth: 1
+  - checkout: templatesBuild
+    fetchDepth: 1
+  - checkout: esp32_idf
+    fetchDepth: 1
+
+  - template: clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
+  - template: azure-pipelines-templates/download-install-esp32-build-components.yml@templatesBuild
+  - template: azure-pipelines-templates/build-espressif-esp32-targets.yml@templatesBuild
+    parameters:
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
+      partitionsDirectory: '$(Build.SourcesDirectory)/nf-interpreter/targets/ESP32/_IDF/$(IDF_Target)'
+  - task: CopyFiles@1
+    condition: succeeded()
+    displayName: Copying bootloader
+    inputs:
+      sourceFolder: '$(Build.SourcesDirectory)\nf-interpreter\build\bootloader'
+      Contents: |
+        bootloader.bin
+      TargetFolder: '$(Build.ArtifactStagingDirectory)\$(TargetPublishName)'
+      flattenFolders: true
+  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
+    parameters:
+      buildDirectory: '$(Build.SourcesDirectory)\nf-interpreter\build'
+  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild

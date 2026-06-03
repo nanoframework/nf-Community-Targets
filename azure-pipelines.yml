@@ -12,6 +12,7 @@ trigger:
     exclude:
       - .gitignore
       - .clang-format
+      - .github/*
       - LICENSE.md
       - README.md
 
@@ -27,8 +28,6 @@ schedules:
   always: true
   displayName: Daily build at 23:50
 
-# add nf-tools repo to resources (for Azure Pipelines templates)
-# add nf-interpreter repo to resources (for Azure Pipelines templates)
 resources:
   repositories:
     - repository: templates
@@ -46,1557 +45,339 @@ resources:
       endpoint: nanoframework
       ref: refs/tags/v5.5.4
 
-jobs:
+stages:
 
 ##############################
-- job: Check_Code_Style
-  condition: ne( dependencies.Check_Build_Options.outputs['BuildOptions.SKIP_BUILD'], true )
+- stage: Check_Build_Options
+  jobs:
+  - job: Check_Build_Options
+    pool:
+      vmImage: 'windows-latest'
 
-  dependsOn:
-  - Check_Build_Options
+    steps:
+    - checkout: self
+      fetchDepth: 1
 
-  pool:
-    vmImage: 'windows-latest'
+    - template: azure-pipelines-templates/get-commit-details.yml@templates
 
-  steps:
-  - checkout: self
-    fetchDepth: 1
+    - powershell: |
 
-  - template: azure-pipelines-templates/download-install-llvm.yml@templatesBuild
-  - template: azure-pipelines-templates/check-code-style.yml@templatesBuild
+        # compute authorization header in format "AUTHORIZATION: basic 'encoded token'"
+        # 'encoded token' is the Base64 of the string "nfbot:personal-token"
+        $auth = "basic $([System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes("nfbot:$(GitHubToken)")))"
 
-##############################
-- job: Get_Commit_Message
-  pool:
-    vmImage: 'windows-latest'
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-  
-  - template: azure-pipelines-templates/get-commit-details.yml@templates
-
-##############################
-- job: Check_Build_Options
-  pool:
-    vmImage: 'windows-latest'
-
-  dependsOn: 
-  - Get_Commit_Message
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-
-  - powershell: |
-
-      if($env:System_PullRequest_PullRequestId -ne $null)
-      {
-        # this is a PR: always build depending on target tag
-        echo "##vso[task.setvariable variable=GO;isOutput=true]false"
-
-        "**PR build**" | Write-Host
-      }
-      else
-      {
-        # build NOT from PR
-        Write-Host "Build for commit ID: $env:Build_SourceVersion"
-
-        # default build flag to FALSE, so other options are checked for what to build
-        echo "##vso[task.setvariable variable=GO;isOutput=true]false"
-        
-        if($env:BUILD_ALL -like "True")
+        if($env:System_PullRequest_PullRequestId -ne $null)
         {
-          # this has BUILD ALL build var set to true
-          "**Build ALL**" | Write-Host
+          # this is a PR: always build depending on target tag
+          echo "##vso[task.setvariable variable=GO;isOutput=true]false"
+
+          "**PR build**" | Write-Host
+
+          # get PR body to check for build target tags
+          try
+          {
+            $prUrl = "https://api.github.com/repos/$env:Build_Repository_Name/pulls/$env:System_PullRequest_PullRequestNumber"
+
+            $pr = Invoke-RestMethod -Uri $prUrl -ContentType "application/json" -Headers @{Accept = "application/json"; Authorization = "$auth"} -Method GET
+
+            if($pr -ne $null)
+            {
+              $prBody = $pr.body.Replace("`r`n", " ").Replace("`r", " ").Replace("`n", " ")
+
+              "Flattened PR body: '$prBody'" | Write-Host
+
+              echo "##vso[task.setvariable variable=COMMIT_MESSAGE_FROMPR;isOutput=true]$prBody"
+            }
+          }
+          catch
+          {
+            Write-Warning "GitHub API call to retrieve PR body failed: $_"
+          }
         }
         else
         {
-          if($env:Build_Reason -eq "Schedule")
+          # build NOT from PR
+          Write-Host "Build for commit ID: $env:Build_SourceVersion"
+
+          # default build flag to FALSE, so other options are checked for what to build
+          echo "##vso[task.setvariable variable=GO;isOutput=true]false"
+
+          if($env:BUILD_ALL -like "True")
           {
-            # scheduled daily build: check commits for the scheduled day (UTC)
-            "**Scheduled build**" | Write-Host
-
-            try {
-              $queuedDateUtc = [System.DateTimeOffset]::Parse($env:Build_QueuedDate).UtcDateTime.Date
-            } catch {
-              # fallback, should not happen
-              $queuedDateUtc = [System.DateTime]::UtcNow.Date
-            }
-            "Scheduled (queued) date (UTC): $queuedDateUtc" | Write-Host
-
-            $fmt = 'yyyy-MM-dd'
-
-            # get commit date for this repo (yyyy-MM-dd from git) parsed invariantly
-            $thisRepoLastCommitDateStr = git show -s --format=%cd --date=short
-            $thisRepoLastCommitDate = [System.DateTime]::ParseExact($thisRepoLastCommitDateStr, $fmt, [System.Globalization.CultureInfo]::InvariantCulture)
-            "Last commit for this repo dated $thisRepoLastCommitDate" | Write-Host
-
-            # clone nf-interpreter
-            git clone https://github.com/nanoframework/nf-interpreter.git -b main nf-interpreter --depth 1 -q
-            cd "nf-interpreter" > $null
-
-            # get commit date for nf-interpreter
-            $interpreterLastCommitDateStr = git show -s --format=%cd --date=short
-            $interpreterLastCommitDate = [System.DateTime]::ParseExact($interpreterLastCommitDateStr, $fmt, [System.Globalization.CultureInfo]::InvariantCulture)
-            "Last commit for nf-interpreter dated $interpreterLastCommitDate" | Write-Host
-
-            if(($interpreterLastCommitDate -eq $queuedDateUtc) -or ($thisRepoLastCommitDate -eq $queuedDateUtc))
-            {
-              # last commit is from the scheduled day, build ALL images
-              echo "##vso[task.setvariable variable=GO;isOutput=true]true"
-
-              "**Update upstream: Build ALL**" | Write-Host
-            }
-            else
-            {
-              # no commits for the scheduled day, skip build
-
-              "***************************************************" | Write-Host
-              "* No commits for scheduled day, skipping build    *" | Write-Host
-              "***************************************************" | Write-Host
-
-              echo "##vso[task.setvariable variable=GO;isOutput=true]false"
-            }
-          }
-          elseif($env:Build_Reason -eq "IndividualCI")
-          {
-              "**Build for a push (commit)**" | Write-Host
-
-              # need to wrap this in a try/catch because PR doesn't always exist
-              try
-              {
-                  # get PR associated with commit
-                  $prUrl = "https://api.github.com/repos/$env:Build_Repository_Name/commits/$env:Build_SourceVersion/pulls"
-
-                  $commit = Invoke-RestMethod -Uri $prUrl -ContentType "application/json" -Headers @{Accept = "application/vnd.github.groot-preview+json"; Authorization = "$auth"}  -Method GET
-
-                  if($commit -ne $null)
-                  {
-                    # get subject and commit message for commit
-                    $commitMessageFromPR = git log --format='%B' -1
-
-                    # need to flatten message by removing new lines
-                    $commitMessageFromPR = $commitMessageFromPR.Replace("`r`n", " ").Replace("`r", " ").Replace("`n", " ")
-
-                    "Flattened commit message from PR is: '$commitMessageFromPR'" | Write-Host
-
-                    # set variable to forward to jobs
-                    echo "##vso[task.setvariable variable=COMMIT_MESSAGE_FROMPR;isOutput=true]$commitMessageFromPR"
-                  }
-              }
-              catch
-              {}
+            # this has BUILD ALL build var set to true
+            "**Build ALL**" | Write-Host
           }
           else
           {
-            # build for other reasons: build depending on target tag
-            echo "##vso[task.setvariable variable=GO;isOutput=true]false"
+            if($env:Build_Reason -eq "Schedule")
+            {
+              # scheduled daily build: check commits for the scheduled day (UTC)
+              "**Scheduled build**" | Write-Host
 
-            "**Build for other reasons**" | Write-Host  
+              try {
+                $queuedDateUtc = [System.DateTimeOffset]::Parse($env:Build_QueuedDate).UtcDateTime
+              } catch {
+                # fallback, should not happen
+                $queuedDateUtc = [System.DateTime]::UtcNow
+              }
+              "Scheduled (queued) datetime (UTC): $queuedDateUtc" | Write-Host
+
+              # get commit datetime for this repo (ISO 8601 from git)
+              $thisRepoLastCommitDateStr = git show -s --format=%cd --date=iso-strict
+              $thisRepoLastCommitDate = [System.DateTimeOffset]::Parse($thisRepoLastCommitDateStr).UtcDateTime
+              "Last commit for this repo dated $thisRepoLastCommitDate" | Write-Host
+
+              # clone nf-interpreter
+              git clone https://github.com/nanoframework/nf-interpreter.git -b main nf-interpreter --depth 1 -q
+              cd "nf-interpreter" > $null
+
+              # get commit datetime for nf-interpreter
+              $interpreterLastCommitDateStr = git show -s --format=%cd --date=iso-strict
+              $interpreterLastCommitDate = [System.DateTimeOffset]::Parse($interpreterLastCommitDateStr).UtcDateTime
+              "Last commit for nf-interpreter dated $interpreterLastCommitDate" | Write-Host
+
+              if(($interpreterLastCommitDate -ge $queuedDateUtc) -or ($thisRepoLastCommitDate -ge $queuedDateUtc))
+              {
+                # last commit is from the scheduled day, build ALL images
+                echo "##vso[task.setvariable variable=GO;isOutput=true]true"
+
+                "**Update upstream: Build ALL**" | Write-Host
+              }
+              else
+              {
+                # no commits for the scheduled day, skip build
+
+                "***************************************************" | Write-Host
+                "* No commits for scheduled day, skipping build    *" | Write-Host
+                "***************************************************" | Write-Host
+
+                echo "##vso[task.setvariable variable=GO;isOutput=true]false"
+              }
+            }
+            elseif($env:Build_Reason -eq "IndividualCI")
+            {
+                "**Build for a push (commit)**" | Write-Host
+
+                # need to wrap this in a try/catch because PR doesn't always exist
+                try
+                {
+                    # get PR associated with commit
+                    $prUrl = "https://api.github.com/repos/$env:Build_Repository_Name/commits/$env:Build_SourceVersion/pulls"
+
+                    $commit = Invoke-RestMethod -Uri $prUrl -ContentType "application/json" -Headers @{Accept = "application/vnd.github.groot-preview+json"; Authorization = "$auth"}  -Method GET
+
+                    if($commit -ne $null)
+                    {
+                      # get PR body to check for build target tags
+                      $commitMessageFromPR = $commit[0].body
+
+                      # need to flatten message by removing new lines
+                      $commitMessageFromPR = $commitMessageFromPR.Replace("`r`n", " ").Replace("`r", " ").Replace("`n", " ")
+
+                      "Flattened PR body from associated PR is: '$commitMessageFromPR'" | Write-Host
+
+                      # set variable to forward to jobs
+                      echo "##vso[task.setvariable variable=COMMIT_MESSAGE_FROMPR;isOutput=true]$commitMessageFromPR"
+                    }
+                }
+                catch
+                {
+                    $httpStatus = if ($_.Exception.Response) { $_.Exception.Response.StatusCode.value__ } else { $null }
+                    if ($null -eq $httpStatus -or $httpStatus -ne 404) {
+                        Write-Warning "GitHub API call to retrieve PR associated with commit failed: $_"
+                    }
+                }
+            }
+            else
+            {
+              # build for other reasons: build depending on target tag
+              echo "##vso[task.setvariable variable=GO;isOutput=true]false"
+
+              "**Build for other reasons**" | Write-Host
+            }
           }
         }
-      }
 
-    name: BuildOptions
-    displayName: Evaluate build options
-
-##############################
-- job: Build_MBN_QUAIL
-  condition: >-
-    and(
-      succeeded('Check_Code_Style'),
-      or(
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] MBN_QUAIL'),
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] MBN_QUAIL'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-        eq(variables['BUILD_ALL'], 'true'),
-        eq(variables['BUILD_MBN_QUAIL'], 'true'),
-        eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-      )
-    )
-
-  dependsOn: 
-  - Check_Code_Style
-
-  pool:
-    vmImage: 'windows-latest'
-
-  variables:
-    TargetBoard: MBN_QUAIL
-    TargetPlatform: 'stm32'
-    TargetSeries: 'stm32f4xx'
-    BuildOptions: 
-    # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('MBN_QUAIL_versioncounter_1_17_0', 0)]
-    GccArm_Version:
-    NeedsDFU: true
-    NeedsSRECORD: false
-    CMakePreset: MBN_QUAIL
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-  - checkout: templatesBuild
-    fetchDepth: 1
-  
-  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-  - template: azure-pipelines-templates/install-kconfig-tools.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
-    parameters:
-      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
-  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
-    parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
+      name: BuildOptions
+      displayName: Evaluate build options
 
 ##############################
-- job: Build_NESHTEC_NESHNODE_V1
-  condition: >-
-    and(
-      succeeded('Check_Code_Style'),
-      or(
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] NESHTEC_NESHNODE_V1'),
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] NESHTEC_NESHNODE_V1'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-        eq(variables['BUILD_ALL'], 'true'),
-        eq(variables['BUILD_NESHTEC_NESHNODE_V1'], 'true'),
-        eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-      )
-    )
-
-  dependsOn: 
-  - Check_Code_Style
-
-  pool:
-    vmImage: 'windows-latest'
-
-  variables:
-    TargetBoard: NESHTEC_NESHNODE_V1
-    TargetPlatform: 'stm32'
-    TargetSeries: 'stm32f7xx'
-    BuildOptions: 
-    # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('NESHTEC_NESHNODE_V1_versioncounter_1_17_0', 0)]
-    GccArm_Version:
-    NeedsDFU: true
-    NeedsSRECORD: false
-    CMakePreset: NESHTEC_NESHNODE_V1
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-  - checkout: templatesBuild
-    fetchDepth: 1
-  
-  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-  - template: azure-pipelines-templates/install-kconfig-tools.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
-    parameters:
-      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
-  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
-    parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
-
-##############################
-- job: Build_BrainPad2
-  condition: >-
-    and(
-      succeeded('Check_Code_Style'),
-      or(
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BrainPad2'),
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BrainPad2'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-        eq(variables['BUILD_ALL'], 'true'),
-        eq(variables['BUILD_BrainPad2'], 'true'),
-        eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-      )
-    )
-
-  dependsOn: 
-  - Check_Code_Style
-
-  pool:
-    vmImage: 'windows-latest'
-
-  variables:
-    TargetBoard: BrainPad2
-    TargetPlatform: 'stm32'
-    TargetSeries: 'stm32f4xx'
-    BuildOptions: 
-    # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('BrainPad2_versioncounter_1_17_0', 0)]
-    GccArm_Version:
-    NeedsDFU: true
-    NeedsSRECORD: false
-    CMakePreset: BrainPad2
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-  - checkout: templatesBuild
-    fetchDepth: 1
-  
-  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-  - template: azure-pipelines-templates/install-kconfig-tools.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
-    parameters:
-      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
-  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
-    parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
-
-##############################
-- job: Build_GHI_FEZ_CERB40_NF
-  condition: >-
-    and(
-      succeeded('Check_Code_Style'),
-      or(
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] GHI_FEZ_CERB40_NF'),
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] GHI_FEZ_CERB40_NF'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-        eq(variables['BUILD_ALL'], 'true'),
-        eq(variables['BUILD_GHI_FEZ_CERB40_NF'], 'true'),
-        eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-      )
-    )
-
-  dependsOn: 
-  - Check_Code_Style
-
-  pool:
-    vmImage: 'windows-latest'
-
-  variables:
-    TargetBoard: GHI_FEZ_CERB40_NF
-    TargetPlatform: 'stm32'
-    TargetSeries: 'stm32f4xx'
-    BuildOptions: 
-    # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('GHI_FEZ_CERB40_NF_versioncounter_1_17_0', 0)]
-    GccArm_Version:
-    NeedsDFU: true
-    NeedsSRECORD: false
-    CMakePreset: GHI_FEZ_CERB40_NF
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-  - checkout: templatesBuild
-    fetchDepth: 1
-
-  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-  - template: azure-pipelines-templates/install-kconfig-tools.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
-    parameters:
-      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
-  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
-    parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
-
-##############################
-- job: Build_GHI_FEZ_CERBERUS_NF
-  condition: >-
-    and(
-      succeeded('Check_Code_Style'),
-      or(
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] GHI_FEZ_CERBERUS_NF'),
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] GHI_FEZ_CERBERUS_NF'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-        eq(variables['BUILD_ALL'], 'true'),
-        eq(variables['BUILD_GHI_FEZ_CERBERUS_NF'], 'true'),
-        eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-      )
-    )
-
-  dependsOn: 
-  - Check_Code_Style
-
-  pool:
-    vmImage: 'windows-latest'
-
-  variables:
-    TargetBoard: GHI_FEZ_CERBERUS_NF
-    TargetPlatform: 'stm32'
-    TargetSeries: 'stm32f4xx'
-    BuildOptions: 
-    # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('GHI_FEZ_CERBERUS_NF_versioncounter_1_17_0', 0)]
-    NeedsDFU: false
-    NeedsSRECORD: false
-    CMakePreset: GHI_FEZ_CERBERUS_NF
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-  - checkout: templatesBuild
-    fetchDepth: 1
-
-  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-  - template: azure-pipelines-templates/install-kconfig-tools.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
-    parameters:
-      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
-  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
-    parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
-
-##############################
-- job: Build_I2M_ELECTRON_NF
-  condition: >-
-    and(
-      succeeded('Check_Code_Style'),
-      or(
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] I2M_ELECTRON_NF'),
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] I2M_ELECTRON_NF'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-        eq(variables['BUILD_ALL'], 'true'),
-        eq(variables['BUILD_I2M_ELECTRON_NF'], 'true'),
-        eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-      )
-    )
-
-  dependsOn: 
-  - Check_Code_Style
-
-  pool:
-    vmImage: 'windows-latest'
-
-  variables:
-    TargetBoard: I2M_ELECTRON_NF
-    TargetPlatform: 'stm32'
-    TargetSeries: 'stm32f4xx'
-    BuildOptions:
-    # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('I2M_ELECTRON_NF_versioncounter_1_17_0', 0)]
-    GccArm_Version:
-    NeedsDFU: true
-    NeedsSRECORD: false
-    CMakePreset: I2M_ELECTRON_NF
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-  - checkout: templatesBuild
-    fetchDepth: 1
-
-  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-  - template: azure-pipelines-templates/install-kconfig-tools.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
-    parameters:
-      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
-  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
-    parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
-
-##############################
-- job: Build_I2M_OXYGEN_NF
-  condition: >-
-    and(
-      succeeded('Check_Code_Style'),
-      or(
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] I2M_OXYGEN_NF'),
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] I2M_OXYGEN_NF'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-        eq(variables['BUILD_ALL'], 'true'),
-        eq(variables['BUILD_I2M_OXYGEN_NF'], 'true'),
-        eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-      )
-    )
-
-  dependsOn: 
-  - Check_Code_Style
-
-  pool:
-    vmImage: 'windows-latest'
-
-  variables:
-    TargetBoard: I2M_OXYGEN_NF
-    TargetPlatform: 'stm32'
-    TargetSeries: 'stm32f4xx'
-    BuildOptions: 
-    # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('I2M_OXYGEN_NF_versioncounter_1_17_0', 0)]
-    GccArm_Version:
-    NeedsDFU: true
-    NeedsSRECORD: false
-    CMakePreset: I2M_OXYGEN_NF
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-  - checkout: templatesBuild
-    fetchDepth: 1
-
-  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-  - template: azure-pipelines-templates/install-kconfig-tools.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
-    parameters:
-      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
-  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
-    parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
-
-##############################
-- job: Build_WEACT_F411CE
-  condition: >-
-    and(
-      succeeded('Check_Code_Style'),
-      or(
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] WEACT_F411CE'),
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] WEACT_F411CE'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-        eq(variables['BUILD_ALL'], 'true'),
-        eq(variables['BUILD_WEACT_F411CE'], 'true'),
-        eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-      )
-    )
-
-  dependsOn: 
-  - Check_Code_Style
-
-  pool:
-    vmImage: 'windows-latest'
-
-  variables:
-    TargetBoard: WEACT_F411CE
-    TargetPlatform: 'stm32'
-    TargetSeries: 'stm32f4xx'
-    BuildOptions: 
-    # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('WEACT_F411CE_versioncounter_1_17_0', 0)]
-    GccArm_Version:
-    NeedsDFU: true
-    NeedsSRECORD: false
-    CMakePreset: WEACT_F411CE
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-  - checkout: templatesBuild
-    fetchDepth: 1
-
-  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-  - template: azure-pipelines-templates/install-kconfig-tools.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
-    parameters:
-      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
-  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
-    parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
-
-##############################
-- job: Build_ST_NUCLEO64_F401RE_NF
-  condition: >-
-    and(
-      succeeded('Check_Code_Style'),
-      or(
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO64_F401RE_NF'),
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO64_F401RE_NF'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-        eq(variables['BUILD_ALL'], 'true'),
-        eq(variables['BUILD_ST_NUCLEO64_F401RE_NF'], 'true'),
-        eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-      )
-    )
-
-  dependsOn: 
-  - Check_Code_Style
-
-  pool:
-    vmImage: 'windows-latest'
-
-  variables:
-    TargetBoard: ST_NUCLEO64_F401RE_NF
-    TargetPlatform: 'stm32'
-    TargetSeries: 'stm32f4xx'
-    BuildOptions: 
-    # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO64_F401RE_NF_versioncounter_1_17_0', 0)]
-    GccArm_Version:
-    NeedsDFU: true
-    NeedsSRECORD: false
-    CMakePreset: ST_NUCLEO64_F401RE_NF
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-  - checkout: templatesBuild
-    fetchDepth: 1
-
-  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-  - template: azure-pipelines-templates/install-kconfig-tools.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
-    parameters:
-      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
-  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
-    parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
-
-##############################
-- job: Build_ST_NUCLEO64_F411RE_NF
-  condition: >-
-    and(
-      succeeded('Check_Code_Style'),
-      or(
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO64_F411RE_NF'),
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO64_F411RE_NF'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-        eq(variables['BUILD_ALL'], 'true'),
-        eq(variables['BUILD_ST_NUCLEO64_F411RE_NF'], 'true'),
-        eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-      )
-    )
-
-  dependsOn: 
-  - Check_Code_Style
-
-  pool:
-    vmImage: 'windows-latest'
-
-  variables:
-    TargetBoard: ST_NUCLEO64_F411RE_NF
-    TargetPlatform: 'stm32'
-    TargetSeries: 'stm32f4xx'
-    BuildOptions: 
-    # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO64_F411RE_NF_versioncounter_1_17_0', 0)]
-    GccArm_Version:
-    NeedsDFU: false
-    NeedsSRECORD: false
-    CMakePreset: ST_NUCLEO64_F411RE_NF
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-  - checkout: templatesBuild
-    fetchDepth: 1
-
-  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-  - template: azure-pipelines-templates/install-kconfig-tools.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
-    parameters:
-      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
-  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
-    parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
-
-##############################
-- job: Build_ST_STM32F411_DISCOVERY
-  condition: >-
-    and(
-      succeeded('Check_Code_Style'),
-      or(
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_STM32F411_DISCOVERY'),
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_STM32F411_DISCOVERY'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-        eq(variables['BUILD_ALL'], 'true'),
-        eq(variables['BUILD_ST_STM32F411_DISCOVERY'], 'true'),
-        eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-      )
-    )
-
-  dependsOn: 
-  - Check_Code_Style
-
-  pool:
-    vmImage: 'windows-latest'
-
-  variables:
-    TargetBoard: ST_STM32F411_DISCOVERY
-    TargetPlatform: 'stm32'
-    TargetSeries: 'stm32f4xx'
-    BuildOptions: 
-    # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_STM32F411_DISCOVERY_versioncounter_1_17_0', 0)]
-    GccArm_Version:
-    NeedsDFU: false
-    NeedsSRECORD: false
-    CMakePreset: ST_STM32F411_DISCOVERY
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-  - checkout: templatesBuild
-    fetchDepth: 1
-
-  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-  - template: azure-pipelines-templates/install-kconfig-tools.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
-    parameters:
-      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
-  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
-    parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
-
-##############################
-- job: Build_ST_NUCLEO144_F412ZG_NF
-  condition: >-
-    and(
-      succeeded('Check_Code_Style'),
-      or(
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F412ZG_NF'),
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F412ZG_NF'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-        eq(variables['BUILD_ALL'], 'true'),
-        eq(variables['BUILD_ST_NUCLEO144_F412ZG_NF'], 'true'),
-        eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-      )
-    )
-
-  dependsOn: 
-  - Check_Code_Style
-
-  pool:
-    vmImage: 'windows-latest'
-
-  variables:
-    TargetBoard: ST_NUCLEO144_F412ZG_NF
-    TargetPlatform: 'stm32'
-    TargetSeries: 'stm32f4xx'
-    BuildOptions:
-    # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO144_F412ZG_NF_versioncounter_1_17_0', 0)]
-    GccArm_Version:
-    NeedsDFU: false
-    NeedsSRECORD: false
-    CMakePreset: ST_NUCLEO144_F412ZG_NF
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-  - checkout: templatesBuild
-    fetchDepth: 1
-
-  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-  - template: azure-pipelines-templates/install-kconfig-tools.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
-    parameters:
-      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
-  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
-    parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
-
-##############################
-- job: Build_ST_NUCLEO144_F746ZG
-  condition: >-
-    and(
-      succeeded('Check_Code_Style'),
-      or(
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F746ZG'),
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F746ZG'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-        eq(variables['BUILD_ALL'], 'true'),
-        eq(variables['BUILD_ST_NUCLEO144_F746ZG'], 'true'),
-        eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-      )
-    )
-
-  dependsOn: 
-  - Check_Code_Style
-
-  pool:
-    vmImage: 'windows-latest'
-
-  variables:
-    TargetBoard: ST_NUCLEO144_F746ZG
-    TargetPlatform: 'stm32'
-    TargetSeries: 'stm32f7xx'
-    BuildOptions: 
-    # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO144_F746ZG_versioncounter_1_17_0', 0)]
-    GccArm_Version:
-    NeedsDFU: true
-    NeedsSRECORD: false
-    CMakePreset: ST_NUCLEO144_F746ZG
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-  - checkout: templatesBuild
-    fetchDepth: 1
-
-  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-  - template: azure-pipelines-templates/install-kconfig-tools.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
-    parameters:
-      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
-  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
-    parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
-
-##############################
-- job: Build_ST_NUCLEO144_F767ZI
-  condition: >-
-    and(
-      succeeded('Check_Code_Style'),
-      or(
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F767ZI'),
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F767ZI'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-        eq(variables['BUILD_ALL'], 'true'),
-        eq(variables['BUILD_ST_NUCLEO144_F767ZI'], 'true'),
-        eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-      )
-    )
-
-  dependsOn:
-    - Check_Code_Style
-
-  pool:
-    vmImage: 'windows-latest'
-
-  variables:
-    TargetBoard: ST_NUCLEO144_F767ZI
-    TargetPlatform: 'stm32'
-    TargetSeries: 'stm32f7xx'
-    BuildOptions:
-    # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO144_F767ZI_versioncounter_1_17_0', 0)]
-    GccArm_Version:
-    NeedsDFU: true
-    NeedsSRECORD: false
-    CMakePreset: ST_NUCLEO144_F767ZI
-  steps:
+- stage: Check_Code_Style
+  dependsOn: Check_Build_Options
+  condition: succeeded()
+  jobs:
+  - job: Check_Code_Style
+    pool:
+      vmImage: 'windows-latest'
+
+    steps:
     - checkout: self
       fetchDepth: 1
-    - checkout: templatesBuild
-      fetchDepth: 1
-    - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-    - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
-      parameters:
-        repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-    - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
-      parameters:
-        repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-    - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-    - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-    - template: azure-pipelines-templates/install-kconfig-tools.yml@templatesBuild
-      parameters:
-        repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-    - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
-      parameters:
-        repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
-    - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
-      parameters:
-        buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-    - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
+
+    - template: azure-pipelines-templates/download-install-llvm.yml@templatesBuild
+    - template: azure-pipelines-templates/check-code-style.yml@templatesBuild
 
 ##############################
-- job: Build_ST_STM32F4_DISCOVERY
-  condition: >-
-    and(
-      succeeded('Check_Code_Style'),
-      or(
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_STM32F4_DISCOVERY'),
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_STM32F4_DISCOVERY'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-        eq(variables['BUILD_ALL'], 'true'),
-        eq(variables['BUILD_ST_STM32F4_DISCOVERY'], 'true'),
-        eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-      )
-    )
+- stage: Build
+  dependsOn:
+    - Check_Code_Style
+    - Check_Build_Options
+  jobs:
 
-  dependsOn: 
-  - Check_Code_Style
-
-  pool:
-    vmImage: 'windows-latest'
-
-  variables:
-    TargetBoard: ST_STM32F4_DISCOVERY
-    TargetPlatform: 'stm32'
-    TargetSeries: 'stm32f4xx'
-    BuildOptions:
-    # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_STM32F4_DISCOVERY_versioncounter_1_17_0', 0)]
-    GccArm_Version:
-    NeedsDFU: false
-    NeedsSRECORD: false
-    CMakePreset: ST_STM32F4_DISCOVERY
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-  - checkout: templatesBuild
-    fetchDepth: 1
-
-  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  # STM32 targets
+  - template: azure-pipelines-templates/build-stm32-job.yml
     parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+      targetBoard: MBN_QUAIL
+      targetSeries: stm32f4xx
+      needsDFU: true
+
+  - template: azure-pipelines-templates/build-stm32-job.yml
     parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-  - template: azure-pipelines-templates/install-kconfig-tools.yml@templatesBuild
+      targetBoard: NESHTEC_NESHNODE_V1
+      targetSeries: stm32f7xx
+      needsDFU: true
+
+  - template: azure-pipelines-templates/build-stm32-job.yml
     parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
+      targetBoard: BrainPad2
+      targetSeries: stm32f4xx
+      needsDFU: true
+
+  - template: azure-pipelines-templates/build-stm32-job.yml
     parameters:
-      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
-  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
+      targetBoard: GHI_FEZ_CERB40_NF
+      targetSeries: stm32f4xx
+      needsDFU: true
+
+  - template: azure-pipelines-templates/build-stm32-job.yml
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
+      targetBoard: GHI_FEZ_CERBERUS_NF
+      targetSeries: stm32f4xx
 
-##############################
-- job: Build_ST_NUCLEO144_F439ZI
-  condition: >-
-    and(
-      succeeded('Check_Code_Style'),
-      or(
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ST_NUCLEO144_F439ZI'),
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ST_NUCLEO144_F439ZI'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-        eq(variables['BUILD_ALL'], 'true'),
-        eq(variables['BUILD_ST_NUCLEO144_F439ZI'], 'true'),
-        eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-      )
-    )
-
-  dependsOn: 
-  - Check_Code_Style
-
-  pool:
-    vmImage: 'windows-latest'
-
-  variables:
-    TargetBoard: ST_NUCLEO144_F439ZI
-    TargetPlatform: 'stm32'
-    TargetSeries: 'stm32f4xx'
-    BuildOptions: 
-    # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('ST_NUCLEO144_F439ZI_versioncounter_1_17_0', 0)]
-    GccArm_Version:
-    NeedsDFU: false
-    NeedsSRECORD: false
-    CMakePreset: ST_NUCLEO144_F439ZI
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-  - checkout: templatesBuild
-    fetchDepth: 1
-
-  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/build-stm32-job.yml
     parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+      targetBoard: I2M_ELECTRON_NF
+      targetSeries: stm32f4xx
+      needsDFU: true
+
+  - template: azure-pipelines-templates/build-stm32-job.yml
     parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-  - template: azure-pipelines-templates/install-kconfig-tools.yml@templatesBuild
+      targetBoard: I2M_OXYGEN_NF
+      targetSeries: stm32f4xx
+      needsDFU: true
+
+  - template: azure-pipelines-templates/build-stm32-job.yml
     parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
+      targetBoard: WEACT_F411CE
+      targetSeries: stm32f4xx
+      needsDFU: true
+
+  - template: azure-pipelines-templates/build-stm32-job.yml
     parameters:
-      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
-  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
+      targetBoard: ST_NUCLEO64_F401RE_NF
+      targetSeries: stm32f4xx
+      needsDFU: true
+
+  - template: azure-pipelines-templates/build-stm32-job.yml
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
+      targetBoard: ST_NUCLEO64_F411RE_NF
+      targetSeries: stm32f4xx
 
-##############################
-- job: Build_TI_CC1352P1_LAUNCHXL_868
-  condition: >-
-    and(
-      succeeded('Check_Code_Style'),
-      or(
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] TI_CC1352P1_LAUNCHXL_868'),
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] TI_CC1352P1_LAUNCHXL_868'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-        eq(variables['BUILD_ALL'], 'true'),
-        eq(variables['BUILD_TI_CC1352P1_LAUNCHXL_868'], 'true'),
-        eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-      )
-    )
-
-  dependsOn: 
-  - Check_Code_Style
-
-  pool:
-    vmImage: 'windows-latest'
-
-  variables:
-    TargetBoard: TI_CC1352P1_LAUNCHXL
-    PackageName: TI_CC1352P1_LAUNCHXL_868
-    TargetPlatform: 'ti_simplelink'
-    TargetSeries: 'CC13X2'
-    BuildOptions: >-
-      -DTI_SIMPLELINK_RADIO_FREQ_MHZ=868
-    # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('TI_CC1352P1_LAUNCHXL_868_versioncounter_1_17_0', 0)]
-    GccArm_Version:
-    CMakePreset: TI_CC1352P1_LAUNCHXL
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-  - checkout: templatesBuild
-    fetchDepth: 1
-
-  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/build-stm32-job.yml
     parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+      targetBoard: ST_STM32F411_DISCOVERY
+      targetSeries: stm32f4xx
+
+  - template: azure-pipelines-templates/build-stm32-job.yml
     parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-  - template: azure-pipelines-templates/install-kconfig-tools.yml@templatesBuild
+      targetBoard: ST_NUCLEO144_F412ZG_NF
+      targetSeries: stm32f4xx
+
+  - template: azure-pipelines-templates/build-stm32-job.yml
     parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/build-ti-simplelink-targets.yml@templatesBuild
+      targetBoard: ST_NUCLEO144_F746ZG
+      targetSeries: stm32f7xx
+      needsDFU: true
+
+  - template: azure-pipelines-templates/build-stm32-job.yml
     parameters:
-      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
-  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
+      targetBoard: ST_NUCLEO144_F767ZI
+      targetSeries: stm32f7xx
+      needsDFU: true
+
+  - template: azure-pipelines-templates/build-stm32-job.yml
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
+      targetBoard: ST_STM32F4_DISCOVERY
+      targetSeries: stm32f4xx
 
-##############################
-- job: Build_TI_CC1352P1_LAUNCHXL_915
-  condition: >-
-    and(
-      succeeded('Check_Code_Style'),
-      or(
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] TI_CC1352P1_LAUNCHXL_915'),
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] TI_CC1352P1_LAUNCHXL_915'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-        eq(variables['BUILD_ALL'], 'true'),
-        eq(variables['BUILD_TI_CC1352P1_LAUNCHXL_915'], 'true'),
-        eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-      )
-    )
-
-  dependsOn: 
-  - Check_Code_Style
-
-  pool:
-    vmImage: 'windows-latest'
-
-  variables:
-    TargetBoard: TI_CC1352P1_LAUNCHXL
-    PackageName: TI_CC1352P1_LAUNCHXL_915
-    TargetPlatform: 'ti_simplelink'
-    TargetSeries: 'CC13X2'
-    BuildOptions: >-
-      -DTI_SIMPLELINK_RADIO_FREQ_MHZ=915
-    # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('TI_CC1352P1_LAUNCHXL_915_versioncounter_1_17_0', 0)]
-    GccArm_Version:
-    CMakePreset: TI_CC1352P1_LAUNCHXL
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-  - checkout: templatesBuild
-    fetchDepth: 1
-
-  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  - template: azure-pipelines-templates/build-stm32-job.yml
     parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+      targetBoard: ST_NUCLEO144_F439ZI
+      targetSeries: stm32f4xx
+
+  - template: azure-pipelines-templates/build-stm32-job.yml
     parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-  - template: azure-pipelines-templates/install-kconfig-tools.yml@templatesBuild
+      targetBoard: PybStick2x
+      targetSeries: stm32f4xx
+      needsDFU: true
+
+  - template: azure-pipelines-templates/build-stm32-job.yml
     parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/build-ti-simplelink-targets.yml@templatesBuild
+      targetBoard: NETDUINO3_WIFI
+      targetSeries: stm32f4xx
+      needsDFU: true
+
+  # TI SimpleLink targets
+  - template: azure-pipelines-templates/build-ti-simplelink-job.yml
     parameters:
-      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
-  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
+      targetBoard: TI_CC1352P1_LAUNCHXL
+      packageName: TI_CC1352P1_LAUNCHXL_868
+      targetSeries: CC13X2
+      buildOptions: '-DTI_SIMPLELINK_RADIO_FREQ_MHZ=868'
+
+  - template: azure-pipelines-templates/build-ti-simplelink-job.yml
     parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
+      targetBoard: TI_CC1352P1_LAUNCHXL
+      packageName: TI_CC1352P1_LAUNCHXL_915
+      targetSeries: CC13X2
+      buildOptions: '-DTI_SIMPLELINK_RADIO_FREQ_MHZ=915'
 
-##############################
-- job: Build_PybStick2x
-  condition: >-
-    and(
-      succeeded('Check_Code_Style'),
-      or(
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] PybStick2x'),
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] PybStick2x'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-        eq(variables['BUILD_ALL'], 'true'),
-        eq(variables['BUILD_PybStick2x'], 'true'),
-        eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-      )
-    )
-
-  dependsOn: 
-  - Check_Code_Style
-
-  pool:
-    vmImage: 'windows-latest'
-
-  variables:
-    TargetBoard: PybStick2x
-    TargetPlatform: 'stm32'
-    TargetSeries: 'stm32f4xx'
-    BuildOptions: 
-    # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('PybStick2x_versioncounter_1_17_0', 0)]
-    GccArm_Version:
-    NeedsDFU: true
-    NeedsSRECORD: false
-    CMakePreset: PybStick2x
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-  - checkout: templatesBuild
-    fetchDepth: 1
-
-  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+  # ESP32 targets
+  - template: azure-pipelines-templates/build-esp32-job.yml
     parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+      targetName: LilygoTWatch2020
+      idfTarget: esp32
+
+  - template: azure-pipelines-templates/build-esp32-job.yml
     parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-  - template: azure-pipelines-templates/install-kconfig-tools.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
-    parameters:
-      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
-  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
-    parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
-
-##############################
-- job: Build_LilygoTWatch2020
-  condition: >-
-    or(
-      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] LilygoTWatch2020'),
-      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] LilygoTWatch2020'),
-      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-      eq(variables['BUILD_ALL'], 'true'),
-      eq(variables['BUILD_LilygoTWatch2020'], 'true'),
-      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-    )
-
-  dependsOn: 
-  - Get_Commit_Message
-  - Check_Build_Options
-
-  pool:
-    vmImage: 'windows-latest'
-
-  variables:
-    TargetBoard: ESP32
-    TargetSeries: 'esp32'
-    TargetPlatform: 'esp32'
-    IDF_PATH: 'D:/a/1/s/esp-idf'
-    IDF_TAG: "v5.5.4"
-    PIP_CACHE_DIR: $(Pipeline.Workspace)/.pip
-    BuildOptions: 
-    IDF_Target: esp32
-    TargetName: LilygoTWatch2020
-    PackageName: LilygoTWatch2020    
-    # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('LilygoTWatch2020_versioncounter_1_17_0', 0)]
-    CMakePreset: LilygoTWatch2020
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-  - checkout: templatesBuild
-    fetchDepth: 1
-  - checkout: esp32_idf
-    fetchDepth: 1
-
-  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/download-install-esp32-build-components.yml@templatesBuild
-  - template: azure-pipelines-templates/build-espressif-esp32-targets.yml@templatesBuild
-    parameters:
-      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
-      partitionsDirectory: '$(Build.SourcesDirectory)/nf-interpreter/targets/ESP32/_IDF/$(IDF_Target)'
-  - task: CopyFiles@1
-    condition: succeeded()
-    displayName: Copying bootloader
-    inputs:
-      sourceFolder: '$(Build.SourcesDirectory)\nf-interpreter\build\bootloader'
-      Contents: |
-        bootloader.bin
-      TargetFolder: '$(Build.ArtifactStagingDirectory)\$(TargetPublishName)'
-      flattenFolders: true
-  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
-    parameters:
-      buildDirectory: '$(Build.SourcesDirectory)\nf-interpreter\build'
-  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
-
-##############################
-- job: Build_LilygoTWatch2021
-  condition: >-
-    or(
-      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] LilygoTWatch2021'),
-      contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] LilygoTWatch2021'),
-      contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-      eq(variables['BUILD_ALL'], 'true'),
-      eq(variables['BUILD_LilygoTWatch2021'], 'true'),
-      eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-    )
-
-  dependsOn: 
-  - Get_Commit_Message
-  - Check_Build_Options
-
-  pool:
-    vmImage: 'windows-latest'
-
-  variables:
-    TargetBoard: ESP32
-    TargetSeries: 'esp32'
-    TargetPlatform: 'esp32'
-    IDF_PATH: 'D:/a/1/s/esp-idf'
-    IDF_TAG: "v5.5.4"    
-    PIP_CACHE_DIR: $(Pipeline.Workspace)/.pip
-    BuildOptions: 
-    IDF_Target: esp32
-    TargetName: LilygoTWatch2021
-    PackageName: LilygoTWatch2021
-    # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('LilygoTWatch2021_versioncounter_1_17_0', 0)]
-    CMakePreset: LilygoTWatch2021
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-  - checkout: templatesBuild
-    fetchDepth: 1
-  - checkout: esp32_idf
-    fetchDepth: 1
-
-  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/download-install-esp32-build-components.yml@templatesBuild
-  - template: azure-pipelines-templates/build-espressif-esp32-targets.yml@templatesBuild
-    parameters:
-      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
-      partitionsDirectory: '$(Build.SourcesDirectory)/nf-interpreter/targets/ESP32/_IDF/$(IDF_Target)'
-  - task: CopyFiles@1
-    condition: succeeded()
-    displayName: Copying bootloader
-    inputs:
-      sourceFolder: '$(Build.SourcesDirectory)\nf-interpreter\build\bootloader'
-      Contents: |
-        bootloader.bin
-      TargetFolder: '$(Build.ArtifactStagingDirectory)\$(TargetPublishName)'
-      flattenFolders: true
-  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
-    parameters:
-      buildDirectory: '$(Build.SourcesDirectory)\nf-interpreter\build'
-  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
-
-##############################
-- job: Build_NETDUINO3_WIFI
-  condition: >-
-    and(
-      succeeded('Check_Code_Style'),
-      or(
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] NETDUINO3_WIFI'),
-        contains(dependencies.Get_Commit_Message.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] NETDUINO3_WIFI'),
-        contains(dependencies.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
-        eq(variables['BUILD_ALL'], 'true'),
-        eq(variables['BUILD_NETDUINO3_WIFI'], 'true'),
-        eq(dependencies.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
-      )
-    )
-
-  dependsOn: 
-  - Check_Code_Style
-
-  pool:
-    vmImage: 'windows-latest'
-
-  variables:
-    TargetBoard: NETDUINO3_WIFI
-    TargetPlatform: 'stm32'
-    TargetSeries: 'stm32f4xx'
-    BuildOptions: 
-    # creates a counter and assigns it to the revision variable
-    REVISION: $[counter('NETDUINO3_WIFI_versioncounter_1_17_0', 0)]
-    GccArm_Version:
-    NeedsDFU: true
-    NeedsSRECORD: false
-    CMakePreset: NETDUINO3_WIFI
-
-  steps:
-  - checkout: self
-    fetchDepth: 1
-  - checkout: templatesBuild
-    fetchDepth: 1
-
-  - template: azure-pipelines-templates/clone-nf-interpreter-repo.yml
-  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
-  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
-  - template: azure-pipelines-templates/install-kconfig-tools.yml@templatesBuild
-    parameters:
-      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
-  - template: azure-pipelines-templates/build-chibios-stm32-targets.yml@templatesBuild
-    parameters:
-      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
-  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
-    parameters:
-      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
-  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
+      targetName: LilygoTWatch2021
+      idfTarget: esp32
 
 ##################################
 # report build failure to Discord
-- job: Report_Build_Failure
-
+- stage: Report_Build_Failure
   dependsOn:
-  - Build_MBN_QUAIL
-  - Build_BrainPad2
-  - Build_GHI_FEZ_CERB40_NF
-  - Build_I2M_ELECTRON_NF
-  - Build_I2M_OXYGEN_NF
-  - Build_WEACT_F411CE
-  - Build_ST_NUCLEO64_F401RE_NF
-  - Build_ST_NUCLEO64_F411RE_NF
-  - Build_ST_STM32F411_DISCOVERY
-  - Build_ST_NUCLEO144_F412ZG_NF
-  - Build_ST_NUCLEO144_F746ZG
-  - Build_ST_NUCLEO144_F767ZI
-  - Build_ST_STM32F4_DISCOVERY
-  - Build_ST_NUCLEO144_F439ZI
-  - Build_TI_CC1352P1_LAUNCHXL_868
-  - Build_TI_CC1352P1_LAUNCHXL_915
-  - Build_PybStick2x
-  - Build_LilygoTWatch2020
-  - Build_LilygoTWatch2021
-  - Build_NETDUINO3_WIFI
-
-
-  condition: >-
+    - Check_Build_Options
+    - Check_Code_Style
+    - Build
+  condition: |
     or(
-      failed('Build_MBN_QUAIL'),
-      failed('Build_BrainPad2'),
-      failed('Build_GHI_FEZ_CERB40_NF'),
-      failed('Build_I2M_ELECTRON_NF'),
-      failed('Build_I2M_OXYGEN_NF'),
-      failed('Build_WEACT_F411CE'),      
-      failed('Build_ST_NUCLEO64_F401RE_NF'),
-      failed('Build_ST_NUCLEO64_F411RE_NF'),
-      failed('Build_ST_STM32F411_DISCOVERY'),
-      failed('Build_ST_NUCLEO144_F412ZG_NF'),
-      failed('Build_ST_NUCLEO144_F746ZG'),
-      failed('Build_ST_NUCLEO144_F767ZI'),
-      failed('Build_ST_STM32F4_DISCOVERY'),
-      failed('Build_ST_NUCLEO144_F439ZI'),
-      failed('Build_TI_CC1352P1_LAUNCHXL_868'),
-      failed('Build_TI_CC1352P1_LAUNCHXL_915'),
-      failed('Build_PybStick2x'),
-      failed('Build_LilygoTWatch2020'),
-      failed('Build_LilygoTWatch2021'),
-      failed('Build_NETDUINO3_WIFI')    
+      failed('Check_Build_Options'),
+      failed('Check_Code_Style'),
+      failed('Build')
     )
+  jobs:
+  - job: Report_Build_Failure
+    pool:
+      vmImage: 'windows-latest'
 
-  pool:
-    vmImage: 'windows-latest'
+    steps:
+    - checkout: self
+      fetchDepth: 1
 
-  steps:
-  - checkout: self
-    fetchDepth: 1
-
-  # step from template @ nf-tools repo
-  - template: azure-pipelines-templates/discord-webhook.yml@templates  
-    parameters:
-      status: 'failure'
-      webhookUrl: '$(DiscordWebhook)'
-      message: ''
+    # step from template @ nf-tools repo
+    - template: azure-pipelines-templates/discord-webhook.yml@templates
+      parameters:
+        status: 'failure'
+        webhookUrl: '$(DiscordWebhook)'
+        message: ''
