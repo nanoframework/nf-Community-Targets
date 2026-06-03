@@ -1,0 +1,64 @@
+# Copyright (c) .NET Foundation and Contributors
+# See LICENSE file in the project root for full license information.
+
+parameters:
+  - name: targetBoard
+    type: string
+  - name: packageName
+    type: string
+  - name: targetSeries
+    type: string
+  - name: buildOptions
+    type: string
+
+jobs:
+- job: Build_${{ parameters.packageName }}
+  condition: >-
+    or(
+      contains(stageDependencies.Check_Build_Options.Check_Build_Options.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] ${{ parameters.packageName }}'),
+      contains(stageDependencies.Check_Build_Options.Check_Build_Options.outputs['GetCommitDetails.COMMIT_MESSAGE'], '[x] BUILD ALL'),
+      contains(stageDependencies.Check_Build_Options.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] ${{ parameters.packageName }}'),
+      contains(stageDependencies.Check_Build_Options.Check_Build_Options.outputs['BuildOptions.COMMIT_MESSAGE_FROMPR'], '[x] BUILD ALL'),
+      eq(variables['BUILD_ALL'], 'true'),
+      eq(variables['BUILD_${{ parameters.packageName }}'], 'true'),
+      eq(stageDependencies.Check_Build_Options.Check_Build_Options.outputs['BuildOptions.GO'], 'True')
+    )
+
+  pool:
+    vmImage: 'windows-latest'
+
+  variables:
+    TargetBoard: ${{ parameters.targetBoard }}
+    PackageName: ${{ parameters.packageName }}
+    TargetPlatform: 'ti_simplelink'
+    TargetSeries: ${{ parameters.targetSeries }}
+    BuildOptions: ${{ parameters.buildOptions }}
+    REVISION: $[counter('${{ parameters.packageName }}_versioncounter_1_17_0', 0)]
+    GccArm_Version:
+    CMakePreset: ${{ parameters.targetBoard }}
+
+  steps:
+  - checkout: self
+    fetchDepth: 1
+  - checkout: templatesBuild
+    fetchDepth: 1
+
+  - template: clone-nf-interpreter-repo.yml
+  - template: azure-pipelines-templates/build-preparations.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
+  - template: azure-pipelines-templates/nb-gitversioning.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
+  - template: azure-pipelines-templates/download-install-arm-gcc-toolchain.yml@templatesBuild
+  - template: azure-pipelines-templates/download-hexdfu.yml@templatesBuild
+  - template: azure-pipelines-templates/install-kconfig-tools.yml@templatesBuild
+    parameters:
+      repoDirectory: '$(Build.SourcesDirectory)\nf-interpreter'
+  - template: azure-pipelines-templates/build-ti-simplelink-targets.yml@templatesBuild
+    parameters:
+      repoDirectory: $(Build.SourcesDirectory)\nf-interpreter
+  - template: azure-pipelines-templates/pack-publish-artifacts.yml@templatesBuild
+    parameters:
+      buildDirectory: $(Build.SourcesDirectory)\nf-interpreter\build
+  - template: azure-pipelines-templates/publish-cloudsmith.yml@templatesBuild
