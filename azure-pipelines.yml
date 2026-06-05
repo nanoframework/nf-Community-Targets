@@ -136,9 +136,9 @@ stages:
               $interpreterLastCommitDate = [System.DateTimeOffset]::Parse($interpreterLastCommitDateStr).UtcDateTime
               "Last commit for nf-interpreter dated $interpreterLastCommitDate" | Write-Host
 
-              if(($interpreterLastCommitDate -ge $queuedDateUtc) -or ($thisRepoLastCommitDate -ge $queuedDateUtc))
+              if(($interpreterLastCommitDate -ge $queuedDateUtc.AddDays(-1)) -or ($thisRepoLastCommitDate -ge $queuedDateUtc.AddDays(-1)))
               {
-                # last commit is from the scheduled day, build ALL images
+                # last commit is within the past 24 hours, build ALL images
                 echo "##vso[task.setvariable variable=GO;isOutput=true]true"
 
                 "**Update upstream: Build ALL**" | Write-Host
