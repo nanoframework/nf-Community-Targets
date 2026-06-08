@@ -10,8 +10,8 @@ steps:
   - task: CopyFiles@2
     displayName: Copy ChibiOS target files
     inputs:
-      sourceFolder: $(Build.SourcesDirectory)\nf-Community-Targets\ChibiOS
-      targetFolder: $(Build.SourcesDirectory)\nf-interpreter\targets-community\ChibiOS
+      sourceFolder: $(Build.SourcesDirectory)/nf-Community-Targets/ChibiOS
+      targetFolder: $(Build.SourcesDirectory)/nf-interpreter/targets-community/ChibiOS
       cleanTargetFolder: false
       overWrite: true
 
@@ -19,8 +19,8 @@ steps:
   - task: CopyFiles@2
     displayName: Copy TI-SimpleLink target files
     inputs:
-      sourceFolder: $(Build.SourcesDirectory)\nf-Community-Targets\TI_SimpleLink
-      targetFolder: $(Build.SourcesDirectory)\nf-interpreter\targets-community\TI_SimpleLink
+      sourceFolder: $(Build.SourcesDirectory)/nf-Community-Targets/TI_SimpleLink
+      targetFolder: $(Build.SourcesDirectory)/nf-interpreter/targets-community/TI_SimpleLink
       cleanTargetFolder: false
       overWrite: true
 
@@ -28,8 +28,8 @@ steps:
   - task: CopyFiles@2
     displayName: Copy install scripts
     inputs:
-      sourceFolder: $(Build.SourcesDirectory)\nf-interpreter\install-scripts
-      targetFolder: $(Build.SourcesDirectory)\install-scripts
+      sourceFolder: $(Build.SourcesDirectory)/nf-interpreter/install-scripts
+      targetFolder: $(Build.SourcesDirectory)/install-scripts
       cleanTargetFolder: false
       overWrite: true
 
@@ -37,8 +37,8 @@ steps:
   - task: CopyFiles@2
     displayName: Copy CMake presets
     inputs:
-      sourceFolder: $(Build.SourcesDirectory)\nf-Community-Targets
-      targetFolder: $(Build.SourcesDirectory)\nf-interpreter\targets-community
+      sourceFolder: $(Build.SourcesDirectory)/nf-Community-Targets
+      targetFolder: $(Build.SourcesDirectory)/nf-interpreter/targets-community
       Contents: |
         CMakePresets.json
       cleanTargetFolder: false
