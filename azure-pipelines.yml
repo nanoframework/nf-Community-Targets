@@ -101,7 +101,7 @@ stages:
         else
         {
           # build NOT from PR
-          Write-Host "Build for commit ID: $env:Build_SourceVersion"
+          Write-Host "Build for commit ID: $(Build.SourceVersion)"
 
           # default build flag to FALSE, so other options are checked for what to build
           echo "##vso[task.setvariable variable=GO;isOutput=true]false"
@@ -119,7 +119,7 @@ stages:
               "**Scheduled build**" | Write-Host
 
               try {
-                $queuedDateUtc = [System.DateTimeOffset]::Parse($env:Build_QueuedDate).UtcDateTime
+                $queuedDateUtc = [System.DateTimeOffset]::Parse("$(Build.QueuedDate)").UtcDateTime
               } catch {
                 # fallback, should not happen
                 $queuedDateUtc = [System.DateTime]::UtcNow
