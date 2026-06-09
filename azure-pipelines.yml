@@ -64,11 +64,10 @@ stages:
 
         # compute authorization header in format "AUTHORIZATION: basic 'encoded token'"
         # 'encoded token' is the Base64 of the string "nfbot:personal-token"
-        $auth = "basic $([System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes("nfbot:$(GitHubToken)")))"
+        $auth = "basic $([System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes("nfbot:$env:GITHUBTOKEN")))"
 
-        # use AZDO macro expansion for these so env var casing is never an issue on Linux
-        $pullRequestNumber = "$(System.PullRequest.PullRequestNumber)"
-        $repositoryName = "$(Build.Repository.Name)"
+        $pullRequestNumber = $env:SYSTEM_PULLREQUEST_PULLREQUESTNUMBER
+        $repositoryName = $env:BUILD_REPOSITORY_NAME
 
         if($env:SYSTEM_PULLREQUEST_PULLREQUESTID -ne $null)
         {
@@ -101,7 +100,7 @@ stages:
         else
         {
           # build NOT from PR
-          Write-Host "Build for commit ID: $(Build.SourceVersion)"
+          Write-Host "Build for commit ID: $env:BUILD_SOURCEVERSION"
 
           # default build flag to FALSE, so other options are checked for what to build
           echo "##vso[task.setvariable variable=GO;isOutput=true]false"
@@ -113,13 +112,13 @@ stages:
           }
           else
           {
-            if("$(Build.Reason)" -eq "Schedule")
+            if($env:BUILD_REASON -eq "Schedule")
             {
               # scheduled daily build: check commits for the scheduled day (UTC)
               "**Scheduled build**" | Write-Host
 
               try {
-                $queuedDateUtc = [System.DateTimeOffset]::Parse("$(Build.QueuedDate)").UtcDateTime
+                $queuedDateUtc = [System.DateTimeOffset]::Parse($env:BUILD_QUEUEDDATE).UtcDateTime
               } catch {
                 # fallback, should not happen
                 $queuedDateUtc = [System.DateTime]::UtcNow
@@ -158,7 +157,7 @@ stages:
                 echo "##vso[task.setvariable variable=GO;isOutput=true]false"
               }
             }
-            elseif("$(Build.Reason)" -eq "IndividualCI")
+            elseif($env:BUILD_REASON -eq "IndividualCI")
             {
                 "**Build for a push (commit)**" | Write-Host
 
@@ -166,7 +165,7 @@ stages:
                 try
                 {
                     # get PR associated with commit
-                    $prUrl = "https://api.github.com/repos/$repositoryName/commits/$(Build.SourceVersion)/pulls"
+                    $prUrl = "https://api.github.com/repos/$repositoryName/commits/$env:BUILD_SOURCEVERSION/pulls"
 
                     $commit = Invoke-RestMethod -Uri $prUrl -ContentType "application/json" -Headers @{Accept = "application/vnd.github.groot-preview+json"; Authorization = "$auth"}  -Method GET
 
@@ -204,6 +203,8 @@ stages:
 
       name: BuildOptions
       displayName: Evaluate build options
+      env:
+        GITHUBTOKEN: $(GitHubToken)
 
 ##############################
 - stage: Check_Code_Style
