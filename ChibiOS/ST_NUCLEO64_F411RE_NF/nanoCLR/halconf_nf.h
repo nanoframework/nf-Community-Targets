@@ -17,8 +17,8 @@
 #endif
 
 //  STM32F411xx Does not support TRNG
-#if !defined(HAL_NF_USE_STM32_RNG)
-#define HAL_NF_USE_STM32_RNG           FALSE
+#if !defined(HAL_NF_USE_RNG)
+#define HAL_NF_USE_RNG           FALSE
 #endif
 
 #endif // HALCONF_NF_H

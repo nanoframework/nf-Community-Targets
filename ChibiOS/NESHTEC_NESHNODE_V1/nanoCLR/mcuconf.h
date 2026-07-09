@@ -279,6 +279,11 @@
 #define STM32_SDC_SDMMC1_IRQ_PRIORITY       9
 
 /*
+ * TRNG driver system settings.
+ */
+#define STM32_TRNG_USE_RNG1                 TRUE
+
+/*
  * SERIAL driver system settings.
  */
 #define STM32_SERIAL_USE_USART1             FALSE
