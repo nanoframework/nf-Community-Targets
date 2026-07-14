@@ -7,8 +7,7 @@
 #define HALCONF_NF_H
 
 // enables STM32 Flash driver
-#if !defined(HAL_NF_USE_STM32_FLASH) 
-#define HAL_NF_USE_STM32_FLASH         TRUE
-#endif
+#define HAL_NF_USE_STM32_FLASH TRUE
+#define HAL_NF_USE_RNG         TRUE
 
 #endif // HALCONF_NF_H

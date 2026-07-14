@@ -6,18 +6,9 @@
 #ifndef _HALCONF_NF_H
 #define _HALCONF_NF_H
 
-// Enables the ChibiOS community overlay.
-#if !defined(HAL_USE_COMMUNITY)
-#define HAL_USE_COMMUNITY TRUE
-#endif
-
-// enables STM32 Flash driver
-#if !defined(HAL_USE_STM32_FLASH)
-#define HAL_USE_STM32_FLASH TRUE
-#endif
-
-#if !defined(HAL_NF_USE_STM32_FLASH)
+#define HAL_USE_COMMUNITY      TRUE
+#define HAL_USE_STM32_FLASH    TRUE
 #define HAL_NF_USE_STM32_FLASH TRUE
-#endif
+#define HAL_NF_USE_RNG         TRUE
 
 #endif // _HALCONF_NF_H
