@@ -317,6 +317,11 @@ stages:
 
   - template: azure-pipelines-templates/build-stm32-job.yml
     parameters:
+      targetBoard: ST_STM32F429I_DISCOVERY_B01
+      targetSeries: stm32f4xx
+
+  - template: azure-pipelines-templates/build-stm32-job.yml
+    parameters:
       targetBoard: ST_NUCLEO144_F439ZI
       targetSeries: stm32f4xx
 
