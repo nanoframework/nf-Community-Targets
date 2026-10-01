@@ -18,6 +18,7 @@
         "ChibiOS/ST_NUCLEO144_F767ZI/CMakePresets.json",
         "ChibiOS/ST_STM32F4_DISCOVERY/CMakePresets.json",
         "ChibiOS/ST_STM32F411_DISCOVERY/CMakePresets.json",
+        "ChibiOS/ST_STM32F429I_DISCOVERY_B01/CMakePresets.json",
         "ChibiOS/WEACT_F411CE/CMakePresets.json",
         "TI_SimpleLink/TI_CC1352P1_LAUNCHXL/CMakePresets.json"
     ]
