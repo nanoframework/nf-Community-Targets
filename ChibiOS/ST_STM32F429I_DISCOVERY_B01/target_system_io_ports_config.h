@@ -11,8 +11,8 @@
 #define NF_SERIAL_COMM_STM32_UART_USE_USART1 TRUE
 
 ///////////
-// UART3 //
+// UART5 //
 ///////////
 
-// enable USART3
-#define NF_SERIAL_COMM_STM32_UART_USE_USART3 TRUE
+// enable UART5
+#define NF_SERIAL_COMM_STM32_UART_USE_UART5 TRUE
