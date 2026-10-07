@@ -30,9 +30,9 @@ if(HEX2DFU_TOOL_AVAILABLE)
     ## DO NOT use the leading 0x notation, just the address in plain hexadecimal formating            ##
     ####################################################################################################
     nf_generate_dfu_package(
-        ${PROJECT_SOURCE_DIR}/build/${NANOBOOTER_PROJECT_NAME}.bin 08000000 
-        ${PROJECT_SOURCE_DIR}/build/${NANOCLR_PROJECT_NAME}.bin 08004000 
-        ${PROJECT_SOURCE_DIR}/build/nanobooter-nanoclr.dfu
+        ${CMAKE_BINARY_DIR}/${NANOBOOTER_PROJECT_NAME}.bin 08000000 
+        ${CMAKE_BINARY_DIR}/${NANOCLR_PROJECT_NAME}.bin 08004000 
+        ${CMAKE_BINARY_DIR}/nanobooter-nanoclr.dfu
     )
 
 endif()
