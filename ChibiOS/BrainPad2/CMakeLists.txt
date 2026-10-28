@@ -31,7 +31,7 @@ if(HEX2DFU_TOOL_AVAILABLE)
     ####################################################################################################
     nf_generate_dfu_package(
         ${CMAKE_BINARY_DIR}/${NANOBOOTER_PROJECT_NAME}.bin 08000000 
-        ${CMAKE_BINARY_DIR}/${NANOCLR_PROJECT_NAME}.bin 08004000 
+        ${CMAKE_BINARY_DIR}/${NANOCLR_PROJECT_NAME}.bin 08008000
         ${CMAKE_BINARY_DIR}/nanobooter-nanoclr.dfu
     )
 
